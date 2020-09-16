@@ -1,41 +1,29 @@
 package edu.uidaho.electricblocks;
 
-import edu.uidaho.electricblocks.blocks.PortableGeneratorBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.sound.sampled.Port;
-import java.util.stream.Collectors;
-
+/**
+ * ElectricBlocks main class. This is what gets everything started.
+ */
 @Mod("electricblocks")
 public class ElectricBlocksMod {
 
-    public static final String MOD_ID = "electricblocks";
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final String MOD_ID = "electricblocks"; // Easy to access copy of Mod ID
 
+    private static final Logger LOGGER = LogManager.getLogger(); // Reference to L4J Logger
+
+    // Creates a new tab group in the creative menu for all the blocks and items in this mod
     public static final ItemGroup TAB = new ItemGroup("ebtab") {
         @Override
         public ItemStack createIcon() {
@@ -69,7 +57,6 @@ public class ElectricBlocksMod {
         LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         // do something when the server starts

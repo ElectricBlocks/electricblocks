@@ -1,5 +1,6 @@
 {
   "itemGroup.ebtab": "Electric Blocks",
   "block.electricblocks.portablegenerator_block": "Portable Generator",
+  "block.electricblocks.externalgrid_block": "External Grid",
   "item.electricblocks.portablegenerator_item": "Portable Generator"
 }
