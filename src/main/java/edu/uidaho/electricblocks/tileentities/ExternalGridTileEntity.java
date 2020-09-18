@@ -16,11 +16,7 @@ public class ExternalGridTileEntity extends TileEntity {
     private Volt voltageLevel = new Volt(120);
 
     public ExternalGridTileEntity() {
-        this(RegistryHandler.EXTERNAL_GRID_TILE_ENTITY.get());
-    }
-
-    public ExternalGridTileEntity(final TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
+        super(RegistryHandler.EXTERNAL_GRID_TILE_ENTITY.get());
     }
 
     @Override

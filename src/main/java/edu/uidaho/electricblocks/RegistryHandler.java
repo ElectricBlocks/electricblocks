@@ -1,10 +1,13 @@
 package edu.uidaho.electricblocks;
 
 import edu.uidaho.electricblocks.blocks.ExternalGridBlock;
+import edu.uidaho.electricblocks.blocks.LampBlock;
 import edu.uidaho.electricblocks.blocks.PortableGeneratorBlock;
 import edu.uidaho.electricblocks.items.ExternalGridItem;
+import edu.uidaho.electricblocks.items.LampItem;
 import edu.uidaho.electricblocks.items.PortableGeneratorItem;
 import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
+import edu.uidaho.electricblocks.tileentities.LampTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
@@ -23,14 +26,18 @@ public class RegistryHandler {
     // Blocks
     public static final RegistryObject<Block> PORTABLE_GENERATOR_BLOCK = BLOCKS.register("portablegenerator_block", PortableGeneratorBlock::new);
     public static final RegistryObject<Block> EXTERNAL_GRID_BLOCK = BLOCKS.register("externalgrid_block", ExternalGridBlock::new);
+    public static final RegistryObject<Block> LAMP_BLOCK = BLOCKS.register("lamp_block", LampBlock::new);
 
     // Items
     public static final RegistryObject<Item> PORTABLE_GENERATOR_ITEM = ITEMS.register("portablegenerator_item", PortableGeneratorItem::new);
     public static final RegistryObject<Item> EXTERNAL_GRID_ITEM = ITEMS.register("externalgrid_item", ExternalGridItem::new);
+    public static final RegistryObject<Item> LAMP_ITEM = ITEMS.register("lamp_item", LampItem::new);
 
     // Tile Entities
     public static final RegistryObject<TileEntityType<ExternalGridTileEntity>> EXTERNAL_GRID_TILE_ENTITY =
             TILE_ENTITIES.register("externalgrid_tileentity", () -> TileEntityType.Builder.create(ExternalGridTileEntity::new).build(null));
+    public static final RegistryObject<TileEntityType<LampTileEntity>> LAMP_TILE_ENTITY =
+            TILE_ENTITIES.register("lamp_tileentity", () -> TileEntityType.Builder.create(LampTileEntity::new).build(null));
 
     public static void init() {
         BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());

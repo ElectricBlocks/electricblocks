@@ -4,6 +4,7 @@ import edu.uidaho.electricblocks.electric.Volt;
 import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RedstoneLampBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
