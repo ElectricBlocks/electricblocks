@@ -1,0 +1,6 @@
+package edu.uidaho.electricblocks.simulation;
+
+public enum SimulationType {
+    GENERATOR,LOAD,LINE,EXT_GRID,BUS,SWITCH,TRANSFORMER,ASYMMETRIC_LOAD,ASYMMETRIC_GENERATOR,
+    STORAGE,THREE_WINDING_TRANSFORMER
+}

@@ -1,10 +1,20 @@
 package edu.uidaho.electricblocks.electric;
 
+import edu.uidaho.electricblocks.ElectricBlocksMod;
+
+/**
+ * Class representing a watt unit for easy conversion.
+ * This class is immutable. If you want to change voltage, you must use a new instance.
+ */
 public class Watt {
 
-    private double watts;
+    private final double watts;
 
     public Watt(double watts) {
+        if (watts <= 0) {
+            ElectricBlocksMod.LOGGER.error("Watt failed check: " + watts + " watts. Must be greater than or equal to zero.");
+            throw new RuntimeException("Watts must be greater than or equal to zero.");
+        }
         this.watts = watts;
     }
 
@@ -20,15 +30,4 @@ public class Watt {
         return watts / 1000000d;
     }
 
-    public void setWatts(double watts) {
-        this.watts = watts;
-    }
-
-    public void setKiloWatts(double kiloWatts) {
-        this.watts = kiloWatts * 1000d;
-    }
-
-    public void setMegaWatts(double megaWatts) {
-        this.watts = megaWatts * 1000000d;
-    }
 }

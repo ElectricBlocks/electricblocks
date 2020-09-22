@@ -1,8 +1,11 @@
 package edu.uidaho.electricblocks.tileentities;
 
+import com.google.gson.JsonObject;
 import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
+import edu.uidaho.electricblocks.simulation.ISimulation;
+import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -10,34 +13,54 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
-public class LampTileEntity extends TileEntity {
+/**
+ * LampTileEntity stores information about the lamp block.
+ */
+public class LampTileEntity extends TileEntity implements ISimulation {
 
-    private boolean inService = true;
+    private boolean inService = true; // Whether or not the lamp is on
     private Watt maxPower = new Watt(60); // Maximum power this lamp can take
     private Watt resultPower = new Watt(60); // Amount of power being received
+    private UUID simId = UUID.randomUUID();
 
     public LampTileEntity() {
         super(RegistryHandler.LAMP_TILE_ENTITY.get());
     }
 
+    /**
+     * Adds Lamp specific information to the NBT Tags
+     * @param compound The NBT tag being updated
+     * @return A complete NBT tag with Lamp specific information
+     */
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
         compound.putBoolean("inService", inService);
         compound.putDouble("maxPower", maxPower.getWatts());
         compound.putDouble("resultPower", resultPower.getWatts());
+        compound.putUniqueId("simId", simId);
         return compound;
     }
 
+    /**
+     * Extracts information from an NBT Tag about the Lamp
+     * @param compound The NBT Tag to extract info from
+     */
     @Override
     public void read(CompoundNBT compound) {
         super.read(compound);
         inService = compound.getBoolean("inService");
-        maxPower.setWatts(compound.getDouble("maxPower"));
-        resultPower.setWatts(compound.getDouble("resultPower"));
+        maxPower = new Watt(compound.getDouble("maxPower"));
+        resultPower = new Watt(compound.getDouble("resultPower"));
+        simId = compound.getUniqueId("simId");
     }
 
+    /**
+     * Sever sends an update tile entity packet to client.
+     * @return The completed update tile entity packet
+     */
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
@@ -46,23 +69,28 @@ public class LampTileEntity extends TileEntity {
         return new SUpdateTileEntityPacket(getPos(), -1, tag);
     }
 
+    /**
+     * Data packet received from server regarding Lamp Tile Entity
+     * @param net The network manager
+     * @param pkt The update packet
+     */
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT tag = pkt.getNbtCompound();
         read(tag);
     }
 
-    public boolean isInService() {
-        return inService;
-    }
-
+    /**
+     * Turns the lamp on and off
+     */
     public void toggleInService() {
         inService = !inService;
         CompoundNBT tag = new CompoundNBT();
         write(tag);
         markDirty();
-        world.getLightManager().checkBlock(pos);
-        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+        if (world != null) { // Only check block if world is loaded
+            world.getLightManager().checkBlock(pos);
+        }
     }
 
     /**
@@ -74,4 +102,56 @@ public class LampTileEntity extends TileEntity {
         return (int) Math.round(percentPower * 15);
     }
 
+    public boolean isInService() {
+        return inService;
+    }
+
+    /**
+     * Return the max power
+     * @return
+     */
+    public Watt getMaxPower() {
+        return maxPower;
+    }
+
+    public void setMaxPower(Watt maxPower) {
+        this.maxPower = maxPower;
+        if (world != null) {
+            // TODO Add notification to simulation handler
+            world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+        }
+    }
+
+    public Watt getResultPower() {
+        return resultPower;
+    }
+
+    public void setResultPower(Watt resultPower) {
+        this.resultPower = resultPower;
+        if (world != null) {
+            // TODO Add notification to simulation handler
+            world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+        }
+    }
+
+
+    @Override
+    public UUID getSimulationID() {
+        return simId;
+    }
+
+    @Override
+    public SimulationType getSimulationType() {
+        return SimulationType.LOAD;
+    }
+
+    @Override
+    public void addOrUpdateSimulation(JsonObject simulation) {
+
+    }
+
+    @Override
+    public void receiveSimulationResults(JsonObject results) {
+
+    }
 }

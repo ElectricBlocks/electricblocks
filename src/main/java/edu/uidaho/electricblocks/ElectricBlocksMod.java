@@ -21,7 +21,7 @@ public class ElectricBlocksMod {
 
     public static final String MOD_ID = "electricblocks"; // Easy to access copy of Mod ID
 
-    private static final Logger LOGGER = LogManager.getLogger(); // Reference to L4J Logger
+    public static final Logger LOGGER = LogManager.getLogger(); // Reference to L4J Logger
 
     // Creates a new tab group in the creative menu for all the blocks and items in this mod
     public static final ItemGroup TAB = new ItemGroup("ebtab") {

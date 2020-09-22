@@ -1,19 +1,23 @@
 package edu.uidaho.electricblocks.tileentities;
 
+import com.google.gson.JsonObject;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Volt;
+import edu.uidaho.electricblocks.simulation.ISimulation;
+import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
-public class ExternalGridTileEntity extends TileEntity {
+public class ExternalGridTileEntity extends TileEntity implements ISimulation {
 
     private boolean inService = true;
     private Volt voltageLevel = new Volt(120);
+    private UUID simId = UUID.randomUUID();
 
     public ExternalGridTileEntity() {
         super(RegistryHandler.EXTERNAL_GRID_TILE_ENTITY.get());
@@ -24,6 +28,7 @@ public class ExternalGridTileEntity extends TileEntity {
         super.write(compound);
         compound.putBoolean("inService", inService);
         compound.putDouble("voltageLevel", voltageLevel.getVolts());
+        compound.putUniqueId("simId", simId);
         return compound;
     }
 
@@ -31,7 +36,8 @@ public class ExternalGridTileEntity extends TileEntity {
     public void read(CompoundNBT compound) {
         super.read(compound);
         inService = compound.getBoolean("inService");
-        voltageLevel.setVolts(compound.getDouble("voltageLevel"));
+        voltageLevel = new Volt(compound.getDouble("voltageLevel"));
+        simId = compound.getUniqueId("simId");
     }
 
     @Nullable
@@ -49,4 +55,23 @@ public class ExternalGridTileEntity extends TileEntity {
     }
 
 
+    @Override
+    public UUID getSimulationID() {
+        return simId;
+    }
+
+    @Override
+    public SimulationType getSimulationType() {
+        return SimulationType.EXT_GRID;
+    }
+
+    @Override
+    public void addOrUpdateSimulation(JsonObject simulation) {
+
+    }
+
+    @Override
+    public void receiveSimulationResults(JsonObject results) {
+
+    }
 }
