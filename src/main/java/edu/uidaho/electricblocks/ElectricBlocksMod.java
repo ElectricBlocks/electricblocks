@@ -13,6 +13,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import edu.uidaho.electricblocks.simulation.SimulationHandler;
+
 /**
  * ElectricBlocks main class. This is what gets everything started.
  */
@@ -39,6 +41,8 @@ public class ElectricBlocksMod {
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doServerStuff);
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -48,18 +52,20 @@ public class ElectricBlocksMod {
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
-        // do something that can only be done on the client
         LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+    }
+
+    private void doServerStuff(final FMLDedicatedServerSetupEvent event) {
+        LOGGER.info("Hello from dedicated server setup event.");
+        SimulationHandler.instance();
     }
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
-        // do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
 
