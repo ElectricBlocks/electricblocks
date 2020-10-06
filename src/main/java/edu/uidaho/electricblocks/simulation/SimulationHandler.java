@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -60,6 +61,24 @@ public class SimulationHandler {
         } else {
             ElectricBlocksMod.LOGGER.fatal("Could not contact EBPP server!");
         }
+    }
+
+    public void asyncSimRequest(SimulationNetwork simNetwork) {
+        CompletableFuture.supplyAsync(() -> simRequest(simNetwork))
+        .thenAccept(result -> simNetwork.handleSimulationResults(result));
+    }
+
+    private JsonObject simRequest(SimulationNetwork simNetwork) {
+        JsonObject requestJson = new JsonObject();
+        requestJson.addProperty("status", "SIM_REQUEST");
+        JsonObject elements = new JsonObject();
+        for (ISimulation iSimulation : simNetwork.getSimulationList()) {
+            elements.add(iSimulation.getSimulationID().toString(), iSimulation.toJson());
+        }
+        requestJson.add("elements", elements);
+        String responseString = sendPost(requestJson.toString());
+        JsonObject responseJson = new JsonParser().parse(responseString).getAsJsonObject();
+        return responseJson;
     }
 
     private String sendPost(String body) {

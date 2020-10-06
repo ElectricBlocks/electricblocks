@@ -1,7 +1,6 @@
 package edu.uidaho.electricblocks.tileentities;
 
 import com.google.gson.JsonObject;
-import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
 import edu.uidaho.electricblocks.simulation.ISimulation;
@@ -20,7 +19,7 @@ import java.util.UUID;
  */
 public class LampTileEntity extends TileEntity implements ISimulation {
 
-    private boolean inService = true; // Whether or not the lamp is on
+    private boolean inService = false; // Whether or not the lamp is on
     private Watt maxPower = new Watt(60); // Maximum power this lamp can take
     private Watt resultPower = new Watt(60); // Amount of power being received
     private UUID simId = UUID.randomUUID();
@@ -153,5 +152,11 @@ public class LampTileEntity extends TileEntity implements ISimulation {
     @Override
     public void receiveSimulationResults(JsonObject results) {
 
+    }
+
+    @Override
+    public JsonObject toJson() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

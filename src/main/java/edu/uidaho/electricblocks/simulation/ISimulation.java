@@ -9,4 +9,5 @@ public interface ISimulation {
     public SimulationType getSimulationType();
     public void addOrUpdateSimulation(JsonObject simulation);
     public void receiveSimulationResults(JsonObject results);
+    public JsonObject toJson();
 }

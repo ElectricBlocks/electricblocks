@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class ExternalGridTileEntity extends TileEntity implements ISimulation {
 
-    private boolean inService = true;
+    private boolean inService = false;
     private Volt voltageLevel = new Volt(120);
     private UUID simId = UUID.randomUUID();
 
@@ -73,5 +73,11 @@ public class ExternalGridTileEntity extends TileEntity implements ISimulation {
     @Override
     public void receiveSimulationResults(JsonObject results) {
 
+    }
+
+    @Override
+    public JsonObject toJson() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
