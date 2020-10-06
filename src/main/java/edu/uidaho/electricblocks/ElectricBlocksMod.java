@@ -41,8 +41,6 @@ public class ElectricBlocksMod {
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doServerStuff);
-
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -59,13 +57,9 @@ public class ElectricBlocksMod {
         LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
     }
 
-    private void doServerStuff(final FMLDedicatedServerSetupEvent event) {
-        LOGGER.info("Hello from dedicated server setup event.");
-        SimulationHandler.instance();
-    }
-
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
+        SimulationHandler.instance().sendKeepAlive();
         LOGGER.info("HELLO from server starting");
     }
 

@@ -1,8 +1,5 @@
 package edu.uidaho.electricblocks.simulation;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,19 +36,16 @@ public class SimulationHandler {
     
 
     private SimulationHandler() {
-        sendKeepAlive();
     }
 
-    @OnlyIn(Dist.DEDICATED_SERVER)
     public static SimulationHandler instance() {
         if (instance == null) {
-
             instance = new SimulationHandler();
         }
         return instance;
     }
 
-    private void sendKeepAlive() {
+    public void sendKeepAlive() {
         String keepAlive = "{\"status\": \"KEEP_ALIVE\"}";
         String response = sendPost(keepAlive);
         ElectricBlocksMod.LOGGER.info("Sending keep alive.");
