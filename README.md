@@ -27,15 +27,15 @@ Electric Blocks is different from other Minecraft mods. Rather than using our ow
 ### Built With
 
 * [MC Forge](http://files.minecraftforge.net/)
-* [EBPP](https://github.com/Electric-Blocks/ebpp)
+* [EBPP](https://github.com/ElectricBlocks/ebpp)
 
 ## Installation
 
-To use this mod, you must have Forge version 1.15.2 installed. For single player, [EBPP](https://github.com/Electric-Blocks/ebpp) must be installed and running on your computer. For multiplayer, only the computer running the Forge server needs to have [EBPP](https://github.com/Electric-Blocks/ebpp) installed.
+To use this mod, you must have Forge version 1.15.2 installed. For single player, [EBPP](https://github.com/ElectricBlocks/ebpp) must be installed and running on your computer. For multiplayer, only the computer running the Forge server needs to have [EBPP](https://github.com/ElectricBlocks/ebpp) installed.
 
 ### Prebuilt JAR
 
-First make sure you have MC Forge installed. If you want to play single player or host a multiplayer server then you will need to have EBPP installed and running as well. Then go to our releases page and download the latest release: https://github.com/Electric-Blocks/electricblocks/releases/
+First make sure you have MC Forge installed. If you want to play single player or host a multiplayer server then you will need to have EBPP installed and running as well. Then go to our releases page and download the latest release: https://github.com/ElectricBlocks/electricblocks/releases/
 
 Move the JAR file into your mods folder and start up MC Forge.
 
@@ -47,7 +47,7 @@ To build from sources, you will need:
 
 Once you have the prerequisites installed, run the following commands:
 ```sh
-git clone https://github.com/Electric-Blocks/electricblocks.git
+git clone https://github.com/ElectricBlocks/electricblocks.git
 cd electricblocks
 gradle jar
 ```
@@ -76,13 +76,13 @@ This software is developed by students at the University of Idaho for the Capsto
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Electric-Blocks/electricblocks.svg?style=flat-square
-[contributors-url]: https://github.com/Electric-Blocks/electricblocks/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Electric-Blocks/electricblocks.svg?style=flat-square
-[forks-url]: https://github.com/Electric-Blocks/electricblocks/network/members
-[stars-shield]: https://img.shields.io/github/stars/Electric-Blocks/electricblocks.svg?style=flat-square
-[stars-url]: https://github.com/Electric-Blocks/electricblocks/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Electric-Blocks/electricblocks.svg?style=flat-square
-[issues-url]: https://github.com/Electric-Blocks/electricblocks/issues
-[license-shield]: https://img.shields.io/github/license/Electric-Blocks/electricblocks.svg?style=flat-square
-[license-url]: https://github.com/Electric-Blocks/electricblocks/blob/master/LICENSE.md
+[contributors-shield]: https://img.shields.io/github/contributors/ElectricBlocks/electricblocks.svg?style=flat-square
+[contributors-url]: https://github.com/ElectricBlocks/electricblocks/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/ElectricBlocks/electricblocks.svg?style=flat-square
+[forks-url]: https://github.com/ElectricBlocks/electricblocks/network/members
+[stars-shield]: https://img.shields.io/github/stars/ElectricBlocks/electricblocks.svg?style=flat-square
+[stars-url]: https://github.com/ElectricBlocks/electricblocks/stargazers
+[issues-shield]: https://img.shields.io/github/issues/ElectricBlocks/electricblocks.svg?style=flat-square
+[issues-url]: https://github.com/ElectricBlocks/electricblocks/issues
+[license-shield]: https://img.shields.io/github/license/ElectricBlocks/electricblocks.svg?style=flat-square
+[license-url]: https://github.com/ElectricBlocks/electricblocks/blob/master/LICENSE.md
