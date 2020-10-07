@@ -2,6 +2,7 @@
 
 Electric Blocks is a minecraft mod that simulates realistic power transmission.
 
+[![Build][build-shield]][build-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -76,6 +77,8 @@ This software is developed by students at the University of Idaho for the Capsto
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[build-shield]: https://img.shields.io/github/workflow/status/ElectricBlocks/electricblocks/Java%20CI%20with%20Gradle?style=flat-square
+[build-url]: https://github.com/ElectricBlocks/electricblocks/actions?query=workflow%3A%22Java+CI+with+Gradle%22
 [contributors-shield]: https://img.shields.io/github/contributors/ElectricBlocks/electricblocks.svg?style=flat-square
 [contributors-url]: https://github.com/ElectricBlocks/electricblocks/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/ElectricBlocks/electricblocks.svg?style=flat-square
