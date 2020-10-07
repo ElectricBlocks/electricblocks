@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
 import edu.uidaho.electricblocks.simulation.ISimulation;
+import edu.uidaho.electricblocks.simulation.SimulationHandler;
 import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -21,7 +22,7 @@ public class LampTileEntity extends TileEntity implements ISimulation {
 
     private boolean inService = false; // Whether or not the lamp is on
     private Watt maxPower = new Watt(60); // Maximum power this lamp can take
-    private Watt resultPower = new Watt(60); // Amount of power being received
+    private Watt resultPower = new Watt(0); // Amount of power being received
     private UUID simId = UUID.randomUUID();
 
     public LampTileEntity() {
@@ -87,6 +88,7 @@ public class LampTileEntity extends TileEntity implements ISimulation {
         CompoundNBT tag = new CompoundNBT();
         write(tag);
         markDirty();
+        SimulationHandler.instance().newSimulationNetwork(this);
         if (world != null) { // Only check block if world is loaded
             world.getLightManager().checkBlock(pos);
         }
@@ -116,7 +118,6 @@ public class LampTileEntity extends TileEntity implements ISimulation {
     public void setMaxPower(Watt maxPower) {
         this.maxPower = maxPower;
         if (world != null) {
-            // TODO Add notification to simulation handler
             world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
         }
     }
@@ -128,11 +129,9 @@ public class LampTileEntity extends TileEntity implements ISimulation {
     public void setResultPower(Watt resultPower) {
         this.resultPower = resultPower;
         if (world != null) {
-            // TODO Add notification to simulation handler
             world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
         }
     }
-
 
     @Override
     public UUID getSimulationID() {
@@ -145,18 +144,27 @@ public class LampTileEntity extends TileEntity implements ISimulation {
     }
 
     @Override
-    public void addOrUpdateSimulation(JsonObject simulation) {
-
-    }
-
-    @Override
     public void receiveSimulationResults(JsonObject results) {
 
     }
 
     @Override
     public JsonObject toJson() {
-        // TODO Auto-generated method stub
-        return null;
+        JsonObject json = new JsonObject();
+        JsonObject props = new JsonObject();
+        props.addProperty("type", getSimulationType().toString());
+        props.addProperty("in_service", inService);
+        props.addProperty("p_mw", maxPower.getMegaWatts());
+        json.add(simId.toString(), props);
+        return json;
+    }
+
+    @Override
+    public void zeroSim() {
+        resultPower = new Watt(0);
+        CompoundNBT tag = new CompoundNBT();
+        write(tag);
+        markDirty();
+        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
     }
 }

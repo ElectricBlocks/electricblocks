@@ -112,4 +112,9 @@ public class SimulationHandler {
         }
         return result;
     }
+
+    public void newSimulationNetwork(ISimulation startingBlock) {
+        SimulationNetwork simulationNetwork = new SimulationNetwork(startingBlock);
+        networkList.add(simulationNetwork);
+    }
 }
