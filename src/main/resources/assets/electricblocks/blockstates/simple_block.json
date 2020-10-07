@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "electricblocks:block/simple_block" }
+  }
+}
