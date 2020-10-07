@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,10 +33,35 @@ public class SimulationHandler {
 
     private static SimulationHandler instance = null;
     private static final String addr = "http://127.0.0.1:1127/api"; // TODO Read from config file
-    private List<SimulationNetwork> networkList = new ArrayList<>();
-    
+    private List<SimulationNetwork> networkList = Collections.synchronizedList(new ArrayList<>());
+    private Thread asyncSimThread;
 
     private SimulationHandler() {
+        asyncSimThread = new Thread() {
+            /**
+            * Simulations are ran asynchronously in a separate thread, but are all calculated in order.
+            * This is done so that subsequent changes to the same block are always performed in the
+            * order that the player modifies them in game.
+            */
+            public void run() {
+                ElectricBlocksMod.LOGGER.info("Starting simulation handler thread!");
+                while (true) {
+                    if (networkList.size() > 0 && networkList.get(0).isReady()) {
+                        ElectricBlocksMod.LOGGER.info("Sim thread got network.");
+                        SimulationNetwork sim = networkList.remove(0); // Pop network from beginning of list
+                        JsonObject result = simRequest(sim);
+                        if (result.get("status").getAsString().equals("SIM_RESULT")) {
+                            ElectricBlocksMod.LOGGER.info("Successful sim");
+                            sim.handleSimulationResults(result);
+                        } else {
+                            ElectricBlocksMod.LOGGER.info("Zero sim.");
+                            sim.zeroSimResults();
+                        }
+                    }
+                }
+            }
+        };
+        asyncSimThread.start();
     }
 
     public static SimulationHandler instance() {
@@ -55,11 +81,6 @@ public class SimulationHandler {
         } else {
             ElectricBlocksMod.LOGGER.fatal("Could not contact EBPP server!");
         }
-    }
-
-    public void asyncSimRequest(SimulationNetwork simNetwork) {
-        CompletableFuture.supplyAsync(() -> simRequest(simNetwork))
-        .thenAccept(result -> simNetwork.handleSimulationResults(result));
     }
 
     private JsonObject simRequest(SimulationNetwork simNetwork) {

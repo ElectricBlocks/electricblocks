@@ -88,7 +88,9 @@ public class LampTileEntity extends TileEntity implements ISimulation {
         CompoundNBT tag = new CompoundNBT();
         write(tag);
         markDirty();
-        SimulationHandler.instance().newSimulationNetwork(this);
+        if (!world.isRemote) {
+            SimulationHandler.instance().newSimulationNetwork(this);
+        }
         if (world != null) { // Only check block if world is loaded
             world.getLightManager().checkBlock(pos);
         }

@@ -75,7 +75,7 @@ public class ExternalGridTileEntity extends TileEntity implements ISimulation {
 
     @Override
     public void receiveSimulationResults(JsonObject results) {
-
+        resultPower = new Watt(results.get("p_mw").getAsDouble());
     }
 
     @Override
