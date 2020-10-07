@@ -153,11 +153,9 @@ public class LampTileEntity extends TileEntity implements ISimulation {
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        JsonObject props = new JsonObject();
-        props.addProperty("type", getSimulationType().toString());
-        props.addProperty("in_service", inService);
-        props.addProperty("p_mw", maxPower.getMegaWatts());
-        json.add(simId.toString(), props);
+        json.addProperty("etype", getSimulationType().toString());
+        json.addProperty("in_service", inService);
+        json.addProperty("p_mw", maxPower.getMegaWatts());
         return json;
     }
 

@@ -81,11 +81,9 @@ public class ExternalGridTileEntity extends TileEntity implements ISimulation {
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        JsonObject props = new JsonObject();
-        props.addProperty("type", getSimulationType().toString());
-        props.addProperty("in_service", inService);
-        props.addProperty("vm_pu", voltageLevel.getVolts());
-        json.add(simId.toString(), props);
+        json.addProperty("etype", getSimulationType().toString());
+        json.addProperty("in_service", inService);
+        json.addProperty("vm_pu", voltageLevel.getVolts());
         return json;
     }
 

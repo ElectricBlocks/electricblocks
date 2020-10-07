@@ -47,14 +47,11 @@ public class SimulationHandler {
                 ElectricBlocksMod.LOGGER.info("Starting simulation handler thread!");
                 while (true) {
                     if (networkList.size() > 0 && networkList.get(0).isReady()) {
-                        ElectricBlocksMod.LOGGER.info("Sim thread got network.");
                         SimulationNetwork sim = networkList.remove(0); // Pop network from beginning of list
                         JsonObject result = simRequest(sim);
                         if (result.get("status").getAsString().equals("SIM_RESULT")) {
-                            ElectricBlocksMod.LOGGER.info("Successful sim");
                             sim.handleSimulationResults(result);
                         } else {
-                            ElectricBlocksMod.LOGGER.info("Zero sim.");
                             sim.zeroSimResults();
                         }
                     }
@@ -80,19 +77,23 @@ public class SimulationHandler {
             ElectricBlocksMod.LOGGER.info("Keep Alive successful!");
         } else {
             ElectricBlocksMod.LOGGER.fatal("Could not contact EBPP server!");
+            throw new RuntimeException("Could not contact EBPP server. Fatal error!");
         }
     }
 
     private JsonObject simRequest(SimulationNetwork simNetwork) {
         JsonObject requestJson = new JsonObject();
         requestJson.addProperty("status", "SIM_REQUEST");
+        requestJson.addProperty("3phase", false); // TODO make 3phase system work
         JsonObject elements = new JsonObject();
         for (ISimulation iSimulation : simNetwork.getSimulationList()) {
             elements.add(iSimulation.getSimulationID().toString(), iSimulation.toJson());
         }
         requestJson.add("elements", elements);
+        ElectricBlocksMod.LOGGER.debug(requestJson.toString());
         String responseString = sendPost(requestJson.toString());
         JsonObject responseJson = new JsonParser().parse(responseString).getAsJsonObject();
+        ElectricBlocksMod.LOGGER.debug(responseJson.toString());
         return responseJson;
     }
 
