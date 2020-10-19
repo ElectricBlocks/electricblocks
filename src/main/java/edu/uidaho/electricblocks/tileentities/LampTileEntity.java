@@ -3,7 +3,8 @@ package edu.uidaho.electricblocks.tileentities;
 import com.google.gson.JsonObject;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
-import edu.uidaho.electricblocks.simulation.ISimulation;
+import edu.uidaho.electricblocks.simulation.SimulationHandler;
+import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -17,15 +18,14 @@ import java.util.UUID;
 /**
  * LampTileEntity stores information about the lamp block.
  */
-public class LampTileEntity extends TileEntity implements ISimulation {
+public class LampTileEntity extends SimulationTileEntity {
 
     private boolean inService = false; // Whether or not the lamp is on
     private Watt maxPower = new Watt(60); // Maximum power this lamp can take
-    private Watt resultPower = new Watt(60); // Amount of power being received
-    private UUID simId = UUID.randomUUID();
+    private Watt resultPower = new Watt(0); // Amount of power being received
 
     public LampTileEntity() {
-        super(RegistryHandler.LAMP_TILE_ENTITY.get());
+        super(RegistryHandler.LAMP_TILE_ENTITY.get(), SimulationType.LOAD);
     }
 
     /**
@@ -87,6 +87,9 @@ public class LampTileEntity extends TileEntity implements ISimulation {
         CompoundNBT tag = new CompoundNBT();
         write(tag);
         markDirty();
+        if (!world.isRemote) {
+            SimulationHandler.instance().newSimulationNetwork(this);
+        }
         if (world != null) { // Only check block if world is loaded
             world.getLightManager().checkBlock(pos);
         }
@@ -116,7 +119,6 @@ public class LampTileEntity extends TileEntity implements ISimulation {
     public void setMaxPower(Watt maxPower) {
         this.maxPower = maxPower;
         if (world != null) {
-            // TODO Add notification to simulation handler
             world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
         }
     }
@@ -128,25 +130,8 @@ public class LampTileEntity extends TileEntity implements ISimulation {
     public void setResultPower(Watt resultPower) {
         this.resultPower = resultPower;
         if (world != null) {
-            // TODO Add notification to simulation handler
             world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
         }
-    }
-
-
-    @Override
-    public UUID getSimulationID() {
-        return simId;
-    }
-
-    @Override
-    public SimulationType getSimulationType() {
-        return SimulationType.LOAD;
-    }
-
-    @Override
-    public void addOrUpdateSimulation(JsonObject simulation) {
-
     }
 
     @Override
@@ -156,7 +141,20 @@ public class LampTileEntity extends TileEntity implements ISimulation {
 
     @Override
     public JsonObject toJson() {
-        // TODO Auto-generated method stub
-        return null;
+        JsonObject json = new JsonObject();
+        json.addProperty("etype", getSimulationType().toString());
+        json.addProperty("in_service", inService);
+        json.addProperty("p_mw", maxPower.getMegaWatts());
+        // TODO Add bus
+        return json;
+    }
+
+    @Override
+    public void zeroSim() {
+        resultPower = new Watt(0);
+        CompoundNBT tag = new CompoundNBT();
+        write(tag);
+        markDirty();
+        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
     }
 }
