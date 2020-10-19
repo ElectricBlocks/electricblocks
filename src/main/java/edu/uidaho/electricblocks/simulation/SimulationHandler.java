@@ -86,8 +86,8 @@ public class SimulationHandler {
         requestJson.addProperty("status", "SIM_REQUEST");
         requestJson.addProperty("3phase", false); // TODO make 3phase system work
         JsonObject elements = new JsonObject();
-        for (ISimulation iSimulation : simNetwork.getSimulationList()) {
-            elements.add(iSimulation.getSimulationID().toString(), iSimulation.toJson());
+        for (SimulationTileEntity sim : simNetwork.getSimulationList()) {
+            elements.add(sim.getSimulationID().toString(), sim.toJson());
         }
         requestJson.add("elements", elements);
         ElectricBlocksMod.LOGGER.debug(requestJson.toString());
@@ -135,7 +135,7 @@ public class SimulationHandler {
         return result;
     }
 
-    public void newSimulationNetwork(ISimulation startingBlock) {
+    public void newSimulationNetwork(SimulationTileEntity startingBlock) {
         SimulationNetwork simulationNetwork = new SimulationNetwork(startingBlock);
         networkList.add(simulationNetwork);
     }

@@ -4,27 +4,24 @@ import com.google.gson.JsonObject;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Volt;
 import edu.uidaho.electricblocks.electric.Watt;
-import edu.uidaho.electricblocks.simulation.ISimulation;
+import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
-public class ExternalGridTileEntity extends TileEntity implements ISimulation {
+public class ExternalGridTileEntity extends SimulationTileEntity {
 
     private boolean inService = false;
     private Watt maxPower = new Watt(10000);
     private Watt resultPower = new Watt(0);
     private Volt voltageLevel = new Volt(120);
-    private UUID simId = UUID.randomUUID();
 
     public ExternalGridTileEntity() {
-        super(RegistryHandler.EXTERNAL_GRID_TILE_ENTITY.get());
+        super(RegistryHandler.EXTERNAL_GRID_TILE_ENTITY.get(), SimulationType.EXT_GRID);
     }
 
     @Override
@@ -64,16 +61,6 @@ public class ExternalGridTileEntity extends TileEntity implements ISimulation {
 
 
     @Override
-    public UUID getSimulationID() {
-        return simId;
-    }
-
-    @Override
-    public SimulationType getSimulationType() {
-        return SimulationType.EXT_GRID;
-    }
-
-    @Override
     public void receiveSimulationResults(JsonObject results) {
         resultPower = new Watt(results.get("p_mw").getAsDouble());
     }
@@ -84,6 +71,7 @@ public class ExternalGridTileEntity extends TileEntity implements ISimulation {
         json.addProperty("etype", getSimulationType().toString());
         json.addProperty("in_service", inService);
         json.addProperty("vm_pu", voltageLevel.getVolts());
+        // TODO Add bus
         return json;
     }
 

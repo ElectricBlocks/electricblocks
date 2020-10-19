@@ -3,8 +3,8 @@ package edu.uidaho.electricblocks.tileentities;
 import com.google.gson.JsonObject;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
-import edu.uidaho.electricblocks.simulation.ISimulation;
 import edu.uidaho.electricblocks.simulation.SimulationHandler;
+import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -18,15 +18,14 @@ import java.util.UUID;
 /**
  * LampTileEntity stores information about the lamp block.
  */
-public class LampTileEntity extends TileEntity implements ISimulation {
+public class LampTileEntity extends SimulationTileEntity {
 
     private boolean inService = false; // Whether or not the lamp is on
     private Watt maxPower = new Watt(60); // Maximum power this lamp can take
     private Watt resultPower = new Watt(0); // Amount of power being received
-    private UUID simId = UUID.randomUUID();
 
     public LampTileEntity() {
-        super(RegistryHandler.LAMP_TILE_ENTITY.get());
+        super(RegistryHandler.LAMP_TILE_ENTITY.get(), SimulationType.LOAD);
     }
 
     /**
@@ -136,16 +135,6 @@ public class LampTileEntity extends TileEntity implements ISimulation {
     }
 
     @Override
-    public UUID getSimulationID() {
-        return simId;
-    }
-
-    @Override
-    public SimulationType getSimulationType() {
-        return SimulationType.LOAD;
-    }
-
-    @Override
     public void receiveSimulationResults(JsonObject results) {
 
     }
@@ -156,6 +145,7 @@ public class LampTileEntity extends TileEntity implements ISimulation {
         json.addProperty("etype", getSimulationType().toString());
         json.addProperty("in_service", inService);
         json.addProperty("p_mw", maxPower.getMegaWatts());
+        // TODO Add bus
         return json;
     }
 

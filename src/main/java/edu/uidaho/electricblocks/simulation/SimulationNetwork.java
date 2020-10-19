@@ -2,7 +2,6 @@ package edu.uidaho.electricblocks.simulation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import com.google.gson.JsonObject;
 
@@ -10,12 +9,12 @@ import edu.uidaho.electricblocks.ElectricBlocksMod;
 
 public class SimulationNetwork {
 
-    private List<ISimulation> iSimulations = new ArrayList<>();
+    private List<SimulationTileEntity> simTileEntities = new ArrayList<>();
     private boolean ready = false;
     private Thread asyncBlocksThread;
 
-    public SimulationNetwork(ISimulation startingBlock) {
-        iSimulations.add(startingBlock);
+    public SimulationNetwork(SimulationTileEntity startingBlock) {
+        simTileEntities.add(startingBlock);
         asyncBlocksThread = new Thread() {
             public void run() {
                 addConnectedBlocks();
@@ -25,19 +24,19 @@ public class SimulationNetwork {
         asyncBlocksThread.start();
     }
 
-    public List<ISimulation> getSimulationList() {
-        return iSimulations;
+    public List<SimulationTileEntity> getSimulationList() {
+        return simTileEntities;
     }
 
     public void handleSimulationResults(JsonObject simResults) {
         JsonObject elements = simResults.get("elements").getAsJsonObject();
-        for (ISimulation sim : iSimulations) {
+        for (SimulationTileEntity sim : simTileEntities) {
             sim.receiveSimulationResults(elements.get(sim.getSimulationID().toString()).getAsJsonObject());
         }
     }
 
     public void zeroSimResults() {
-        for (ISimulation sim : iSimulations) {
+        for (SimulationTileEntity sim : simTileEntities) {
             sim.zeroSim();
         }
     }
@@ -51,7 +50,7 @@ public class SimulationNetwork {
     }
 
     public void addConnectedBlocks() {
-        
+
     }
 
 }
