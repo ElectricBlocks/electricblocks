@@ -30,5 +30,11 @@ public abstract class SimulationTileEntity extends TileEntity {
     public SimulationType getSimulationType() {
         return this.simulationType;
     }
+
+    public void requestSimulation() {
+        if (!world.isRemote()) {
+            SimulationHandler.instance().newSimulationNetwork(this);
+        }
+    }
     
 }

@@ -87,12 +87,7 @@ public class LampTileEntity extends SimulationTileEntity {
         CompoundNBT tag = new CompoundNBT();
         write(tag);
         markDirty();
-        if (!world.isRemote) {
-            SimulationHandler.instance().newSimulationNetwork(this);
-        }
-        if (world != null) { // Only check block if world is loaded
-            world.getLightManager().checkBlock(pos);
-        }
+        requestSimulation();
     }
 
     /**
@@ -136,7 +131,10 @@ public class LampTileEntity extends SimulationTileEntity {
 
     @Override
     public void receiveSimulationResults(JsonObject results) {
-
+        
+        if (world != null) { // Only check block if world is loaded
+            world.getLightManager().checkBlock(pos);
+        }
     }
 
     @Override
