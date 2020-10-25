@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "electricblocks:blocks/simple_block"
+    "all": "electricblocks:blocks/bus_block"
   }
 }

@@ -3,12 +3,11 @@ package edu.uidaho.electricblocks.items;
 import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.RegistryHandler;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 
-public class SimpleItem extends BlockItem {
+public class BusItem extends BlockItem {
 
-    public SimpleItem() {
-        super(RegistryHandler.SIMPLE_BLOCK.get(), new Item.Properties()
+    public BusItem() {
+        super(RegistryHandler.BUS_BLOCK.get(), new Properties()
                 .group(ElectricBlocksMod.TAB)
                 .maxStackSize(64)
         );

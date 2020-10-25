@@ -4,10 +4,12 @@ import edu.uidaho.electricblocks.blocks.ExternalGridBlock;
 import edu.uidaho.electricblocks.blocks.LampBlock;
 import edu.uidaho.electricblocks.blocks.PortableGeneratorBlock;
 import edu.uidaho.electricblocks.blocks.WireBlock;
+import edu.uidaho.electricblocks.blocks.BusBlock;
 import edu.uidaho.electricblocks.items.ExternalGridItem;
 import edu.uidaho.electricblocks.items.LampItem;
 import edu.uidaho.electricblocks.items.PortableGeneratorItem;
 import edu.uidaho.electricblocks.items.WireItem;
+import edu.uidaho.electricblocks.items.BusItem;
 import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
 import edu.uidaho.electricblocks.tileentities.LampTileEntity;
 import net.minecraft.block.Block;
@@ -28,12 +30,14 @@ public class RegistryHandler {
     // Blocks
     public static final RegistryObject<Block> PORTABLE_GENERATOR_BLOCK = BLOCKS.register("portablegenerator_block", PortableGeneratorBlock::new);
     public static final RegistryObject<Block> WIRE_BLOCK = BLOCKS.register("wire_block", WireBlock::new);
+    public static final RegistryObject<Block> BUS_BLOCK = BLOCKS.register("bus_block", WireBlock::new);
     public static final RegistryObject<Block> EXTERNAL_GRID_BLOCK = BLOCKS.register("externalgrid_block", ExternalGridBlock::new);
     public static final RegistryObject<Block> LAMP_BLOCK = BLOCKS.register("lamp_block", LampBlock::new);
 
     // Items
     public static final RegistryObject<Item> PORTABLE_GENERATOR_ITEM = ITEMS.register("portablegenerator_item", PortableGeneratorItem::new);
     public static final RegistryObject<Item> WIRE_ITEM = ITEMS.register("wire_item", WireItem::new);
+    public static final RegistryObject<Item> BUS_ITEM = ITEMS.register("bus_item", BusItem::new);
     public static final RegistryObject<Item> EXTERNAL_GRID_ITEM = ITEMS.register("externalgrid_item", ExternalGridItem::new);
     public static final RegistryObject<Item> LAMP_ITEM = ITEMS.register("lamp_item", LampItem::new);
 

@@ -4,10 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
-public class SimpleBlock extends Block {
+public class BusBlock extends Block {
 
-    public SimpleBlock() {
-        super(Block.Properties.create(Material.EARTH)
+    public BusBlock() {
+        super(Properties.create(Material.EARTH)
                 .hardnessAndResistance(0f)
                 .sound(SoundType.ANVIL)
                 .slipperiness(0.6f)
