@@ -3,18 +3,15 @@ package edu.uidaho.electricblocks.simulation;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -87,7 +84,12 @@ public class SimulationHandler {
         requestJson.addProperty("3phase", false); // TODO make 3phase system work
         JsonObject elements = new JsonObject();
         for (SimulationTileEntity sim : simNetwork.getSimulationList()) {
-            elements.add(sim.getSimulationID().toString(), sim.toJson());
+            ElectricBlocksMod.LOGGER.debug("Adding ste " + sim.getSimulationType().toString());
+            JsonObject simJs = sim.toJson();
+            for (Map.Entry<String, JsonElement> entry : simJs.entrySet()) {
+                elements.add(entry.getKey(), entry.getValue());
+            }
+            ElectricBlocksMod.LOGGER.debug(elements.toString());
         }
         requestJson.add("elements", elements);
         ElectricBlocksMod.LOGGER.debug(requestJson.toString());

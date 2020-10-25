@@ -8,7 +8,6 @@ import java.util.Queue;
 
 import com.google.gson.JsonObject;
 
-import edu.uidaho.electricblocks.ElectricBlocksMod;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,10 +19,9 @@ public class SimulationNetwork {
     private Thread asyncBlocksThread;
 
     public SimulationNetwork(SimulationTileEntity startingBlock) {
-        simTileEntities.add(startingBlock);
         asyncBlocksThread = new Thread() {
             public void run() {
-                addConnectedBlocks();
+                addConnectedBlocks(startingBlock);
                 setReady();
             }
         };
@@ -55,11 +53,11 @@ public class SimulationNetwork {
         return ready;
     }
 
-    public void addConnectedBlocks() {
+    public void addConnectedBlocks(SimulationTileEntity startingBlock) {
         HashSet<BlockPos> checked = new HashSet<>();
         Queue<BlockPos> unchecked = new LinkedList<>();
-        World world = simTileEntities.get(0).getWorld();
-        unchecked.add(simTileEntities.get(0).getPos());
+        World world = startingBlock.getWorld();
+        unchecked.add(startingBlock.getPos());
         
         while (!unchecked.isEmpty()) {
             BlockPos bPos = unchecked.remove();

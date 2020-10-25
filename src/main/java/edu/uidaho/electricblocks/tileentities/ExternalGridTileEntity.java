@@ -11,6 +11,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraftforge.common.util.Constants;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 public class ExternalGridTileEntity extends SimulationTileEntity {
@@ -68,10 +70,18 @@ public class ExternalGridTileEntity extends SimulationTileEntity {
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        json.addProperty("etype", getSimulationType().toString());
-        json.addProperty("in_service", inService);
-        json.addProperty("vm_pu", voltageLevel.getVolts());
-        // TODO Add bus
+        JsonObject bus = new JsonObject();
+        UUID busId = UUID.randomUUID();
+        bus.addProperty("etype", SimulationType.BUS.toString());
+
+        JsonObject obj = new JsonObject();
+        obj.addProperty("etype", getSimulationType().toString());
+        obj.addProperty("in_service", inService);
+        obj.addProperty("vm_pu", voltageLevel.getVolts());
+        obj.addProperty("bus", busId.toString());
+        
+        json.add(busId.toString(), bus);
+        json.add(getSimulationID().toString(), obj);
         return json;
     }
 

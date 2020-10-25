@@ -3,17 +3,16 @@ package edu.uidaho.electricblocks.tileentities;
 import com.google.gson.JsonObject;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
-import edu.uidaho.electricblocks.simulation.SimulationHandler;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
+
+import javax.annotation.Nullable;
 
 /**
  * LampTileEntity stores information about the lamp block.
@@ -140,10 +139,18 @@ public class LampTileEntity extends SimulationTileEntity {
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        json.addProperty("etype", getSimulationType().toString());
-        json.addProperty("in_service", inService);
-        json.addProperty("p_mw", maxPower.getMegaWatts());
-        // TODO Add bus
+        JsonObject bus = new JsonObject();
+        UUID busId = UUID.randomUUID();
+        bus.addProperty("etype", SimulationType.BUS.toString());
+
+        JsonObject obj = new JsonObject();
+        obj.addProperty("etype", getSimulationType().toString());
+        obj.addProperty("in_service", inService);
+        obj.addProperty("p_mw", maxPower.getMegaWatts());
+        obj.addProperty("bus", busId.toString());
+
+        json.add(busId.toString(), bus);
+        json.add(getSimulationID().toString(), obj);
         return json;
     }
 

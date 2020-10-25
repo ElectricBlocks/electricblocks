@@ -53,7 +53,7 @@ public class ElectricBlocksMod {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+        
     }
 
     @SubscribeEvent
