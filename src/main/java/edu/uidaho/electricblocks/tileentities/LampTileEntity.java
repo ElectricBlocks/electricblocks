@@ -1,6 +1,8 @@
 package edu.uidaho.electricblocks.tileentities;
 
 import com.google.gson.JsonObject;
+
+import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
@@ -53,6 +55,7 @@ public class LampTileEntity extends SimulationTileEntity {
         maxPower = new Watt(compound.getDouble("maxPower"));
         resultPower = new Watt(compound.getDouble("resultPower"));
         simId = compound.getUniqueId("simId");
+        world.getLightManager().checkBlock(pos);
     }
 
     /**
@@ -83,9 +86,6 @@ public class LampTileEntity extends SimulationTileEntity {
      */
     public void toggleInService() {
         inService = !inService;
-        CompoundNBT tag = new CompoundNBT();
-        write(tag);
-        markDirty();
         requestSimulation();
     }
 
@@ -112,9 +112,6 @@ public class LampTileEntity extends SimulationTileEntity {
 
     public void setMaxPower(Watt maxPower) {
         this.maxPower = maxPower;
-        if (world != null) {
-            world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
-        }
     }
 
     public Watt getResultPower() {
@@ -123,24 +120,21 @@ public class LampTileEntity extends SimulationTileEntity {
 
     public void setResultPower(Watt resultPower) {
         this.resultPower = resultPower;
-        if (world != null) {
-            world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
-        }
+        
     }
 
     @Override
     public void receiveSimulationResults(JsonObject results) {
-        
-        if (world != null) { // Only check block if world is loaded
-            world.getLightManager().checkBlock(pos);
-        }
+        double resultPower = results.get("p_mw").getAsDouble() * 1000000;
+        setResultPower(new Watt(resultPower));
+        notifyUpdate();
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
         JsonObject bus = new JsonObject();
-        UUID busId = UUID.randomUUID();
+        UUID busId = embededBusses.get("main");
         bus.addProperty("etype", SimulationType.BUS.toString());
 
         JsonObject obj = new JsonObject();
@@ -161,5 +155,10 @@ public class LampTileEntity extends SimulationTileEntity {
         write(tag);
         markDirty();
         world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+    }
+
+    @Override
+    public void initEmbeddedBusses() {
+        embededBusses.put("main", UUID.randomUUID());
     }
 }
