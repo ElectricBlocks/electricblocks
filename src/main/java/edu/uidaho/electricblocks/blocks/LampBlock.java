@@ -42,7 +42,7 @@ public class LampBlock extends Block {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         // TODO Make a menu popup for light when right clicked
         LampTileEntity lampTileEntity = (LampTileEntity) worldIn.getTileEntity(pos);
-        lampTileEntity.toggleInService();
+        lampTileEntity.toggleInService(player);
         return ActionResultType.SUCCESS;
     }
 

@@ -7,6 +7,7 @@ import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -84,9 +85,9 @@ public class LampTileEntity extends SimulationTileEntity {
     /**
      * Turns the lamp on and off
      */
-    public void toggleInService() {
+    public void toggleInService(PlayerEntity player) {
         inService = !inService;
-        requestSimulation();
+        requestSimulation(player);
     }
 
     /**

@@ -10,7 +10,9 @@ import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.RegistryHandler;
+import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,6 +27,7 @@ public class SimulationNetwork {
 
     private SimulationTileEntity startingBlock;
     private World world;
+    private PlayerEntity player = null;
 
     public SimulationNetwork(SimulationTileEntity startingBlock) {
         this.startingBlock = startingBlock;
@@ -65,6 +68,14 @@ public class SimulationNetwork {
 
     public boolean isReady() {
         return ready;
+    }
+
+    public void setPlayer(PlayerEntity player) {
+        this.player = player;
+    }
+
+    public boolean hasPlayer() {
+        return this.player != null;
     }
 
     public boolean isElectricBlock(Block b) {
@@ -149,6 +160,14 @@ public class SimulationNetwork {
             return currConnection != null;
         }
 
+        public boolean previousBlockEquals(BlockPos newPos) {
+            if (newPos == null || previousBlock == null) {
+                return false;
+            }
+
+            return newPos.equals(previousBlock.pos);
+        }
+
     }
 
     public void addConnectedBlocks() {
@@ -159,7 +178,13 @@ public class SimulationNetwork {
         
         while (!unchecked.isEmpty()) {
             ConnectedBlock cb = unchecked.remove();
-            if (checked.contains(cb.pos) && !cb.hasSimTileEntity()) continue; // Skip if already checked
+            if (checked.contains(cb.pos)) {
+                if (!cb.hasSimTileEntity()) {
+                    if (hasPlayer())
+                        PlayerUtils.warn(player, "command.electricblocks.requestsimulation.warn_loop");
+                    continue;
+                }
+            }
 
             if (cb.hasSimTileEntity()) {
                 if (!simTileEntities.contains(cb.ste)) simTileEntities.add(cb.ste);
@@ -170,7 +195,7 @@ public class SimulationNetwork {
                 }
 
                 for (BlockPos pos : getSurroundingBlocks(cb.pos)) {
-                    if (isWire(pos)) {
+                    if (isWire(pos) && !cb.previousBlockEquals(pos)) {
                         ConnectedBlock ncb = new ConnectedBlock(pos);
                         ncb.previousBlock = cb;
                         ncb.currConnection = new SimulationConnection();
@@ -186,7 +211,7 @@ public class SimulationNetwork {
                 }
 
                 for (BlockPos pos : getSurroundingBlocks(cb.pos)) {
-                    if (isElectricBlock(getBlock(pos))) {
+                    if (isElectricBlock(getBlock(pos)) && !cb.previousBlockEquals(pos)) {
                         ConnectedBlock ncb = new ConnectedBlock(pos);
                         ncb.previousBlock = cb;
                         ncb.currConnection = cb.currConnection;

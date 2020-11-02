@@ -57,4 +57,5 @@ public class SimulationConnection {
         return this.lengthKm;
     }
 
+
 }

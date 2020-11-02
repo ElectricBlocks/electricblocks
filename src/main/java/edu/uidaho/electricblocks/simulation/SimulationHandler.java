@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import edu.uidaho.electricblocks.ElectricBlocksMod;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * Singleton class that handles simulation tasks. This class contains a list of
@@ -139,7 +140,12 @@ public class SimulationHandler {
     }
 
     public void newSimulationNetwork(SimulationTileEntity ste) {
+        newSimulationNetwork(ste, null);
+    }
+
+    public void newSimulationNetwork(SimulationTileEntity ste, PlayerEntity player) {
         SimulationNetwork simulationNetwork = new SimulationNetwork(ste);
+        simulationNetwork.setPlayer(player);
         networkList.add(simulationNetwork);
     }
 }

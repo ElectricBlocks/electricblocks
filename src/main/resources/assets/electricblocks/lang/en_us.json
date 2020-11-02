@@ -5,5 +5,8 @@
   "block.electricblocks.bus_block": "Bus",
   "block.electricblocks.externalgrid_block": "External Grid",
   "block.electricblocks.lamp_block": "Lamp",
-  "item.electricblocks.portablegenerator_item": "Portable Generator"
+  "item.electricblocks.portablegenerator_item": "Portable Generator",
+  "command.electricblocks.warn": "WARNING",
+  "command.electricblocks.error": "ERROR",
+  "command.electricblocks.requestsimulation.warn_loop": "Loop detected in wire. This loop will be ignored."
 }

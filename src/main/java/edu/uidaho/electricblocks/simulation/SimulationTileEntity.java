@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.google.gson.JsonObject;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -41,8 +42,12 @@ public abstract class SimulationTileEntity extends TileEntity {
     }
 
     public void requestSimulation() {
+        requestSimulation(null);
+    }
+
+    public void requestSimulation(PlayerEntity player) {
         if (!world.isRemote()) {
-            SimulationHandler.instance().newSimulationNetwork(this);
+            SimulationHandler.instance().newSimulationNetwork(this, player);
         }
     }
 
