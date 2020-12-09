@@ -50,8 +50,10 @@ Once you have the prerequisites installed, run the following commands:
 ```sh
 git clone https://github.com/ElectricBlocks/electricblocks.git
 cd electricblocks
-gradle jar
+gradlew jar
 ```
+We recommend using the included gradle wrapper. We are using version 4.10.3. Newer versions of gradle may cause this build to fail.
+
 This may take a while. Once built, the JAR should be located in `./build/reobfJar/output.jar`
 
 Copy this JAR file into your mods folder and start MC Forge.
