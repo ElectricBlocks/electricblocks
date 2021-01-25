@@ -1,4 +1,4 @@
-package edu.uidaho.electricblocks;
+package edu.uidaho.electricblocks.interfaces;
 
 import net.minecraft.entity.player.PlayerEntity;
 

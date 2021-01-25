@@ -4,6 +4,8 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -13,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import edu.uidaho.electricblocks.eventhandlers.MultimeterEventHandler;
+import edu.uidaho.electricblocks.guis.ConfigScreen;
 import edu.uidaho.electricblocks.simulation.SimulationHandler;
 
 /**
@@ -45,8 +48,12 @@ public class ElectricBlocksMod {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new MultimeterEventHandler());
 
-        RegistryHandler.init();
+        // Register gui screens
+        ModLoadingContext.get().registerExtensionPoint(
+            ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> new ConfigScreen()
+            );
 
+        RegistryHandler.init();
     }
 
     private void setup(final FMLCommonSetupEvent event)

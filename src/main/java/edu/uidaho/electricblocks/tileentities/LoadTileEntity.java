@@ -6,12 +6,13 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 
-import edu.uidaho.electricblocks.IMultimeter;
+import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
+import edu.uidaho.electricblocks.guis.LoadScreen;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
-import edu.uidaho.electricblocks.utils.PlayerUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -90,6 +91,10 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
         requestSimulation(player);
     }
 
+    public void setInService(boolean inService) {
+        this.inService = inService;
+    }
+
     public boolean isInService() {
         return inService;
     }
@@ -161,7 +166,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
 
     @Override
     public void viewOrModify(PlayerEntity player) {
-        PlayerUtils.error(player, "command.electricblocks.viewmodify.err_invalid_block");
+        Minecraft.getInstance().displayGuiScreen(new LoadScreen(this, player));
     }
     
 }
