@@ -5,8 +5,12 @@
   "block.electricblocks.bus_block": "Bus",
   "block.electricblocks.externalgrid_block": "External Grid",
   "block.electricblocks.lamp_block": "Lamp",
+  "block.electricblocks.load_block": "Load",
   "item.electricblocks.portablegenerator_item": "Portable Generator",
+  "item.electricblocks.multimeter_item": "Multimeter",
   "command.electricblocks.warn": "WARNING",
   "command.electricblocks.error": "ERROR",
-  "command.electricblocks.requestsimulation.warn_loop": "Loop detected in wire. This loop will be ignored."
+  "command.electricblocks.requestsimulation.warn_loop": "Loop detected in wire. This loop will be ignored.",
+  "command.electricblocks.updatetoggle": "Sending update/toggle request.",
+  "command.electricblocks.updatetoggle.err_invalid_block": "The multimeter is unable to update or toggle this block."
 }

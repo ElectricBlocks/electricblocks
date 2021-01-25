@@ -12,6 +12,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import edu.uidaho.electricblocks.eventhandlers.MultimeterEventHandler;
 import edu.uidaho.electricblocks.simulation.SimulationHandler;
 
 /**
@@ -42,6 +43,7 @@ public class ElectricBlocksMod {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new MultimeterEventHandler());
 
         RegistryHandler.init();
 
