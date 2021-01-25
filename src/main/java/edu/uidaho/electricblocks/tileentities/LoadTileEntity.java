@@ -11,6 +11,7 @@ import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
+import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -160,8 +161,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
 
     @Override
     public void viewOrModify(PlayerEntity player) {
-        // TODO Auto-generated method stub
-
+        PlayerUtils.error(player, "command.electricblocks.viewmodify.err_invalid_block");
     }
     
 }

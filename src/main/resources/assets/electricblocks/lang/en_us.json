@@ -12,5 +12,6 @@
   "command.electricblocks.error": "ERROR",
   "command.electricblocks.requestsimulation.warn_loop": "Loop detected in wire. This loop will be ignored.",
   "command.electricblocks.updatetoggle": "Sending update/toggle request.",
-  "command.electricblocks.updatetoggle.err_invalid_block": "The multimeter is unable to update or toggle this block."
+  "command.electricblocks.updatetoggle.err_invalid_block": "The multimeter is unable to update or toggle this block.",
+  "command.electricblocks.viewmodify.err_invalid_block": "The multimeter is unable to view or modify this block."
 }
