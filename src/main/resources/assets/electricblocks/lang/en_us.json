@@ -15,6 +15,7 @@
   "command.electricblocks.updatetoggle": "Sending update/toggle request.",
   "command.electricblocks.updatetoggle.err_invalid_block": "The multimeter is unable to update or toggle this block.",
   "command.electricblocks.viewmodify.err_invalid_block": "The multimeter is unable to view or modify this block.",
+  "command.electricblocks.viewmodify.submit": "Submitting changes to simulation handler.",
   "gui.electricblocks.err_invalid_number": "Unable to parse one more numbers entered.",
   "gui.electricblocks.configscreen": "Electric Blocks Config",
   "gui.electricblocks.configscreen.microgrid_warning": "Show Microgrid Warnings: ",
