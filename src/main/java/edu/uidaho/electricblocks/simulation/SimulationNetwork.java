@@ -74,6 +74,10 @@ public class SimulationNetwork {
         this.player = player;
     }
 
+    public PlayerEntity getPlayer() {
+        return this.player;
+    }
+
     public boolean hasPlayer() {
         return this.player != null;
     }

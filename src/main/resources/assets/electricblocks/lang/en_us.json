@@ -10,6 +10,7 @@
   "item.electricblocks.multimeter_item": "Multimeter",
   "command.electricblocks.warn": "WARNING",
   "command.electricblocks.error": "ERROR",
+  "command.electricblocks.requestsimulation.error_conn": "EletricBlocks could not connect to simulation server! Please notify your server administrator.",
   "command.electricblocks.requestsimulation.warn_loop": "Loop detected in wire. This loop will be ignored.",
   "command.electricblocks.updatetoggle": "Sending update/toggle request.",
   "command.electricblocks.updatetoggle.err_invalid_block": "The multimeter is unable to update or toggle this block.",

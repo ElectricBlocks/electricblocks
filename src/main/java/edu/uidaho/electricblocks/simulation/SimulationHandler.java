@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import edu.uidaho.electricblocks.ElectricBlocksMod;
+import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 
 /**
@@ -37,17 +38,18 @@ public class SimulationHandler {
     private SimulationHandler() {
         asyncSimThread = new Thread() {
             /**
-            * Simulations are ran asynchronously in a separate thread, but are all calculated in order.
-            * This is done so that subsequent changes to the same block are always performed in the
-            * order that the player modifies them in game.
-            */
+             * Simulations are ran asynchronously in a separate thread, but are all
+             * calculated in order. This is done so that subsequent changes to the same
+             * block are always performed in the order that the player modifies them in
+             * game.
+             */
             public void run() {
                 ElectricBlocksMod.LOGGER.info("Starting simulation handler thread!");
                 while (true) {
                     if (networkList.size() > 0 && networkList.get(0).isReady()) {
                         SimulationNetwork sim = networkList.remove(0); // Pop network from beginning of list
                         JsonObject result = simRequest(sim);
-                        if (result.get("status").getAsString().equals("SIM_RESULT")) {
+                        if (result != null && result.get("status").getAsString().equals("SIM_RESULT")) {
                             sim.handleSimulationResults(result);
                         } else {
                             sim.zeroSimResults();
@@ -66,17 +68,18 @@ public class SimulationHandler {
         return instance;
     }
 
-    public void sendKeepAlive() {
+    public boolean sendKeepAlive() throws Exception {
         String keepAlive = "{\"status\": \"KEEP_ALIVE\"}";
         String response = sendPost(keepAlive);
         ElectricBlocksMod.LOGGER.info("Sending keep alive.");
         JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
         if (jsonObject.get("status").getAsString().equals("KEEP_ALIVE")) {
             ElectricBlocksMod.LOGGER.info("Keep Alive successful!");
-        } else {
-            ElectricBlocksMod.LOGGER.fatal("Could not contact EBPP server!");
-            throw new RuntimeException("Could not contact EBPP server. Fatal error!");
+            return true;
         }
+        ElectricBlocksMod.LOGGER.fatal("Invalid or malformed keep alive request! Dumping response:");
+        ElectricBlocksMod.LOGGER.fatal(jsonObject.toString());
+        return false;
     }
 
     private JsonObject simRequest(SimulationNetwork simNetwork) {
@@ -95,14 +98,27 @@ public class SimulationHandler {
         }
         requestJson.add("elements", elements);
         ElectricBlocksMod.LOGGER.debug(requestJson.toString());
-        String responseString = sendPost(requestJson.toString());
-        JsonObject responseJson = new JsonParser().parse(responseString).getAsJsonObject();
-        ElectricBlocksMod.LOGGER.debug(responseJson.toString());
-        return responseJson;
+        String responseString = null;
+        try {
+            responseString = sendPost(requestJson.toString());
+        } catch (Exception e) {
+            if (simNetwork.hasPlayer()) {
+                PlayerUtils.error(simNetwork.getPlayer(), "command.electricblocks.requestsimulation.error_conn");
+            }
+            ElectricBlocksMod.LOGGER.fatal("ElectricBlocks experienced a connection issue with EBPP:");
+            e.printStackTrace();
+            ElectricBlocksMod.LOGGER.fatal("ElectricBlocks experienced a connection issue with EBPP. See the above error for more info.");
+            return null;
+        }
+        if (responseString != null) {
+            JsonObject responseJson = new JsonParser().parse(responseString).getAsJsonObject();
+            ElectricBlocksMod.LOGGER.debug(responseJson.toString());
+            return responseJson;
+        }
+        return null;
     }
 
-    private String sendPost(String body) {
-        // TODO Gracefully handle post failure
+    private String sendPost(String body) throws Exception {
         PrintWriter out = null;
         BufferedReader in = null;
         String result = "";
@@ -122,8 +138,6 @@ public class SimulationHandler {
             while ((line = in.readLine()) != null) {
                 result += line + "\n";
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             if (out != null) {
                 out.close();

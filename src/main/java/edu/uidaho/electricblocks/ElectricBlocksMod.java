@@ -67,8 +67,19 @@ public class ElectricBlocksMod {
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
-        SimulationHandler.instance().sendKeepAlive();
-        LOGGER.info("HELLO from server starting");
+        boolean keepAliveSuccessful = false;
+        try {
+            keepAliveSuccessful = SimulationHandler.instance().sendKeepAlive();
+        } catch (Exception e) {
+            keepAliveSuccessful = true; // Set this to prevent double message from appearing
+            LOGGER.fatal("Unable to contact simulation server! ElectricBlocksMod will be unable to function.");
+            LOGGER.fatal("Ensure that EBPP is online and accessible. Also validate your configuration file.");
+        }
+
+        if (!keepAliveSuccessful) {
+            LOGGER.fatal("Received unexpected response from simulation server. Are you sure your configuration is correct?");
+            LOGGER.fatal("Another service other than EBPP may be running at the configured host and port!");
+        }
     }
 
 }
