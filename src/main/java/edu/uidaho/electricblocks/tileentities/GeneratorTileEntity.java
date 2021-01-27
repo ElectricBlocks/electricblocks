@@ -18,10 +18,12 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 public class GeneratorTileEntity extends SimulationTileEntity {
 
     private boolean inService = false;
-    private boolean slack = true;
+    private boolean slack = false;
     private Watt maxPower = new Watt(1000);
     private Watt resultPower = new Watt(0);
+    private Watt reactivePower = new Watt(0);
     private Volt nominalVoltage = new Volt(120);
+    private Volt resultVoltage = new Volt(0);
 
     public GeneratorTileEntity() {
         super(RegistryHandler.GENERATOR_TILE_ENTITY.get(), SimulationType.GENERATOR);
@@ -34,7 +36,9 @@ public class GeneratorTileEntity extends SimulationTileEntity {
         compound.putBoolean("slack", slack);
         compound.putDouble("maxPower", maxPower.getWatts());
         compound.putDouble("resultPower", resultPower.getWatts());
+        compound.putDouble("reactivePower", reactivePower.getWatts());
         compound.putDouble("nominalVoltage", nominalVoltage.getVolts());
+        compound.putDouble("resultVoltage", resultVoltage.getVolts());
         compound.putUniqueId("simId", simId);
         return compound;
     }
@@ -46,7 +50,9 @@ public class GeneratorTileEntity extends SimulationTileEntity {
         slack = compound.getBoolean("slack");
         maxPower = new Watt(compound.getDouble("maxPower"));
         resultPower = new Watt(compound.getDouble("resultPower"));
+        reactivePower = new Watt(compound.getDouble("reactivePower"));
         nominalVoltage = new Volt(compound.getDouble("nominalVoltage"));
+        resultVoltage = new Volt(compound.getDouble("resultVoltage"));
         simId = compound.getUniqueId("simId");
     }
 
@@ -68,12 +74,18 @@ public class GeneratorTileEntity extends SimulationTileEntity {
     public void receiveSimulationResults(JsonObject results) {
         double resultPower = results.get("p_mw").getAsDouble() * 1000000;
         this.resultPower = new Watt(resultPower);
+        double reactivePower = results.get("q_mvar").getAsDouble() * 1000000;
+        this.reactivePower = new Watt(reactivePower);
+        double resultVoltage = results.get("vm_pu").getAsDouble();
+        this.resultVoltage = new Volt(resultVoltage);
         notifyUpdate();
     }
 
     @Override
     public void zeroSim() {
         resultPower = new Watt(0);
+        reactivePower = new Watt(0);
+        resultVoltage = new Volt(0);
         notifyUpdate();
     }
 
