@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "electricblocks:blocks/multimeter_item"
+    "all": "electricblocks:items/multimeter_item"
   }
 }

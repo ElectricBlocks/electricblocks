@@ -26,7 +26,6 @@ public class LoadScreen extends Screen {
     private static final int DONE_BUTTON_TOP_OFFSET = 26;
     // Distance from top of the screen to this GUI's title
     private static final int TITLE_HEIGHT = 8;
-    // Width of max power label
 
     // Layout elements
     private Button doneButton;
