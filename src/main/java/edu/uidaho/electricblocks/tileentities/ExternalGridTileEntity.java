@@ -94,6 +94,7 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     @Override
     public void zeroSim() {
         resultPower = new Watt(0);
+        reactivePower = new Watt(0);
         notifyUpdate();
     }
 

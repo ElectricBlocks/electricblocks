@@ -17,7 +17,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraftforge.common.util.Constants;
 
 /**
  * Tile entity associated with the @LoadBlock
@@ -27,6 +26,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
     private boolean inService = false;
     private Watt maxPower = new Watt(100);
     private Watt resultPower = new Watt(0);
+    private Watt reactivePower = new Watt(0);
 
     public LoadTileEntity() {
         super(RegistryHandler.LOAD_TILE_ENTITY.get(), SimulationType.LOAD);
@@ -43,6 +43,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
         compound.putBoolean("inService", inService);
         compound.putDouble("maxPower", maxPower.getWatts());
         compound.putDouble("resultPower", resultPower.getWatts());
+        compound.putDouble("reactivePower", reactivePower.getWatts());
         compound.putUniqueId("simId", simId);
         return compound;
     }
@@ -57,6 +58,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
         inService = compound.getBoolean("inService");
         maxPower = new Watt(compound.getDouble("maxPower"));
         resultPower = new Watt(compound.getDouble("resultPower"));
+        reactivePower = new Watt(compound.getDouble("reactivePower"));
         simId = compound.getUniqueId("simId");
     }
 
@@ -117,13 +119,22 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
 
     public void setResultPower(Watt resultPower) {
         this.resultPower = resultPower;
-        
+    }
+
+    public Watt getReactivePower() {
+        return reactivePower;
+    }
+
+    public void setReactivePower(Watt reactivePower) {
+        this.reactivePower = reactivePower;
     }
 
     @Override
     public void receiveSimulationResults(JsonObject results) {
         double resultPower = results.get("p_mw").getAsDouble() * 1000000;
         setResultPower(new Watt(resultPower));
+        double reactivePower = results.get("q_mvar").getAsDouble() * 1000000;
+        setReactivePower(new Watt(reactivePower));
         notifyUpdate();
     }
 
@@ -148,10 +159,8 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public void zeroSim() {
         resultPower = new Watt(0);
-        CompoundNBT tag = new CompoundNBT();
-        write(tag);
-        markDirty();
-        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+        reactivePower = new Watt(0);
+        notifyUpdate();
     }
 
     @Override

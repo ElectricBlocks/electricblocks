@@ -3,7 +3,6 @@ package edu.uidaho.electricblocks.guis;
 import org.lwjgl.glfw.GLFW;
 
 import edu.uidaho.electricblocks.electric.Volt;
-import edu.uidaho.electricblocks.electric.Watt;
 import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.client.gui.screen.Screen;
@@ -105,7 +104,7 @@ public class ExternalGridScreen extends Screen {
         // Draw mw label
         this.drawString(this.font, "V", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MVar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw separator
         this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, 45 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         textFieldVoltage.render(mouseX, mouseY, partialTicks);

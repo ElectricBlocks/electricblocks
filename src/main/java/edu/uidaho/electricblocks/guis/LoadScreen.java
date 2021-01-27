@@ -31,6 +31,7 @@ public class LoadScreen extends Screen {
     private Button doneButton;
     private TextFieldWidget textFieldMaxPower;
     private TextFieldWidget textFieldResultPower;
+    private TextFieldWidget textFieldReactivePower;
 
     // Info needed to preload the form with data
     private boolean changed = false;
@@ -55,6 +56,10 @@ public class LoadScreen extends Screen {
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultPower.setText(String.format("%f", loadTileEntity.getResultPower().getMegaWatts()));
         textFieldResultPower.setVisible(true);
+
+        textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldReactivePower.setText(String.format("%f", loadTileEntity.getReactivePower().getMegaWatts()));
+        textFieldReactivePower.setVisible(true);
 
         // Add the "Done" button
         doneButton = new Button(
@@ -95,13 +100,16 @@ public class LoadScreen extends Screen {
         // Draw property labels
         this.drawString(this.font, "Max Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "Result Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw mw label
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Mvar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw separator
         this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, 45 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         textFieldMaxPower.render(mouseX, mouseY, partialTicks);
         textFieldResultPower.render(mouseX, mouseY, partialTicks);
+        textFieldReactivePower.render(mouseX, mouseY, partialTicks);
         // Call the super class' method to complete rendering
         super.render(mouseX, mouseY, partialTicks);
     }
