@@ -49,8 +49,14 @@ public class SimulationHandler {
                     if (networkList.size() > 0 && networkList.get(0).isReady()) {
                         SimulationNetwork sim = networkList.remove(0); // Pop network from beginning of list
                         JsonObject result = simRequest(sim);
-                        if (result != null && result.get("status").getAsString().equals("SIM_RESULT")) {
+                        if (result == null) {
+                            // Notifying player about failed connection is done in simRequest call
+                            sim.zeroSimResults();
+                        } else if (result.get("status").getAsString().equals("SIM_RESULT")) {
                             sim.handleSimulationResults(result);
+                        } else if (result.get("status").getAsString().equals("CONV_ERROR")) {
+                            sim.zeroSimResults();
+                            PlayerUtils.warn(sim.getPlayer(), "command.electricblocks.requestsimulation.warn_conv");
                         } else {
                             sim.zeroSimResults();
                         }
