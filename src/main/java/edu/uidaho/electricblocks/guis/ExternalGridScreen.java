@@ -2,8 +2,9 @@ package edu.uidaho.electricblocks.guis;
 
 import org.lwjgl.glfw.GLFW;
 
+import edu.uidaho.electricblocks.electric.Volt;
 import edu.uidaho.electricblocks.electric.Watt;
-import edu.uidaho.electricblocks.tileentities.LoadTileEntity;
+import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -12,7 +13,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class LoadScreen extends Screen {
+public class ExternalGridScreen extends Screen {
     // Layout constants 
     // Width of a button
     private static final int BUTTON_WIDTH = 200;
@@ -29,32 +30,37 @@ public class LoadScreen extends Screen {
 
     // Layout elements
     private Button doneButton;
-    private TextFieldWidget textFieldMaxPower;
+    private TextFieldWidget textFieldVoltage;
     private TextFieldWidget textFieldResultPower;
+    private TextFieldWidget textFieldReactivePower;
 
     // Info needed to preload the form with data
     private boolean changed = false;
-    private LoadTileEntity loadTileEntity;
+    private ExternalGridTileEntity externalGridTileEntity;
     private PlayerEntity player;
     private boolean inService;
 
-    public LoadScreen(LoadTileEntity loadTileEntity, PlayerEntity player) {
-        super(new TranslationTextComponent("gui.electricblocks.loadscreen"));
-        this.loadTileEntity = loadTileEntity;
+    public ExternalGridScreen(ExternalGridTileEntity externalGridTileEntity, PlayerEntity player) {
+        super(new TranslationTextComponent("gui.electricblocks.externalgridscreen"));
+        this.externalGridTileEntity = externalGridTileEntity;
         this.player = player;
     }
 
     @Override
     protected void init() {
-        inService = loadTileEntity.isInService();
-        textFieldMaxPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldMaxPower.setText(String.format("%f", loadTileEntity.getMaxPower().getMegaWatts()));
-        textFieldMaxPower.setFocused2(true);
-        textFieldMaxPower.setVisible(true);
+        inService = externalGridTileEntity.isInService();
+        textFieldVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldVoltage.setText(String.format("%f", externalGridTileEntity.getVoltage().getVolts()));
+        textFieldVoltage.setFocused2(true);
+        textFieldVoltage.setVisible(true);
 
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldResultPower.setText(String.format("%f", loadTileEntity.getResultPower().getMegaWatts()));
+        textFieldResultPower.setText(String.format("%f", externalGridTileEntity.getResultPower().getMegaWatts()));
         textFieldResultPower.setVisible(true);
+
+        textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldReactivePower.setText(String.format("%f", externalGridTileEntity.getReactivePower().getMegaWatts()));
+        textFieldReactivePower.setVisible(true); 
 
         // Add the "Done" button
         doneButton = new Button(
@@ -93,23 +99,26 @@ public class LoadScreen extends Screen {
         this.drawCenteredString(this.font, this.title.getFormattedText(),
                 this.width / 2, TITLE_HEIGHT, 0xFFFFFF);
         // Draw property labels
-        this.drawString(this.font, "Max Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "Result Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw mw label
-        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "V", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw separator
         this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, 45 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        textFieldMaxPower.render(mouseX, mouseY, partialTicks);
+        textFieldVoltage.render(mouseX, mouseY, partialTicks);
         textFieldResultPower.render(mouseX, mouseY, partialTicks);
+        textFieldReactivePower.render(mouseX, mouseY, partialTicks);
         // Call the super class' method to complete rendering
         super.render(mouseX, mouseY, partialTicks);
     }
 
     @Override
     public boolean charTyped(char p_charTyped_1_, int p_charTyped_2_) {
-        if (textFieldMaxPower.isFocused()) {
-            textFieldMaxPower.charTyped(p_charTyped_1_, p_charTyped_2_);
+        if (textFieldVoltage.isFocused()) {
+            textFieldVoltage.charTyped(p_charTyped_1_, p_charTyped_2_);
             onChange();
         }
         return super.charTyped(p_charTyped_1_, p_charTyped_2_);
@@ -117,8 +126,8 @@ public class LoadScreen extends Screen {
 
     @Override
     public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-        if (textFieldMaxPower.isFocused()) {
-            textFieldMaxPower.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
+        if (textFieldVoltage.isFocused()) {
+            textFieldVoltage.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
             if (p_keyPressed_1_ == GLFW.GLFW_KEY_BACKSPACE) {
                 onChange();
             }
@@ -128,8 +137,8 @@ public class LoadScreen extends Screen {
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if (textFieldMaxPower.isFocused()) {
-            textFieldMaxPower.keyReleased(keyCode, scanCode, modifiers);
+        if (textFieldVoltage.isFocused()) {
+            textFieldVoltage.keyReleased(keyCode, scanCode, modifiers);
         }
         return super.keyReleased(keyCode, scanCode, modifiers);
     }
@@ -143,9 +152,9 @@ public class LoadScreen extends Screen {
     public void onClose() {
         if (changed) {
             boolean shouldUpdate = true;
-            double maxPower = 0;
+            double voltage = 0;
             try {
-                maxPower = Double.parseDouble(textFieldMaxPower.getText());
+                voltage = Double.parseDouble(textFieldVoltage.getText());
             } catch (NumberFormatException e) {
                 shouldUpdate = false;
                 PlayerUtils.error(player, "gui.electricblocks.err_invalid_number");
@@ -153,11 +162,11 @@ public class LoadScreen extends Screen {
 
             if (shouldUpdate) {
                 PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
-                loadTileEntity.setInService(inService);
-                loadTileEntity.setMaxPower(new Watt(maxPower * 1000000));
-                loadTileEntity.notifyUpdate();
+                externalGridTileEntity.setInService(inService);
+                externalGridTileEntity.setVoltage(new Volt(voltage));
+                externalGridTileEntity.notifyUpdate();
 
-                loadTileEntity.requestSimulation(player);
+                externalGridTileEntity.requestSimulation(player);
             }
         }
         super.onClose();
@@ -169,5 +178,4 @@ public class LoadScreen extends Screen {
             doneButton.setMessage("* " + I18n.format("gui.done") + " *");
         }
     }
-
 }
