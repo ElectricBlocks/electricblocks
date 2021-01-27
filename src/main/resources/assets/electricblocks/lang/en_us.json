@@ -12,6 +12,7 @@
   "command.electricblocks.error": "ERROR",
   "command.electricblocks.requestsimulation.error_conn": "EletricBlocks could not connect to simulation server! Please notify your server administrator.",
   "command.electricblocks.requestsimulation.warn_loop": "Loop detected in wire. This loop will be ignored.",
+  "command.electricblocks.requestsimulation.warn_conv": "The load flow failed to converge on a solution. Network will be zero'd out.",
   "command.electricblocks.updatetoggle": "Sending update/toggle request.",
   "command.electricblocks.updatetoggle.err_invalid_block": "The multimeter is unable to update or toggle this block.",
   "command.electricblocks.viewmodify.err_invalid_block": "The multimeter is unable to view or modify this block.",
@@ -19,5 +20,6 @@
   "gui.electricblocks.err_invalid_number": "Unable to parse one more numbers entered.",
   "gui.electricblocks.configscreen": "Electric Blocks Config",
   "gui.electricblocks.configscreen.microgrid_warning": "Show Microgrid Warnings: ",
-  "gui.electricblocks.loadscreen": "Generic Load"
+  "gui.electricblocks.loadscreen": "Generic Load",
+  "gui.electricblocks.externalgridscreen": "Exteral Grid"
 }
