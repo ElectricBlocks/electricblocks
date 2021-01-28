@@ -177,5 +177,11 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
     public void viewOrModify(PlayerEntity player) {
         Minecraft.getInstance().displayGuiScreen(new LoadScreen(this, player));
     }
+
+    @Override
+    public void disable() {
+        inService = false;
+        maxPower = new Watt(0);
+    }
     
 }

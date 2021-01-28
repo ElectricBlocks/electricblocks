@@ -29,6 +29,8 @@ public abstract class SimulationTileEntity extends TileEntity {
 
     public abstract void zeroSim();
 
+    public abstract void disable();
+
     public abstract JsonObject toJson();
 
     public abstract void initEmbeddedBusses();

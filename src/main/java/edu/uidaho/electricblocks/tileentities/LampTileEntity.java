@@ -161,4 +161,10 @@ public class LampTileEntity extends SimulationTileEntity {
     public void initEmbeddedBusses() {
         embededBusses.put("main", UUID.randomUUID());
     }
+
+    @Override
+    public void disable() {
+        inService = false;
+        maxPower = new Watt(0);
+    }
 }

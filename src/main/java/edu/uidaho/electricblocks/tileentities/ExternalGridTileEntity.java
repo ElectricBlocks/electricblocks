@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 
 public class ExternalGridTileEntity extends SimulationTileEntity implements IMultimeter {
 
-    private boolean inService = true;
+    private boolean inService = false;
     private Volt voltage = new Volt(1);
     private Watt resultPower = new Watt(0);
     private Watt reactivePower = new Watt(0);
@@ -144,5 +144,11 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     @Override
     public void viewOrModify(PlayerEntity player) {
         Minecraft.getInstance().displayGuiScreen(new ExternalGridScreen(this, player));
+    }
+
+    @Override
+    public void disable() {
+        inService = false;
+        voltage = new Volt(0);
     }
 }

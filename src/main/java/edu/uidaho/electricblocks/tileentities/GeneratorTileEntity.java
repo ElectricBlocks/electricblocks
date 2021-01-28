@@ -184,5 +184,12 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
     public void viewOrModify(PlayerEntity player) {
         Minecraft.getInstance().displayGuiScreen(new GeneratorScreen(this, player));
     }
+
+    @Override
+    public void disable() {
+        inService = false;
+        nominalVoltage = new Volt(0);
+        maxPower = new Watt(0);
+    }
     
 }
