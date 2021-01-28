@@ -7,6 +7,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
@@ -28,7 +29,8 @@ public class ElectricBlocksMod {
 
     public static final Logger LOGGER = LogManager.getLogger(); // Reference to L4J Logger
 
-    // Creates a new tab group in the creative menu for all the blocks and items in this mod
+    // Creates a new tab group in the creative menu for all the blocks and items in
+    // this mod
     public static final ItemGroup TAB = new ItemGroup("ebtab") {
         @Override
         public ItemStack createIcon() {
@@ -37,6 +39,8 @@ public class ElectricBlocksMod {
     };
 
     public ElectricBlocksMod() {
+        // Register config file
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ElectricBlocksConfig.SERVER_SPEC);
 
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -48,10 +52,9 @@ public class ElectricBlocksMod {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new MultimeterEventHandler());
 
-        // Register gui screens
-        ModLoadingContext.get().registerExtensionPoint(
-            ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> new ConfigScreen()
-            );
+        // Register config gui screen
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY,
+                () -> (mc, screen) -> new ConfigScreen());
 
         RegistryHandler.init();
     }

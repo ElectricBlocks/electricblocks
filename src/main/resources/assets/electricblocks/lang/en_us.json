@@ -6,6 +6,7 @@
   "block.electricblocks.externalgrid_block": "External Grid",
   "block.electricblocks.lamp_block": "Lamp",
   "block.electricblocks.load_block": "Load",
+  "config.electricblocks.hostURL": "Host of EBPP Simulation Server including port and endpoint",
   "item.electricblocks.portablegenerator_item": "Portable Generator",
   "item.electricblocks.multimeter_item": "Multimeter",
   "command.electricblocks.warn": "WARNING",

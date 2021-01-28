@@ -15,6 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import edu.uidaho.electricblocks.ElectricBlocksConfig;
 import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,7 +32,7 @@ import net.minecraft.entity.player.PlayerEntity;
 public class SimulationHandler {
 
     private static SimulationHandler instance = null;
-    private static final String addr = "http://127.0.0.1:1127/api"; // TODO Read from config file
+    private static final String addr = ElectricBlocksConfig.getHostURL();
     private List<SimulationNetwork> networkList = Collections.synchronizedList(new ArrayList<>());
     private Thread asyncSimThread;
 
