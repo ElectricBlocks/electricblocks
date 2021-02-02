@@ -4,8 +4,11 @@ import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.electric.Watt;
+import edu.uidaho.electricblocks.guis.LampScreen;
+import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -19,11 +22,12 @@ import javax.annotation.Nullable;
 /**
  * LampTileEntity stores information about the lamp block.
  */
-public class LampTileEntity extends SimulationTileEntity {
+public class LampTileEntity extends SimulationTileEntity implements IMultimeter {
 
     private boolean inService = false; // Whether or not the lamp is on
     private Watt maxPower = new Watt(60); // Maximum power this lamp can take
     private Watt resultPower = new Watt(0); // Amount of power being received
+    private Watt reactivePower = new Watt(0);
 
     public LampTileEntity() {
         super(RegistryHandler.LAMP_TILE_ENTITY.get(), SimulationType.LOAD);
@@ -123,6 +127,14 @@ public class LampTileEntity extends SimulationTileEntity {
         
     }
 
+    public void setInService(boolean inService) {
+        this.inService = inService;
+    }
+
+    public Watt getReactivePower() {
+        return reactivePower;
+    }
+
     @Override
     public void receiveSimulationResults(JsonObject results) {
         double resultPower = results.get("p_mw").getAsDouble() * 1000000;
@@ -166,5 +178,15 @@ public class LampTileEntity extends SimulationTileEntity {
     public void disable() {
         inService = false;
         maxPower = new Watt(0);
+    }
+
+    @Override
+    public void updateOrToggle(PlayerEntity player) {
+        toggleInService(player);
+    }
+
+    @Override
+    public void viewOrModify(PlayerEntity player) {
+        Minecraft.getInstance().displayGuiScreen(new LampScreen(this, player));
     }
 }
