@@ -2,8 +2,6 @@ package edu.uidaho.electricblocks.tileentities;
 
 import java.util.UUID;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.RegistryHandler;
@@ -16,8 +14,6 @@ import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 
 public class GeneratorTileEntity extends SimulationTileEntity implements IMultimeter {
 
@@ -58,20 +54,6 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         nominalVoltage = new Volt(compound.getDouble("nominalVoltage"));
         resultVoltage = new Volt(compound.getDouble("resultVoltage"));
         simId = compound.getUniqueId("simId");
-    }
-
-    @Nullable
-    @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        CompoundNBT tag = new CompoundNBT();
-        write(tag);
-        return new SUpdateTileEntityPacket(getPos(), -1, tag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        CompoundNBT tag = pkt.getNbtCompound();
-        read(tag);
     }
 
     @Override

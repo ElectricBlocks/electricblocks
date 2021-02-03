@@ -1,14 +1,10 @@
 package edu.uidaho.electricblocks.guis;
 
-import org.lwjgl.glfw.GLFW;
-
 import edu.uidaho.electricblocks.electric.Watt;
 import edu.uidaho.electricblocks.tileentities.LoadTileEntity;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 

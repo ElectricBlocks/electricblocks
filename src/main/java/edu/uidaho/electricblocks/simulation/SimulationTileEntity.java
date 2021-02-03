@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
@@ -55,6 +57,19 @@ public abstract class SimulationTileEntity extends TileEntity {
 
     public Map<String, UUID> getEmbeddedBuses() {
         return embededBusses;
+    }
+
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        CompoundNBT tag = new CompoundNBT();
+        write(tag);
+        return new SUpdateTileEntityPacket(getPos(), -1, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT tag = pkt.getNbtCompound();
+        read(tag);
     }
 
     /**

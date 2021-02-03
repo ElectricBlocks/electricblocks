@@ -6,8 +6,8 @@
   "block.electricblocks.externalgrid_block": "External Grid",
   "block.electricblocks.lamp_block": "Lamp",
   "block.electricblocks.load_block": "Load",
+  "block.electricblocks.transformer_block": "Transformer",
   "config.electricblocks.hostURL": "Host of EBPP Simulation Server including port and endpoint",
-  "item.electricblocks.portablegenerator_item": "Portable Generator",
   "item.electricblocks.multimeter_item": "Multimeter",
   "command.electricblocks.warn": "WARNING",
   "command.electricblocks.error": "ERROR",
@@ -19,11 +19,13 @@
   "command.electricblocks.updatetoggle.err_invalid_block": "The multimeter is unable to update or toggle this block.",
   "command.electricblocks.viewmodify.err_invalid_block": "The multimeter is unable to view or modify this block.",
   "command.electricblocks.viewmodify.submit": "Submitting changes to simulation handler.",
+  "gui.electricblocks.scrollable": "(use scroll wheel)",
   "gui.electricblocks.err_invalid_number": "Unable to parse one more numbers entered.",
   "gui.electricblocks.warn_escape": "Changes not submitted. Press the \"Done\" button instead of escape to submit changes.",
   "gui.electricblocks.configscreen": "Electric Blocks Config",
   "gui.electricblocks.configscreen.microgrid_warning": "Show Microgrid Warnings: ",
   "gui.electricblocks.loadscreen": "Generic Load",
   "gui.electricblocks.externalgridscreen": "External Grid",
-  "gui.electricblocks.generatorscreen": "Single Phase Generator"
+  "gui.electricblocks.generatorscreen": "Single Phase Generator",
+  "gui.electricblocks.transformerscreen": "Transformer"
 }

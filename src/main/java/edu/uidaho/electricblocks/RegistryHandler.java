@@ -4,6 +4,7 @@ import edu.uidaho.electricblocks.blocks.ExternalGridBlock;
 import edu.uidaho.electricblocks.blocks.LampBlock;
 import edu.uidaho.electricblocks.blocks.LoadBlock;
 import edu.uidaho.electricblocks.blocks.PortableGeneratorBlock;
+import edu.uidaho.electricblocks.blocks.TransformerBlock;
 import edu.uidaho.electricblocks.blocks.WireBlock;
 import edu.uidaho.electricblocks.blocks.BusBlock;
 import edu.uidaho.electricblocks.items.ExternalGridItem;
@@ -11,12 +12,14 @@ import edu.uidaho.electricblocks.items.LampItem;
 import edu.uidaho.electricblocks.items.LoadItem;
 import edu.uidaho.electricblocks.items.MultimeterItem;
 import edu.uidaho.electricblocks.items.PortableGeneratorItem;
+import edu.uidaho.electricblocks.items.TransformerItem;
 import edu.uidaho.electricblocks.items.WireItem;
 import edu.uidaho.electricblocks.items.BusItem;
 import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
 import edu.uidaho.electricblocks.tileentities.GeneratorTileEntity;
 import edu.uidaho.electricblocks.tileentities.LampTileEntity;
 import edu.uidaho.electricblocks.tileentities.LoadTileEntity;
+import edu.uidaho.electricblocks.tileentities.TransformerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
@@ -39,6 +42,7 @@ public class RegistryHandler {
     public static final RegistryObject<Block> EXTERNAL_GRID_BLOCK = BLOCKS.register("externalgrid_block", ExternalGridBlock::new);
     public static final RegistryObject<Block> LAMP_BLOCK = BLOCKS.register("lamp_block", LampBlock::new);
     public static final RegistryObject<Block> LOAD_BLOCK = BLOCKS.register("load_block", LoadBlock::new);
+    public static final RegistryObject<Block> TRANSFORMER_BLOCK = BLOCKS.register("transformer_block", TransformerBlock::new);
 
     // Items
     public static final RegistryObject<Item> PORTABLE_GENERATOR_ITEM = ITEMS.register("portablegenerator_item", PortableGeneratorItem::new);
@@ -48,6 +52,7 @@ public class RegistryHandler {
     public static final RegistryObject<Item> LAMP_ITEM = ITEMS.register("lamp_item", LampItem::new);
     public static final RegistryObject<Item> LOAD_ITEM = ITEMS.register("load_item", LoadItem::new);
     public static final RegistryObject<Item> MULTIMETER_ITEM = ITEMS.register("multimeter_item", MultimeterItem::new);
+    public static final RegistryObject<Item> TRANSFORMER_ITEM = ITEMS.register("transformer_item", TransformerItem::new);
 
     // Tile Entities
     public static final RegistryObject<TileEntityType<ExternalGridTileEntity>> EXTERNAL_GRID_TILE_ENTITY =
@@ -58,6 +63,8 @@ public class RegistryHandler {
             TILE_ENTITIES.register("generator_tileentity", () -> TileEntityType.Builder.create(GeneratorTileEntity::new).build(null));
     public static final RegistryObject<TileEntityType<LoadTileEntity>> LOAD_TILE_ENTITY =
             TILE_ENTITIES.register("load_tileentity", () -> TileEntityType.Builder.create(LoadTileEntity::new).build(null));
+    public static final RegistryObject<TileEntityType<TransformerTileEntity>> TRANSFORMER_TILE_ENTITY =
+            TILE_ENTITIES.register("transformer_tileentity", () -> TileEntityType.Builder.create(TransformerTileEntity::new).build(null));
 
     public static void init() {
         BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());

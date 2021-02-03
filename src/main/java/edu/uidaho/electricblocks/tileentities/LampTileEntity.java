@@ -8,13 +8,9 @@ import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.UUID;
-
-import javax.annotation.Nullable;
 
 /**
  * LampTileEntity stores information about the lamp block.
@@ -56,29 +52,6 @@ public class LampTileEntity extends SimulationTileEntity {
         resultPower = new Watt(compound.getDouble("resultPower"));
         simId = compound.getUniqueId("simId");
         world.getLightManager().checkBlock(pos);
-    }
-
-    /**
-     * Sever sends an update tile entity packet to client.
-     * @return The completed update tile entity packet
-     */
-    @Nullable
-    @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        CompoundNBT tag = new CompoundNBT();
-        write(tag);
-        return new SUpdateTileEntityPacket(getPos(), -1, tag);
-    }
-
-    /**
-     * Data packet received from server regarding Lamp Tile Entity
-     * @param net The network manager
-     * @param pkt The update packet
-     */
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        CompoundNBT tag = pkt.getNbtCompound();
-        read(tag);
     }
 
     /**
