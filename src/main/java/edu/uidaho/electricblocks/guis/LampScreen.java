@@ -50,12 +50,12 @@ public class LampScreen extends AbstractScreen {
         textFieldReactivePower.setDisabledTextColour(enabledColor);
         addButton(textFieldReactivePower);
 
-        textFieldLight = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldReactivePower.setText(String.format("%f", lampTileEntity.getReactivePower().getMegaWatts()));
-        textFieldReactivePower.setVisible(true);
-        textFieldReactivePower.setEnabled(false);
-        textFieldReactivePower.setDisabledTextColour(enabledColor);
-        addButton(textFieldReactivePower);
+        textFieldLight = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldLight.setText(String.format("%f%%", lampTileEntity.getLightPercentage()));
+        textFieldLight.setVisible(true);
+        textFieldLight.setEnabled(false);
+        textFieldLight.setDisabledTextColour(enabledColor);
+        addButton(textFieldLight);
 
         this.addButton(new Button(
             (this.width - BUTTON_WIDTH) / 2,
@@ -82,6 +82,7 @@ public class LampScreen extends AbstractScreen {
         this.drawString(this.font, "Max Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "Result Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Light", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw mw label
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);

@@ -110,6 +110,10 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
      * Return the max power
      * @return
      */
+
+    public double getLightPercentage() {
+        return this.resultPower.getWatts() / this.maxPower.getWatts();
+    }
     public Watt getMaxPower() {
         return maxPower;
     }
