@@ -27,38 +27,89 @@ public abstract class SimulationTileEntity extends TileEntity {
         initEmbeddedBusses();
     }
 
+    /**
+     * This function is called whenever a simulation involving this simulation tile entity is finished and the results
+     * are received.
+     * @param jsonObject The results of the simulation for this specific tile entity
+     */
     public abstract void receiveSimulationResults(JsonObject jsonObject);
 
+    /**
+     * This function is called whenever a simulation involving this tile entity fails for any reason. This sets all
+     * the results to zero. This does not zero out any of the inputs, only the results
+     */
     public abstract void zeroSim();
 
+    /**
+     * This function fully disables the tile entity. This is usually called before a tile entity is destroyed so that
+     * the simulation can be updated with this block gone. This usually just involves setting all values to zero
+     * and setting the block to no longer be in service.
+     */
     public abstract void disable();
 
+    /**
+     * Called by SimulationNetwork to get the JSON representation of this tile entity.
+     * @return The JSON representation of this object
+     */
     public abstract JsonObject toJson();
 
+    /**
+     * Initializes the embedded buses. For most blocks this just involves mapping "main" to a new randomly generated
+     * UUID, but some blocks will require more than one like the transformer.
+     */
     public abstract void initEmbeddedBusses();
 
+    /**
+     * The UUID of this simulation entity. Used for tracking the name of this tile entity when it is sent over to the
+     * EBPP simulation software.
+     * @return The UUID
+     */
     public UUID getSimulationID() {
         return simId;
     }
 
+    /**
+     * The simulation type enum. This is useful since there may be multiple blocks that are represented in the
+     * simulator by a single type. For example, a generic load and lamp are both loads in the simulator.
+     * @return The simulation type enum
+     */
     public SimulationType getSimulationType() {
         return this.simulationType;
     }
 
+    /**
+     * Requests a simulation on this tile entity and its associated network of connected components.
+     * This version is called when the player that requested the simulation is unknown.
+     */
     public void requestSimulation() {
         requestSimulation(null);
     }
 
+    /**
+     * Request a simulation on this tile entity and its associated network of connected components.
+     * This version is called when the player that requested the simulation is known. They will receive any errors or
+     * other messages associated with this simulation request.
+     * @param player
+     */
     public void requestSimulation(PlayerEntity player) {
         if (!world.isRemote()) {
             SimulationHandler.instance().newSimulationNetwork(this, player);
         }
     }
 
+    /**
+     * Get's the map of embedded buses
+     * @return The map of embedded buses
+     */
     public Map<String, UUID> getEmbeddedBuses() {
         return embededBusses;
     }
 
+    /**
+     * Called whenever an update needs to be sent between the server and the player. This constructs the packet using
+     * information written in the write function for this class.
+     * @return The tile entity's update packet
+     */
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         CompoundNBT tag = new CompoundNBT();
@@ -66,6 +117,11 @@ public abstract class SimulationTileEntity extends TileEntity {
         return new SUpdateTileEntityPacket(getPos(), -1, tag);
     }
 
+    /**
+     * Called whenever a data packet is received concerning this tile entity.
+     * @param net The network manager
+     * @param pkt The update packet to be read from
+     */
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT tag = pkt.getNbtCompound();
@@ -89,6 +145,10 @@ public abstract class SimulationTileEntity extends TileEntity {
         return null;
     }
 
+    /**
+     * Called to notify the client or server of changes made involving this tile entity. This function write's the NBT
+     * tag, marks it as dirty, and then runs the notifyBlockUpdate function.
+     */
     public void notifyUpdate() {
         CompoundNBT tag = new CompoundNBT();
         write(tag);

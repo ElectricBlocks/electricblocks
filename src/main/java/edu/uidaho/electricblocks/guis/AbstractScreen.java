@@ -36,6 +36,10 @@ public abstract class AbstractScreen extends Screen {
         super(titleIn);
     }
 
+    /**
+     * Called whenever a new screen is initialized. This function adds a "Done" button at the bottom of the screen by
+     * default. Override in subclasses to perform additional actions
+     */
     @Override
     protected void init() {
         // Add the "Done" button
