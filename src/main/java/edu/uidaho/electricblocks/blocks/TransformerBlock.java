@@ -2,7 +2,6 @@ package edu.uidaho.electricblocks.blocks;
 
 import javax.annotation.Nullable;
 
-import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.tileentities.TransformerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -58,8 +58,8 @@ public abstract class AbstractScreen extends Screen {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         // res will be false for all characters that update the display except for backspace
         boolean res = super.keyPressed(keyCode, scanCode, modifiers); 
-        boolean updateKeyPressed = (res && keyCode == 259) || !res; // Check if backspace is pressed or other update key is pressed
-        boolean focusIsOnEditableTextFieldWidget = this.getFocused() instanceof TextFieldWidget ? ((TextFieldWidget) this.getFocused()).canWrite() : false;
+        boolean updateKeyPressed = !res || keyCode == 259; // Check if backspace is pressed or other update key is pressed
+        boolean focusIsOnEditableTextFieldWidget = this.getFocused() instanceof TextFieldWidget && ((TextFieldWidget) this.getFocused()).canWrite();
         if (updateKeyPressed && focusIsOnEditableTextFieldWidget) {
             onChange();
         }

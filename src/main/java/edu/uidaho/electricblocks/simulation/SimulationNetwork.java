@@ -32,12 +32,10 @@ public class SimulationNetwork {
     public SimulationNetwork(SimulationTileEntity startingBlock) {
         this.startingBlock = startingBlock;
         this.world = startingBlock.getWorld();
-        asyncBlocksThread = new Thread() {
-            public void run() {
-                addConnectedBlocks();
-                setReady();
-            }
-        };
+        asyncBlocksThread = new Thread(() -> {
+            addConnectedBlocks();
+            setReady();
+        });
         asyncBlocksThread.start();
     }
 
@@ -102,10 +100,7 @@ public class SimulationNetwork {
 
     public boolean isSimulationTileEntity(BlockPos pos) {
         TileEntity te = world.getChunk(pos).getTileEntity(pos);
-        if (te != null && te instanceof SimulationTileEntity) {
-            return true;
-        }
-        return false;
+        return te != null && te instanceof SimulationTileEntity;
     }
 
     public SimulationTileEntity getSimulationTileEntity(BlockPos pos) {

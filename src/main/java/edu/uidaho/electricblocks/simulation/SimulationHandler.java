@@ -128,7 +128,7 @@ public class SimulationHandler {
     private String sendPost(String body) throws Exception {
         PrintWriter out = null;
         BufferedReader in = null;
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try {
             URL url = new URL(addr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -143,7 +143,7 @@ public class SimulationHandler {
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                result += line + "\n";
+                result.append(line).append("\n");
             }
         } finally {
             if (out != null) {
@@ -157,7 +157,7 @@ public class SimulationHandler {
                 }
             }
         }
-        return result;
+        return result.toString();
     }
 
     public void newSimulationNetwork(SimulationTileEntity ste) {
