@@ -3,6 +3,7 @@ package edu.uidaho.electricblocks.tileentities;
 import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.RegistryHandler;
+import edu.uidaho.electricblocks.electric.Watt;
 import edu.uidaho.electricblocks.guis.TransformerScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
@@ -12,6 +13,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
 public class TransformerTileEntity extends SimulationTileEntity implements IMultimeter {
+
+    private boolean inService = false;
+    private Watt ratedApparentPower = new Watt(100); // sn_mva
 
     public TransformerTileEntity() {
         super(RegistryHandler.TRANSFORMER_TILE_ENTITY.get(), SimulationType.TRANSFORMER);
@@ -69,5 +73,16 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     public void viewOrModify(PlayerEntity player) {
         Minecraft.getInstance().displayGuiScreen(new TransformerScreen(this, player));
     }
-    
+
+    public boolean getInService() {
+        return inService;
+    }
+
+    public Watt getRatedApparentPower() {
+        return ratedApparentPower;
+    }
+
+    public void setRatedApparentPower(Watt ratedApparentPower) {
+        this.ratedApparentPower = ratedApparentPower;
+    }
 }
