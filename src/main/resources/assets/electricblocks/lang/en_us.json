@@ -25,6 +25,7 @@
   "gui.electricblocks.configscreen": "Electric Blocks Config",
   "gui.electricblocks.configscreen.microgrid_warning": "Show Microgrid Warnings: ",
   "gui.electricblocks.loadscreen": "Generic Load",
+  "gui.electricblocks.lampscreen": "Lamp",
   "gui.electricblocks.externalgridscreen": "External Grid",
   "gui.electricblocks.generatorscreen": "Single Phase Generator",
   "gui.electricblocks.transformerscreen": "Transformer"

@@ -57,7 +57,7 @@ public class RegistryHandler {
     // Tile Entities
     public static final RegistryObject<TileEntityType<ExternalGridTileEntity>> EXTERNAL_GRID_TILE_ENTITY =
             TILE_ENTITIES.register("externalgrid_tileentity", () -> TileEntityType.Builder.create(ExternalGridTileEntity::new).build(null));
-    public static final RegistryObject<TileEntityType<LampTileEntity>> LAMP_TILE_ENTITY =
+    public static final RegistryObject<TileEntityType<LampTileEntity>> LAMP_TILE_ENTITY  =
             TILE_ENTITIES.register("lamp_tileentity", () -> TileEntityType.Builder.create(LampTileEntity::new).build(null));
     public static final RegistryObject<TileEntityType<GeneratorTileEntity>> GENERATOR_TILE_ENTITY =
             TILE_ENTITIES.register("generator_tileentity", () -> TileEntityType.Builder.create(GeneratorTileEntity::new).build(null));
