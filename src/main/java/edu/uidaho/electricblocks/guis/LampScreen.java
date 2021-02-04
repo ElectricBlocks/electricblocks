@@ -51,7 +51,7 @@ public class LampScreen extends AbstractScreen {
         addButton(textFieldReactivePower);
 
         textFieldLight = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldLight.setText(String.format("%f%%", lampTileEntity.getLightPercentage()));
+        textFieldLight.setText(String.format("%f", lampTileEntity.getLightPercentage()));
         textFieldLight.setVisible(true);
         textFieldLight.setEnabled(false);
         textFieldLight.setDisabledTextColour(enabledColor);
@@ -87,6 +87,8 @@ public class LampScreen extends AbstractScreen {
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "Mvar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "%", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 120 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+
         // Draw separator
         this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, 45 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
     }
