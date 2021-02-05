@@ -20,6 +20,8 @@ import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 
+import javax.annotation.Nullable;
+
 /**
  * Singleton class that handles simulation tasks. This class contains a list of
  * SimulationNetworks. Each SimulationNetwork is responsible for converting
@@ -68,6 +70,10 @@ public class SimulationHandler {
         asyncSimThread.start();
     }
 
+    /**
+     * Get the instance of the SimulationHandler singleton. Will instantiate if the singleton has not been created yet.
+     * @return The singleton instance
+     */
     public static SimulationHandler instance() {
         if (instance == null) {
             instance = new SimulationHandler();
@@ -75,6 +81,15 @@ public class SimulationHandler {
         return instance;
     }
 
+    /**
+     * Sends a keep alive request to the EBPP simulation server which will just check if the server is accessible and
+     * that the server on the other end is in fact the EBPP server and not just any other server responding to a
+     * request.
+     * @return Whether or not the keep alive request was successful
+     * @throws Exception Throws a general Exception if Electric Blocks could not connect to the EBPP simulation server
+     * during the sendPost call or if the response could not be parsed as JSON. It's not possible to tell the which has
+     * occurred, but that's irrelevant.
+     */
     public boolean sendKeepAlive() throws Exception {
         String keepAlive = "{\"status\": \"KEEP_ALIVE\"}";
         String response = sendPost(keepAlive);
@@ -89,6 +104,15 @@ public class SimulationHandler {
         return false;
     }
 
+    /**
+     * This function performs several jobs (maybe we should split this up in the future for improved modularity).
+     * It starts by building the the JSON for the simulation request by getting the information from all the
+     * SimulationTileEntities and SimulationConnections in the SimulationNetwork. The request is then sent to the EBPP
+     * simulation server and the results are parsed into a JSON object.
+     * @param simNetwork The simulation network that we are requesting a simulation for
+     * @return The JSON object representing the response to this simulation request
+     */
+    @Nullable
     private JsonObject simRequest(SimulationNetwork simNetwork) {
         JsonObject requestJson = new JsonObject();
         requestJson.addProperty("status", "SIM_REQUEST");
@@ -127,6 +151,15 @@ public class SimulationHandler {
         return responseJson;
     }
 
+    /**
+     * Sends a post request to the EBPP simulation server. Only the SimulationHandler is able to call this function and
+     * so the body should only be filled out with properly formatted requests.
+     * @param body The body of the request to be sent
+     * @return The response to this request from the EBPP server
+     * @throws Exception Throws this general exception for nearly any problem that occurs when trying to make a request.
+     * This includes stuff like malformed urls, connection timeouts, connection closed, IO exceptions, and more. If an
+     * exception is thrown we can just assume the request failed.
+     */
     private String sendPost(String body) throws Exception {
         PrintWriter out = null;
         BufferedReader in = null;
@@ -162,10 +195,23 @@ public class SimulationHandler {
         return result.toString();
     }
 
+    /**
+     * Creates a new simulation network starting at a specific SimulationTileEntity, but the player who triggered the
+     * request is either unknown or doesn't exist. The new simulation network is added to the simulation network list
+     * and will be queued for simulation.
+     * @param ste The SimulationTileEntity that was modified and which will serve as the starting block for the network
+     */
     public void newSimulationNetwork(SimulationTileEntity ste) {
         newSimulationNetwork(ste, null);
     }
 
+    /**
+     * Creates a new simulation network starting at a specific SimulationTileEntity and with a known player who
+     * triggered the request and will be notified of any relevant information. The new simulation network is added to
+     * the simulation network list and will be queued for simulation.
+     * @param ste The SimulationTileEntity that was modified and which will serve as the starting block for the network
+     * @param player The player who triggered the simulation
+     */
     public void newSimulationNetwork(SimulationTileEntity ste, PlayerEntity player) {
         SimulationNetwork simulationNetwork = new SimulationNetwork(ste);
         simulationNetwork.setPlayer(player);
