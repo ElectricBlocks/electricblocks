@@ -8,6 +8,7 @@
   "block.electricblocks.load_block": "Load",
   "block.electricblocks.transformer_block": "Transformer",
   "config.electricblocks.hostURL": "Host of EBPP Simulation Server including port and endpoint",
+  "config.electricblocks.log_json_requests": "Should JSON requests to EBPP be included in the log. Useful for debugging",
   "item.electricblocks.multimeter_item": "Multimeter",
   "command.electricblocks.warn": "WARNING",
   "command.electricblocks.error": "ERROR",

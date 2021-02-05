@@ -12,6 +12,10 @@ public class PlayerUtils {
      * @param args Optional positional arguments used in string formatting
      */
     public static void sendMessage(PlayerEntity player, String message, Object... args) {
+        if (playerIsClientSide(player)) {
+            return;
+        }
+
         player.sendMessage(new TranslationTextComponent(message, args));
     }
 
@@ -22,6 +26,10 @@ public class PlayerUtils {
      * @param args Optional positional arguments used in string formatting
      */
     public static void warn(PlayerEntity player, String warning, Object... args) {
+        if (playerIsClientSide(player)) {
+            return;
+        }
+
         TranslationTextComponent parent = new TranslationTextComponent("command.electricblocks.warn");
         parent.applyTextStyle(TextFormatting.RED);
         parent.appendText(": ");
@@ -40,6 +48,10 @@ public class PlayerUtils {
      * @param args Optional positional arguments used in string formatting
      */
     public static void error(PlayerEntity player, String err, Object... args) {
+        if (playerIsClientSide(player)) {
+            return;
+        }
+
         TranslationTextComponent parent = new TranslationTextComponent("command.electricblocks.error");
         parent.applyTextStyle(TextFormatting.DARK_RED);
         parent.appendText(": ");
@@ -59,7 +71,21 @@ public class PlayerUtils {
      */
     @Deprecated
     public static void sendRaw(PlayerEntity player, String message) {
+        if (playerIsClientSide(player)) {
+            return;
+        }
+
         player.sendMessage(new StringTextComponent(message));
+    }
+
+    /**
+     * Checks if the world the player is in is remote or not. This is useful for checking if an action is occurring on
+     * the client or server.
+     * @param player The player instance that is being checked
+     * @return True if the player object is client side, false if it is server side
+     */
+    public static boolean playerIsClientSide(PlayerEntity player) {
+        return player.getEntityWorld().isRemote();
     }
     
 }

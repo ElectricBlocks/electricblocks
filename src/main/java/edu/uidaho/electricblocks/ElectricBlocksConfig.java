@@ -24,19 +24,41 @@ public class ElectricBlocksConfig {
 
     private static String hostURL;
     private static boolean updateOnBlockBreak;
+    private static boolean logJSONRequests;
 
+    /**
+     * Get the host URL of the EBPP simulation server endpoint. This is used by the simulation handler to create
+     * connections for processing simulation requests
+     * @return The host URL of the EBPP endpoint
+     */
     public static String getHostURL() {
         return hostURL;
     }
 
+    /**
+     * Whether or not the simulation should be updated when an electric block is broken. If this is false then the
+     * in game state may fall out of sync with what would happen in real life. This should usually be true unless a
+     * large electrical network is being broken down as this would cause a new simulation request for every single
+     * block that is broken.
+     * @return Whether or not the simulation should be updated when an electric block is broken.
+     */
     public static boolean getUpdateOnBlockBreak() {
         return updateOnBlockBreak;
+    }
+
+    /**
+     * Whether or not JSON requests sent by the simulation handler should be logged. This can usually be left off but is
+     * useful for development and debugging purposes.
+     * @return Should JSON requests be logged
+     */
+    public static boolean getLogJSONRequests() {
+        return logJSONRequests;
     }
 
     public static void bakeConfig() {
         hostURL = SERVER.hostURL.get();
         updateOnBlockBreak = SERVER.updateOnBlockBreak.get();
-        
+        logJSONRequests = SERVER.logJSONRequests.get();
     }
 
     @SubscribeEvent
@@ -50,6 +72,7 @@ public class ElectricBlocksConfig {
 
         public final ConfigValue<String> hostURL;
         public final BooleanValue updateOnBlockBreak;
+        public final BooleanValue logJSONRequests;
         
         public ServerConfig(ForgeConfigSpec.Builder builder) {
             hostURL = builder
@@ -60,6 +83,10 @@ public class ElectricBlocksConfig {
                 .comment("Whether or not the simulation should be updated when an electric block is broken")
                 .translation("config.electricblocks.update_on_block_break")
                 .define("updateOnBlockBreak", true);
+            logJSONRequests = builder
+                .comment("Should JSON requests to EBPP be included in the log. Useful for debugging")
+                .translation("config.electricblocks.log_json_requests")
+                .define("logJSONRequests", false);
         }
 
     }

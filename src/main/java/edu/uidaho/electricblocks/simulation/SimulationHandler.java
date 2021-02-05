@@ -104,8 +104,10 @@ public class SimulationHandler {
             elements.add(simConn.getSimId().toString(), simConn.toJson());
         }
         requestJson.add("elements", elements);
-        ElectricBlocksMod.LOGGER.debug(requestJson.toString());
-        String responseString = null;
+        if (ElectricBlocksConfig.getLogJSONRequests()) {
+            ElectricBlocksMod.LOGGER.debug(requestJson.toString());
+        }
+        String responseString;
         try {
             responseString = sendPost(requestJson.toString());
         } catch (Exception e) {
@@ -117,12 +119,12 @@ public class SimulationHandler {
             ElectricBlocksMod.LOGGER.fatal("ElectricBlocks experienced a connection issue with EBPP. See the above error for more info.");
             return null;
         }
-        if (responseString != null) {
-            JsonObject responseJson = new JsonParser().parse(responseString).getAsJsonObject();
+
+        JsonObject responseJson = new JsonParser().parse(responseString).getAsJsonObject();
+        if (ElectricBlocksConfig.getLogJSONRequests()) {
             ElectricBlocksMod.LOGGER.debug(responseJson.toString());
-            return responseJson;
         }
-        return null;
+        return responseJson;
     }
 
     private String sendPost(String body) throws Exception {
