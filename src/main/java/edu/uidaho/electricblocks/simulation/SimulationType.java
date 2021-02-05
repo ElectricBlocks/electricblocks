@@ -15,10 +15,16 @@ public enum SimulationType {
 
     private final String name;
 
-    private SimulationType(String name) {
+    SimulationType(String name) {
         this.name = name;
     }
 
+    /**
+     * Converts the simulation type represented by an instance of the SimulationType enum into the string representation
+     * used by PandaPower in the EBPP simulation server. This is used by tile entities to mark their EBPP type or
+     * "etype".
+     * @return The EBPP string representing the simulation type
+     */
     public String toString() {
         return this.name;
     }
