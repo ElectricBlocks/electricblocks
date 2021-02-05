@@ -12,14 +12,27 @@ public class Volt {
         this.volts = volts;
     }
 
+    /**
+     * Gets the number of volts in this instance.
+     * @return The number of volts
+     */
     public double getVolts() {
         return volts;
     }
 
+    /**
+     * Gets the number of kilovolts in this instance. This just divides the internal value by 1000 to do the conversion.
+     * @return The number of kilovolts
+     */
     public double getKiloVolts() {
         return volts / 1000d;
     }
 
+    /**
+     * Gets the number of megavolts in this instance. This just divides the internal value by 1000000 to do the
+     * conversion.
+     * @return The number of megavolts
+     */
     public double getMegaVolts() {
         return volts / 1000000d;
     }

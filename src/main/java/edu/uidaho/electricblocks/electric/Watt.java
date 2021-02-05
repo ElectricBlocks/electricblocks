@@ -12,14 +12,27 @@ public class Watt {
         this.watts = watts;
     }
 
+    /**
+     * Gets the number of watts in this instance
+     * @return The number of watts
+     */
     public double getWatts() {
         return watts;
     }
 
+    /**
+     * Gets the number of kilowatts in this instance. This just divides the internal value by 1000 to do the conversion.
+     * @return The number of kilowatts
+     */
     public double getKiloWatts() {
         return watts / 1000d;
     }
 
+    /**
+     * Gets the number of megawatts in this instance. This just divides the internal value by 1000000 to do the
+     * conversion.
+     * @return The number of megawatts
+     */
     public double getMegaWatts() {
         return watts / 1000000d;
     }
