@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import com.google.gson.JsonObject;
 
+/**
+ * SimulationConnection represents a line/wire that is ran between two buses in a SimulationNetwork.
+ */
 public class SimulationConnection {
     private UUID simId;
     private UUID fromBus;
@@ -15,10 +18,18 @@ public class SimulationConnection {
         this.simId = UUID.randomUUID();
     }
 
+    /**
+     * Gets the UUID assigned to this line
+     * @return The UUID assigned to this line.
+     */
     public UUID getSimId() {
         return simId;
     }
 
+    /**
+     * Gets the JSON representation of this line for use in simulations
+     * @return The JSON representation of this line
+     */
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
         json.addProperty("etype", "line");
@@ -29,33 +40,51 @@ public class SimulationConnection {
         return json;
     }
 
+    /**
+     * Increments the length of this line by 1 meter (one block)
+     */
     public void incrementLength() {
         this.lengthKm += 0.001;
     }
 
-    public UUID getSimID() {
-        return this.simId;
-    }
-
+    /**
+     * Gets the UUID assigned to the bus at the start of this line
+     * @return The UUID assigned to the bus at the start of this line
+     */
     public UUID getFromBus() {
         return this.fromBus;
     }
 
+    /**
+     * Sets the UUID assigned to the bus at the start of this line
+     * @param fromBus The UUID assigned to the bus at the start of this line
+     */
     public void setFromBus(UUID fromBus) {
         this.fromBus = fromBus;
     }
 
+    /**
+     * Gets the UUID assigned to the bus at the end of this line
+     * @return The UUID assigned to the bus at the end of this line
+     */
     public UUID getToBus() {
         return this.toBus;
     }
 
+    /**
+     * Sets the UUID assigned to the bus at the end of this line
+     * @param toBus The UUID assigned to the bus at the end of this line
+     */
     public void setToBus(UUID toBus) {
         this.toBus = toBus;
     }
 
+    /**
+     * Gets the length of this line in kilometers
+     * @return The length of this line in kilometers
+     */
     public double getLengthKm() {
         return this.lengthKm;
     }
-
 
 }
