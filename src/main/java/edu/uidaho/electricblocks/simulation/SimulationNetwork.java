@@ -100,12 +100,12 @@ public class SimulationNetwork {
 
     public boolean isSimulationTileEntity(BlockPos pos) {
         TileEntity te = world.getChunk(pos).getTileEntity(pos);
-        return te != null && te instanceof SimulationTileEntity;
+        return te instanceof SimulationTileEntity;
     }
 
     public SimulationTileEntity getSimulationTileEntity(BlockPos pos) {
         TileEntity te = world.getChunk(pos).getTileEntity(pos);
-        if (te != null && te instanceof SimulationTileEntity) {
+        if (te instanceof SimulationTileEntity) {
             return (SimulationTileEntity) te;
         }
         return null;
@@ -138,7 +138,7 @@ public class SimulationNetwork {
         
         public BlockPos pos;
         public SimulationConnection currConnection = null;
-        public SimulationTileEntity ste = null;
+        public SimulationTileEntity ste;
         public ConnectedBlock previousBlock = null;
 
         public ConnectedBlock(SimulationTileEntity ste) {
@@ -159,12 +159,12 @@ public class SimulationNetwork {
             return currConnection != null;
         }
 
-        public boolean previousBlockEquals(BlockPos newPos) {
+        public boolean previousBlockNotEqualTo(BlockPos newPos) {
             if (newPos == null || previousBlock == null) {
-                return false;
+                return true;
             }
 
-            return newPos.equals(previousBlock.pos);
+            return !newPos.equals(previousBlock.pos);
         }
 
     }
@@ -194,7 +194,7 @@ public class SimulationNetwork {
                 }
 
                 for (BlockPos pos : getSurroundingBlocks(cb.pos)) {
-                    if (isWire(pos) && !cb.previousBlockEquals(pos)) {
+                    if (isWire(pos) && cb.previousBlockNotEqualTo(pos)) {
                         ConnectedBlock ncb = new ConnectedBlock(pos);
                         ncb.previousBlock = cb;
                         ncb.currConnection = new SimulationConnection();
@@ -210,7 +210,7 @@ public class SimulationNetwork {
                 }
 
                 for (BlockPos pos : getSurroundingBlocks(cb.pos)) {
-                    if (isElectricBlock(getBlock(pos)) && !cb.previousBlockEquals(pos)) {
+                    if (isElectricBlock(getBlock(pos)) && cb.previousBlockNotEqualTo(pos)) {
                         ConnectedBlock ncb = new ConnectedBlock(pos);
                         ncb.previousBlock = cb;
                         ncb.currConnection = cb.currConnection;
