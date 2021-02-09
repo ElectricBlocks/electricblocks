@@ -2,8 +2,7 @@ package edu.uidaho.electricblocks.tileentities;
 
 import com.google.gson.JsonObject;
 import edu.uidaho.electricblocks.RegistryHandler;
-import edu.uidaho.electricblocks.electric.Volt;
-import edu.uidaho.electricblocks.electric.Watt;
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.guis.ExternalGridScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
@@ -17,9 +16,9 @@ import java.util.UUID;
 public class ExternalGridTileEntity extends SimulationTileEntity implements IMultimeter {
 
     private boolean inService = false;
-    private Volt voltage = new Volt(1);
-    private Watt resultPower = new Watt(0);
-    private Watt reactivePower = new Watt(0);
+    private MetricUnit voltage = new MetricUnit(1);
+    private MetricUnit resultPower = new MetricUnit(0);
+    private MetricUnit reactivePower = new MetricUnit(0);
 
     public ExternalGridTileEntity() {
         super(RegistryHandler.EXTERNAL_GRID_TILE_ENTITY.get(), SimulationType.EXT_GRID);
@@ -29,9 +28,9 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
         compound.putBoolean("inService", inService);
-        compound.putDouble("voltage", voltage.getVolts());
-        compound.putDouble("resultPower", resultPower.getWatts());
-        compound.putDouble("reactivePower", reactivePower.getWatts());
+        compound.putDouble("voltage", voltage.get());
+        compound.putDouble("resultPower", resultPower.get());
+        compound.putDouble("reactivePower", reactivePower.get());
         compound.putUniqueId("simId", simId);
         return compound;
     }
@@ -40,18 +39,16 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     public void read(CompoundNBT compound) {
         super.read(compound);
         inService = compound.getBoolean("inService");
-        voltage = new Volt(compound.getDouble("voltage"));
-        resultPower = new Watt(compound.getDouble("resultPower"));
-        reactivePower = new Watt(compound.getDouble("reactivePower"));
+        voltage = new MetricUnit(compound.getDouble("voltage"));
+        resultPower = new MetricUnit(compound.getDouble("resultPower"));
+        reactivePower = new MetricUnit(compound.getDouble("reactivePower"));
         simId = compound.getUniqueId("simId");
     }
 
     @Override
     public void receiveSimulationResults(JsonObject results) {
-        double resultPower = results.get("p_mw").getAsDouble() * 1000000;
-        this.resultPower = new Watt(resultPower);
-        double reactivePower = results.get("q_mvar").getAsDouble() * 1000000;
-        this.reactivePower = new Watt(reactivePower);
+        this.resultPower = new MetricUnit(results.get("p_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.reactivePower = new MetricUnit(results.get("q_mvar").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
         notifyUpdate();
     }
 
@@ -65,7 +62,7 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
         JsonObject obj = new JsonObject();
         obj.addProperty("etype", getSimulationType().toString());
         obj.addProperty("in_service", inService);
-        obj.addProperty("vm_pu", voltage.getVolts());
+        obj.addProperty("vm_pu", voltage.get());
         obj.addProperty("bus", busId.toString());
 
         json.add(busId.toString(), bus);
@@ -75,8 +72,8 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
 
     @Override
     public void zeroSim() {
-        resultPower = new Watt(0);
-        reactivePower = new Watt(0);
+        resultPower = new MetricUnit(0);
+        reactivePower = new MetricUnit(0);
         notifyUpdate();
     }
 
@@ -93,27 +90,27 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
         this.inService = inService;
     }
     
-    public Volt getVoltage() {
+    public MetricUnit getVoltage() {
         return this.voltage;
     }
 
-    public void setVoltage(Volt voltage) {
+    public void setVoltage(MetricUnit voltage) {
         this.voltage = voltage;
     }
 
-    public Watt getResultPower() {
+    public MetricUnit getResultPower() {
         return resultPower;
     }
 
-    public void setResultPower(Watt resultPower) {
+    public void setResultPower(MetricUnit resultPower) {
         this.resultPower = resultPower;
     }
 
-    public Watt getReactivePower() {
+    public MetricUnit getReactivePower() {
         return reactivePower;
     }
 
-    public void setReactivePower(Watt reactivePower) {
+    public void setReactivePower(MetricUnit reactivePower) {
         this.reactivePower = reactivePower;
     }
 
@@ -131,6 +128,6 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     @Override
     public void disable() {
         inService = false;
-        voltage = new Volt(0);
+        voltage = new MetricUnit(0);
     }
 }

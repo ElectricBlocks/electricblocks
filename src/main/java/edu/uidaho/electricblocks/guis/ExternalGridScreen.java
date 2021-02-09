@@ -1,7 +1,7 @@
 package edu.uidaho.electricblocks.guis;
 
-import edu.uidaho.electricblocks.electric.Volt;
 import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
@@ -27,20 +27,20 @@ public class ExternalGridScreen extends AbstractScreen {
     protected void init() {
         inService = externalGridTileEntity.isInService();
         textFieldVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldVoltage.setText(String.format("%f", externalGridTileEntity.getVoltage().getVolts()));
+        textFieldVoltage.setText(String.format("%f", externalGridTileEntity.getVoltage().get()));
         textFieldVoltage.setFocused2(true);
         textFieldVoltage.setVisible(true);
         addButton(textFieldVoltage);
 
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldResultPower.setText(String.format("%f", externalGridTileEntity.getResultPower().getMegaWatts()));
+        textFieldResultPower.setText(String.format("%f", externalGridTileEntity.getResultPower().getMega()));
         textFieldResultPower.setVisible(true);
         textFieldResultPower.setEnabled(false);
         textFieldResultPower.setDisabledTextColour(enabledColor);
         addButton(textFieldResultPower);
 
         textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldReactivePower.setText(String.format("%f", externalGridTileEntity.getReactivePower().getMegaWatts()));
+        textFieldReactivePower.setText(String.format("%f", externalGridTileEntity.getReactivePower().getMega()));
         textFieldReactivePower.setVisible(true);
         textFieldReactivePower.setEnabled(false);
         textFieldReactivePower.setDisabledTextColour(enabledColor);
@@ -93,7 +93,7 @@ public class ExternalGridScreen extends AbstractScreen {
         if (shouldUpdate) {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             externalGridTileEntity.setInService(inService);
-            externalGridTileEntity.setVoltage(new Volt(voltage));
+            externalGridTileEntity.setVoltage(new MetricUnit(voltage));
             externalGridTileEntity.notifyUpdate();
 
             externalGridTileEntity.requestSimulation(player);

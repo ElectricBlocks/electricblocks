@@ -1,6 +1,6 @@
 package edu.uidaho.electricblocks.guis;
 
-import edu.uidaho.electricblocks.electric.Watt;
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.tileentities.LoadTileEntity;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -29,21 +29,21 @@ public class LoadScreen extends AbstractScreen {
     protected void init() {
         inService = loadTileEntity.isInService();
         textFieldMaxPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldMaxPower.setText(String.format("%f", loadTileEntity.getMaxPower().getMegaWatts()));
+        textFieldMaxPower.setText(String.format("%f", loadTileEntity.getMaxPower().getMega()));
         textFieldMaxPower.setFocused2(true);
         textFieldMaxPower.setVisible(true);
         addButton(textFieldMaxPower);
         setFocused(textFieldMaxPower);
 
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldResultPower.setText(String.format("%f", loadTileEntity.getResultPower().getMegaWatts()));
+        textFieldResultPower.setText(String.format("%f", loadTileEntity.getResultPower().getMega()));
         textFieldResultPower.setVisible(true);
         textFieldResultPower.setEnabled(false);
         textFieldResultPower.setDisabledTextColour(enabledColor);
         addButton(textFieldResultPower);
 
         textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldReactivePower.setText(String.format("%f", loadTileEntity.getReactivePower().getMegaWatts()));
+        textFieldReactivePower.setText(String.format("%f", loadTileEntity.getReactivePower().getMega()));
         textFieldReactivePower.setVisible(true);
         textFieldReactivePower.setEnabled(false);
         textFieldReactivePower.setDisabledTextColour(enabledColor);
@@ -96,7 +96,7 @@ public class LoadScreen extends AbstractScreen {
         if (shouldUpdate) {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             loadTileEntity.setInService(inService);
-            loadTileEntity.setMaxPower(new Watt(maxPower * 1000000));
+            loadTileEntity.setMaxPower(new MetricUnit(maxPower * 1000000));
             loadTileEntity.notifyUpdate();
 
             loadTileEntity.requestSimulation(player);

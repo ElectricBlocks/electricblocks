@@ -3,7 +3,7 @@ package edu.uidaho.electricblocks.tileentities;
 import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.RegistryHandler;
-import edu.uidaho.electricblocks.electric.Watt;
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.guis.LampScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
@@ -21,9 +21,9 @@ import java.util.UUID;
 public class LampTileEntity extends SimulationTileEntity implements IMultimeter {
 
     private boolean inService = false; // Whether or not the lamp is on
-    private Watt maxPower = new Watt(60); // Maximum power this lamp can take
-    private Watt resultPower = new Watt(0); // Amount of power being received
-    private Watt reactivePower = new Watt(0);
+    private MetricUnit maxPower = new MetricUnit(60); // Maximum power this lamp can take
+    private MetricUnit resultPower = new MetricUnit(0); // Amount of power being received
+    private MetricUnit reactivePower = new MetricUnit(0); // TODO: Make sure this gets updated!!!
 
     public LampTileEntity() {
         super(RegistryHandler.LAMP_TILE_ENTITY.get(), SimulationType.LOAD);
@@ -38,8 +38,8 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
         compound.putBoolean("inService", inService);
-        compound.putDouble("maxPower", maxPower.getWatts());
-        compound.putDouble("resultPower", resultPower.getWatts());
+        compound.putDouble("maxPower", maxPower.get());
+        compound.putDouble("resultPower", resultPower.get());
         compound.putUniqueId("simId", simId);
         return compound;
     }
@@ -52,10 +52,10 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
     public void read(CompoundNBT compound) {
         super.read(compound);
         inService = compound.getBoolean("inService");
-        maxPower = new Watt(compound.getDouble("maxPower"));
-        resultPower = new Watt(compound.getDouble("resultPower"));
+        maxPower = new MetricUnit(compound.getDouble("maxPower"));
+        resultPower = new MetricUnit(compound.getDouble("resultPower"));
         simId = compound.getUniqueId("simId");
-        world.getLightManager().checkBlock(pos);
+        world.getLightManager().checkBlock(pos); // TODO: Move this somewhere else as it can cause an NPE
     }
 
     /**
@@ -71,7 +71,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
      * @return a light value from [0-15]
      */
     public int getScaledLightValue() {
-        double percentPower = resultPower.getWatts() / maxPower.getWatts();
+        double percentPower = resultPower.get() / maxPower.get();
         return (int) Math.round(percentPower * 15);
     }
 
@@ -79,27 +79,22 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
         return inService;
     }
 
-    /**
-     * Return the max power
-     * @return
-     */
-
     public double getLightPercentage() {
-        return this.resultPower.getWatts() / this.maxPower.getWatts() * 100;
+        return this.resultPower.get() / this.maxPower.get() * 100;
     }
-    public Watt getMaxPower() {
+    public MetricUnit getMaxPower() {
         return maxPower;
     }
 
-    public void setMaxPower(Watt maxPower) {
+    public void setMaxPower(MetricUnit maxPower) {
         this.maxPower = maxPower;
     }
 
-    public Watt getResultPower() {
+    public MetricUnit getResultPower() {
         return resultPower;
     }
 
-    public void setResultPower(Watt resultPower) {
+    public void setResultPower(MetricUnit resultPower) {
         this.resultPower = resultPower;
         
     }
@@ -108,14 +103,13 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
         this.inService = inService;
     }
 
-    public Watt getReactivePower() {
+    public MetricUnit getReactivePower() {
         return reactivePower;
     }
 
     @Override
     public void receiveSimulationResults(JsonObject results) {
-        double resultPower = results.get("p_mw").getAsDouble() * 1000000;
-        setResultPower(new Watt(resultPower));
+        setResultPower(new MetricUnit(results.get("p_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA));
         notifyUpdate();
     }
 
@@ -129,7 +123,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
         JsonObject obj = new JsonObject();
         obj.addProperty("etype", getSimulationType().toString());
         obj.addProperty("in_service", inService);
-        obj.addProperty("p_mw", maxPower.getMegaWatts());
+        obj.addProperty("p_mw", maxPower.getMega());
         obj.addProperty("bus", busId.toString());
 
         json.add(busId.toString(), bus);
@@ -139,7 +133,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
 
     @Override
     public void zeroSim() {
-        resultPower = new Watt(0);
+        resultPower = new MetricUnit(0);
         CompoundNBT tag = new CompoundNBT();
         write(tag);
         markDirty();
@@ -154,7 +148,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public void disable() {
         inService = false;
-        maxPower = new Watt(0);
+        maxPower = new MetricUnit(0);
     }
 
     @Override

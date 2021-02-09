@@ -50,7 +50,7 @@ public class TransformerScreen extends AbstractScreen {
         inService = tileEntity.getInService();
 
         textFieldRatedApparentPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldRatedApparentPower.setText(String.format("%f", tileEntity.getRatedApparentPower().getMegaWatts()));
+        textFieldRatedApparentPower.setText(String.format("%f", tileEntity.getRatedApparentPower().getMega()));
         textFieldRatedApparentPower.setFocused2(true);
         textFieldRatedApparentPower.setVisible(true);
         addButton(textFieldRatedApparentPower);

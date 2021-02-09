@@ -5,8 +5,7 @@ import java.util.UUID;
 import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.RegistryHandler;
-import edu.uidaho.electricblocks.electric.Volt;
-import edu.uidaho.electricblocks.electric.Watt;
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.guis.GeneratorScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
@@ -19,11 +18,11 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
 
     private boolean inService = false;
     private boolean slack = false;
-    private Watt maxPower = new Watt(1000);
-    private Watt resultPower = new Watt(0);
-    private Watt reactivePower = new Watt(0);
-    private Volt nominalVoltage = new Volt(120);
-    private Volt resultVoltage = new Volt(0);
+    private MetricUnit maxPower = new MetricUnit(1000);
+    private MetricUnit resultPower = new MetricUnit(0);
+    private MetricUnit reactivePower = new MetricUnit(0);
+    private MetricUnit nominalVoltage = new MetricUnit(120);
+    private MetricUnit resultVoltage = new MetricUnit(0);
 
     public GeneratorTileEntity() {
         super(RegistryHandler.GENERATOR_TILE_ENTITY.get(), SimulationType.GENERATOR);
@@ -34,11 +33,11 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         super.write(compound);
         compound.putBoolean("inService", inService);
         compound.putBoolean("slack", slack);
-        compound.putDouble("maxPower", maxPower.getWatts());
-        compound.putDouble("resultPower", resultPower.getWatts());
-        compound.putDouble("reactivePower", reactivePower.getWatts());
-        compound.putDouble("nominalVoltage", nominalVoltage.getVolts());
-        compound.putDouble("resultVoltage", resultVoltage.getVolts());
+        compound.putDouble("maxPower", maxPower.get());
+        compound.putDouble("resultPower", resultPower.get());
+        compound.putDouble("reactivePower", reactivePower.get());
+        compound.putDouble("nominalVoltage", nominalVoltage.get());
+        compound.putDouble("resultVoltage", resultVoltage.get());
         compound.putUniqueId("simId", simId);
         return compound;
     }
@@ -48,30 +47,27 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         super.read(compound);
         inService = compound.getBoolean("inService");
         slack = compound.getBoolean("slack");
-        maxPower = new Watt(compound.getDouble("maxPower"));
-        resultPower = new Watt(compound.getDouble("resultPower"));
-        reactivePower = new Watt(compound.getDouble("reactivePower"));
-        nominalVoltage = new Volt(compound.getDouble("nominalVoltage"));
-        resultVoltage = new Volt(compound.getDouble("resultVoltage"));
+        maxPower = new MetricUnit(compound.getDouble("maxPower"));
+        resultPower = new MetricUnit(compound.getDouble("resultPower"));
+        reactivePower = new MetricUnit(compound.getDouble("reactivePower"));
+        nominalVoltage = new MetricUnit(compound.getDouble("nominalVoltage"));
+        resultVoltage = new MetricUnit(compound.getDouble("resultVoltage"));
         simId = compound.getUniqueId("simId");
     }
 
     @Override
     public void receiveSimulationResults(JsonObject results) {
-        double resultPower = results.get("p_mw").getAsDouble() * 1000000;
-        this.resultPower = new Watt(resultPower);
-        double reactivePower = results.get("q_mvar").getAsDouble() * 1000000;
-        this.reactivePower = new Watt(reactivePower);
-        double resultVoltage = results.get("vm_pu").getAsDouble();
-        this.resultVoltage = new Volt(resultVoltage);
+        this.resultPower = new MetricUnit(results.get("p_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.reactivePower = new MetricUnit(results.get("q_mvar").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.resultVoltage = new MetricUnit(results.get("vm_pu").getAsDouble());
         notifyUpdate();
     }
 
     @Override
     public void zeroSim() {
-        resultPower = new Watt(0);
-        reactivePower = new Watt(0);
-        resultVoltage = new Volt(0);
+        resultPower = new MetricUnit(0);
+        reactivePower = new MetricUnit(0);
+        resultVoltage = new MetricUnit(0);
         notifyUpdate();
     }
 
@@ -87,8 +83,8 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         obj.addProperty("slack", slack);
         obj.addProperty("in_service", inService);
         obj.addProperty("bus", busId.toString());
-        obj.addProperty("p_mw", maxPower.getMegaWatts());
-        obj.addProperty("vm_pu", nominalVoltage.getVolts());
+        obj.addProperty("p_mw", maxPower.getMega());
+        obj.addProperty("vm_pu", nominalVoltage.get());
 
         json.add(busId.toString(), bus);
         json.add(getSimulationID().toString(), obj);
@@ -108,11 +104,11 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         this.inService = inService;
     }
 
-    public Watt getMaxPower() {
+    public MetricUnit getMaxPower() {
         return maxPower;
     }
 
-    public void setMaxPower(Watt maxPower) {
+    public void setMaxPower(MetricUnit maxPower) {
         this.maxPower = maxPower;
     }
 
@@ -124,35 +120,35 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         this.slack = slack;
     }
 
-    public Volt getNominalVoltage() {
+    public MetricUnit getNominalVoltage() {
         return nominalVoltage;
     }
 
-    public void setNominalVoltage(Volt nominalVoltage) {
+    public void setNominalVoltage(MetricUnit nominalVoltage) {
         this.nominalVoltage = nominalVoltage;
     }
 
-    public Watt getResultPower() {
+    public MetricUnit getResultPower() {
         return resultPower;
     }
 
-    public void setResultPower(Watt resultPower) {
+    public void setResultPower(MetricUnit resultPower) {
         this.resultPower = resultPower;
     }
 
-    public Watt getReactivePower() {
+    public MetricUnit getReactivePower() {
         return reactivePower;
     }
 
-    public void setReactivePower(Watt reactivePower) {
+    public void setReactivePower(MetricUnit reactivePower) {
         this.reactivePower = reactivePower;
     }
 
-    public Volt getResultVoltage() {
+    public MetricUnit getResultVoltage() {
         return resultVoltage;
     }
 
-    public void setResultVoltage(Volt resultVoltage) {
+    public void setResultVoltage(MetricUnit resultVoltage) {
         this.resultVoltage = resultVoltage;
     }
 
@@ -170,8 +166,8 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
     @Override
     public void disable() {
         inService = false;
-        nominalVoltage = new Volt(0);
-        maxPower = new Watt(0);
+        nominalVoltage = new MetricUnit(0);
+        maxPower = new MetricUnit(0);
     }
     
 }

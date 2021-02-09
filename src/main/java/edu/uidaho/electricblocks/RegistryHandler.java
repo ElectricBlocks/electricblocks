@@ -28,7 +28,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class RegistryHandler {
+/**
+ * This is a static class that cannot be instantiated and is just used to register all of the blocks, items and tile
+ * entities. This class is useful for checking if a block or item is a certain type without having to use instanceof.
+ */
+public final class RegistryHandler {
+
+    private RegistryHandler() {} // Class cannot be instantiated
 
     // Registers
     public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ElectricBlocksMod.MOD_ID);
@@ -66,6 +72,10 @@ public class RegistryHandler {
     public static final RegistryObject<TileEntityType<TransformerTileEntity>> TRANSFORMER_TILE_ENTITY =
             TILE_ENTITIES.register("transformer_tileentity", () -> TileEntityType.Builder.create(TransformerTileEntity::new).build(null));
 
+    /**
+     * Initializes all of the registers with the event mod bus so that blocks, items, and tile entities will be
+     * recognized by the Forge mod loader
+     */
     public static void init() {
         BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
