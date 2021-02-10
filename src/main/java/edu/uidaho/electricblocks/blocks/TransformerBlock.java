@@ -47,7 +47,11 @@ public class TransformerBlock extends Block {
 
     @Override
     public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
-        return super.getStateForPlacement(context).with(FACING, context.getPlacementHorizontalFacing());
+        BlockState blockState = super.getStateForPlacement(context);
+        if (blockState != null) {
+            return blockState.with(FACING, context.getPlacementHorizontalFacing());
+        }
+        return null;
     }
     
 }

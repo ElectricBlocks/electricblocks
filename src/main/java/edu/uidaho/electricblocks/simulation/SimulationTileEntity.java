@@ -94,7 +94,7 @@ public abstract class SimulationTileEntity extends TileEntity {
      * @param player The player that requested the simulation if they exist
      */
     public void requestSimulation(@Nullable PlayerEntity player) {
-        if (!world.isRemote()) {
+        if (world != null && !world.isRemote()) {
             SimulationHandler.instance().newSimulationNetwork(this, player);
         }
     }

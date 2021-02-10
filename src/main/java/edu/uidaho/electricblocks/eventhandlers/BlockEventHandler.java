@@ -31,7 +31,7 @@ public class BlockEventHandler {
             BlockState blockState = world.getBlockState(event.getPos());
             Block block = blockState.getBlock();
 
-            IMultimeter multimeter = null;
+            IMultimeter multimeter;
             TileEntity te;
             if (block instanceof IMultimeter) {
                 multimeter = (IMultimeter) block;
@@ -84,9 +84,10 @@ public class BlockEventHandler {
         }
 
         if (ElectricBlocksConfig.getUpdateOnBlockBreak()) {
-            if (event.getWorld().getTileEntity(pos) instanceof SimulationTileEntity) {
+            TileEntity te;
+            if ((te = event.getWorld().getTileEntity(pos)) instanceof SimulationTileEntity) {
                 PlayerUtils.warn(player, "command.electricblocks.block_broken");
-                SimulationTileEntity simulationTileEntity = (SimulationTileEntity) event.getWorld().getTileEntity(pos);
+                SimulationTileEntity simulationTileEntity = (SimulationTileEntity) te;
                 simulationTileEntity.disable();
                 simulationTileEntity.requestSimulation(player);
             }
