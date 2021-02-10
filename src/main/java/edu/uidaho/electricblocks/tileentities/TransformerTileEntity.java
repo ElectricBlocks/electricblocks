@@ -3,6 +3,7 @@ package edu.uidaho.electricblocks.tileentities;
 import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.RegistryHandler;
+import edu.uidaho.electricblocks.blocks.TransformerBlock;
 import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.guis.TransformerScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
@@ -11,6 +12,8 @@ import edu.uidaho.electricblocks.simulation.SimulationType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
@@ -145,6 +148,20 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     public void initEmbeddedBusses() {
         embededBusses.put("lowVoltage", UUID.randomUUID());
         embededBusses.put("highVoltage", UUID.randomUUID());
+    }
+
+    @Override
+    public UUID getEmbeddedBus(BlockPos pos) {
+        if (getPos().manhattanDistance(pos) == 1) {
+            Direction d = getBlockState().get(TransformerBlock.FACING);
+            if (getPos().offset(d).equals(pos)) {
+                return embededBusses.get("highVoltage");
+            }
+            if (getPos().offset(d.getOpposite()).equals(pos)) {
+                return embededBusses.get("lowVoltage");
+            }
+        }
+        return null;
     }
 
     @Override

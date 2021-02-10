@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockReader;
 
 public class TransformerBlock extends Block {
 
-    static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public TransformerBlock() {
         super(Block.Properties.create(Material.EARTH)
