@@ -44,24 +44,15 @@ public class GeneratorScreen extends AbstractScreen {
 
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultPower.setText(String.format("%f", genTileEntity.getResultPower().getMega()));
-        textFieldResultPower.setVisible(true);
-        textFieldResultPower.setEnabled(false);
-        textFieldResultPower.setDisabledTextColour(enabledColor);
-        this.addButton(textFieldResultPower);
+        initializeResultField(textFieldResultPower);
 
         textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldReactivePower.setText(String.format("%f", genTileEntity.getReactivePower().getMega()));
-        textFieldReactivePower.setVisible(true);
-        textFieldReactivePower.setEnabled(false);
-        textFieldReactivePower.setDisabledTextColour(enabledColor);
-        this.addButton(textFieldReactivePower);
+        initializeResultField(textFieldReactivePower);
 
         textFieldResultVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 150, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultVoltage.setText(String.format("%f", genTileEntity.getReactivePower().getMega()));
-        textFieldResultVoltage.setVisible(true);
-        textFieldResultVoltage.setEnabled(false);
-        textFieldResultVoltage.setDisabledTextColour(enabledColor);
-        this.addButton(textFieldResultVoltage);
+        initializeResultField(textFieldResultVoltage);
 
         this.addButton(new Button(
             (this.width - BUTTON_WIDTH) / 2,

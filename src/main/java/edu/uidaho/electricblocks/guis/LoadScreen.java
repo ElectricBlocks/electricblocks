@@ -37,17 +37,11 @@ public class LoadScreen extends AbstractScreen {
 
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultPower.setText(String.format("%f", loadTileEntity.getResultPower().getMega()));
-        textFieldResultPower.setVisible(true);
-        textFieldResultPower.setEnabled(false);
-        textFieldResultPower.setDisabledTextColour(enabledColor);
-        addButton(textFieldResultPower);
+        initializeResultField(textFieldResultPower);
 
         textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldReactivePower.setText(String.format("%f", loadTileEntity.getReactivePower().getMega()));
-        textFieldReactivePower.setVisible(true);
-        textFieldReactivePower.setEnabled(false);
-        textFieldReactivePower.setDisabledTextColour(enabledColor);
-        addButton(textFieldReactivePower);
+        initializeResultField(textFieldReactivePower);
 
         this.addButton(new Button(
             (this.width - BUTTON_WIDTH) / 2,

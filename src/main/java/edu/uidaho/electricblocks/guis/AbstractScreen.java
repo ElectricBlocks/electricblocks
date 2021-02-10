@@ -8,6 +8,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 
+import java.awt.*;
+
 public abstract class AbstractScreen extends Screen {
     // Layout constants 
     // Width of a button
@@ -110,5 +112,12 @@ public abstract class AbstractScreen extends Screen {
      * updates, and simulation requests in this function.
      */
     protected abstract void submitChanges();
+
+    protected void initializeResultField(TextFieldWidget textFieldWidget) {
+        textFieldWidget.setVisible(true);
+        textFieldWidget.setEnabled(false);
+        textFieldWidget.setDisabledTextColour(enabledColor);
+        addButton(textFieldWidget);
+    }
     
 }
