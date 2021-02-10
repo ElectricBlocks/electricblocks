@@ -1,6 +1,6 @@
 package edu.uidaho.electricblocks.guis;
 
-import edu.uidaho.electricblocks.electric.Watt;
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.tileentities.LampTileEntity;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -30,21 +30,21 @@ public class LampScreen extends AbstractScreen {
     protected void init() {
         inService = lampTileEntity.isInService();
         textFieldMaxPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldMaxPower.setText(String.format("%f", lampTileEntity.getMaxPower().getMegaWatts()));
+        textFieldMaxPower.setText(String.format("%f", lampTileEntity.getMaxPower().getMega()));
         textFieldMaxPower.setFocused2(true);
         textFieldMaxPower.setVisible(true);
         addButton(textFieldMaxPower);
         setFocused(textFieldMaxPower);
 
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldResultPower.setText(String.format("%f", lampTileEntity.getResultPower().getMegaWatts()));
+        textFieldResultPower.setText(String.format("%f", lampTileEntity.getResultPower().getMega()));
         textFieldResultPower.setVisible(true);
         textFieldResultPower.setEnabled(false);
         textFieldResultPower.setDisabledTextColour(enabledColor);
         addButton(textFieldResultPower);
 
         textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldReactivePower.setText(String.format("%f", lampTileEntity.getReactivePower().getMegaWatts()));
+        textFieldReactivePower.setText(String.format("%f", lampTileEntity.getReactivePower().getMega()));
         textFieldReactivePower.setVisible(true);
         textFieldReactivePower.setEnabled(false);
         textFieldReactivePower.setDisabledTextColour(enabledColor);
@@ -107,7 +107,7 @@ public class LampScreen extends AbstractScreen {
         if (shouldUpdate) {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             lampTileEntity.setInService(inService);
-            lampTileEntity.setMaxPower(new Watt(maxPower * 1000000));
+            lampTileEntity.setMaxPower(new MetricUnit(maxPower * 1000000));
             lampTileEntity.notifyUpdate();
 
             lampTileEntity.requestSimulation(player);

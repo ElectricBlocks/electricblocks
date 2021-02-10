@@ -1,7 +1,6 @@
 package edu.uidaho.electricblocks.guis;
 
-import edu.uidaho.electricblocks.electric.Watt;
-import edu.uidaho.electricblocks.electric.Volt;
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.tileentities.GeneratorTileEntity;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -32,33 +31,33 @@ public class GeneratorScreen extends AbstractScreen {
     protected void init() {
         inService = genTileEntity.isInService();
         textFieldMaxPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldMaxPower.setText(String.format("%f", genTileEntity.getMaxPower().getMegaWatts()));
+        textFieldMaxPower.setText(String.format("%f", genTileEntity.getMaxPower().getMega()));
         textFieldMaxPower.setFocused2(true);
         textFieldMaxPower.setVisible(true);
         this.addButton(textFieldMaxPower);
         this.setFocused(textFieldMaxPower);
 
         textFieldVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 55, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldVoltage.setText(String.format("%f", genTileEntity.getNominalVoltage().getVolts()));
+        textFieldVoltage.setText(String.format("%f", genTileEntity.getNominalVoltage().get()));
         textFieldVoltage.setVisible(true);
         this.addButton(textFieldVoltage);
 
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldResultPower.setText(String.format("%f", genTileEntity.getResultPower().getMegaWatts()));
+        textFieldResultPower.setText(String.format("%f", genTileEntity.getResultPower().getMega()));
         textFieldResultPower.setVisible(true);
         textFieldResultPower.setEnabled(false);
         textFieldResultPower.setDisabledTextColour(enabledColor);
         this.addButton(textFieldResultPower);
 
         textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldReactivePower.setText(String.format("%f", genTileEntity.getReactivePower().getMegaWatts()));
+        textFieldReactivePower.setText(String.format("%f", genTileEntity.getReactivePower().getMega()));
         textFieldReactivePower.setVisible(true);
         textFieldReactivePower.setEnabled(false);
         textFieldReactivePower.setDisabledTextColour(enabledColor);
         this.addButton(textFieldReactivePower);
 
         textFieldResultVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 150, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldResultVoltage.setText(String.format("%f", genTileEntity.getReactivePower().getMegaWatts()));
+        textFieldResultVoltage.setText(String.format("%f", genTileEntity.getReactivePower().getMega()));
         textFieldResultVoltage.setVisible(true);
         textFieldResultVoltage.setEnabled(false);
         textFieldResultVoltage.setDisabledTextColour(enabledColor);
@@ -118,8 +117,8 @@ public class GeneratorScreen extends AbstractScreen {
         if (shouldUpdate) {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             genTileEntity.setInService(inService);
-            genTileEntity.setMaxPower(new Watt(maxPower * 1000000));
-            genTileEntity.setNominalVoltage(new Volt(voltage));
+            genTileEntity.setMaxPower(new MetricUnit(maxPower * 1000000));
+            genTileEntity.setNominalVoltage(new MetricUnit(voltage));
             genTileEntity.notifyUpdate();
 
             genTileEntity.requestSimulation(player);
