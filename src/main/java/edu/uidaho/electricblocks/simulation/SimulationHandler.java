@@ -55,13 +55,23 @@ public class SimulationHandler {
                         if (result == null) {
                             // Notifying player about failed connection is done in simRequest call
                             sim.zeroSimResults();
-                        } else if (result.get("status").getAsString().equals("SIM_RESULT")) {
-                            sim.handleSimulationResults(result);
-                        } else if (result.get("status").getAsString().equals("CONV_ERROR")) {
-                            sim.zeroSimResults();
-                            PlayerUtils.warn(sim.getPlayer(), "command.electricblocks.requestsimulation.warn_conv");
                         } else {
-                            sim.zeroSimResults();
+                            JsonElement status = result.get("status");
+                            if (status != null) {
+                                String status_str = status.getAsString();
+                                if (status_str.equals("SIM_RESULT")) {
+                                    sim.handleSimulationResults(result);
+                                } else if (status_str.equals("CONV_ERROR")) {
+                                    sim.zeroSimResults();
+                                    PlayerUtils.warn(sim.getPlayer(), "command.electricblocks.requestsimulation.warn_conv");
+                                } else {
+                                    sim.zeroSimResults();
+                                    PlayerUtils.error(sim.getPlayer(), "command.electricblocks.requestsimulation.err", result.get("status").getAsString(), result.get("response").getAsString());
+                                }
+                            } else {
+                                sim.zeroSimResults();
+                                PlayerUtils.error(sim.getPlayer(), "command.electricblocks.requestsimulation.unknown_err");
+                            }
                         }
                     }
                 }
