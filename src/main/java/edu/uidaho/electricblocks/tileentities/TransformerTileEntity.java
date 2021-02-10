@@ -106,7 +106,7 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
         this.powerAtHighVoltageBus = new MetricUnit(jsonObject.get("p_hv_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
         this.reactivePowerAtHighVoltageBus = new MetricUnit(jsonObject.get("q_hv_mvar").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
         this.powerAtLowVoltageBus = new MetricUnit(jsonObject.get("p_lv_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
-        this.reactivePowerAtLowVoltageBus = new MetricUnit(jsonObject.get("q_lv_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.reactivePowerAtLowVoltageBus = new MetricUnit(jsonObject.get("q_lv_mvar").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
         this.activePowerLosses = new MetricUnit(jsonObject.get("pl_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
         this.reactivePowerConsumption = new MetricUnit(jsonObject.get("ql_mvar").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
         this.currentAtHighBus = new MetricUnit(jsonObject.get("i_hv_ka").getAsDouble(), MetricUnit.MetricPrefix.KILO);
