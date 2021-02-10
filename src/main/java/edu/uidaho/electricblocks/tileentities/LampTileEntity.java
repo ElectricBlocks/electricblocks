@@ -55,7 +55,9 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
         maxPower = new MetricUnit(compound.getDouble("maxPower"));
         resultPower = new MetricUnit(compound.getDouble("resultPower"));
         simId = compound.getUniqueId("simId");
-        world.getLightManager().checkBlock(pos); // TODO: Move this somewhere else as it can cause an NPE
+        if (world != null) {
+            world.getLightManager().checkBlock(pos);
+        }
     }
 
     /**
@@ -137,7 +139,9 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
         CompoundNBT tag = new CompoundNBT();
         write(tag);
         markDirty();
-        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+        if (world != null) {
+            world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+        }
     }
 
     @Override
