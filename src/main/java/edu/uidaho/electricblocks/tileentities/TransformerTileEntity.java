@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class TransformerTileEntity extends SimulationTileEntity implements IMultimeter {
 
@@ -34,8 +35,11 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     private MetricUnit reactivePowerAtLowVoltageBus = new MetricUnit(0); // q_lv_mw
     private MetricUnit activePowerLosses = new MetricUnit(0); // pl_mw
     private MetricUnit reactivePowerConsumption = new MetricUnit(0); // ql_mvar
-    private MetricUnit voltageAtHighBus = new MetricUnit(0); // i_hv_ka
-    private MetricUnit voltageAtLowBus = new MetricUnit(0); // i_lv_ka
+    private MetricUnit currentAtHighBus = new MetricUnit(0); // i_hv_ka
+    private MetricUnit currentAtLowBus = new MetricUnit(0); // i_lv_ka
+    private double voltageMagnitudeAtHighVoltageBus = 0.0; // vm_hv_pu
+    private double voltageMagnitudeAtLowVoltageBus = 0.0;
+    private double loadingPercent = 0.0; // loading_percent
 
     public TransformerTileEntity() {
         super(RegistryHandler.TRANSFORMER_TILE_ENTITY.get(), SimulationType.TRANSFORMER);
@@ -53,6 +57,18 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
         compound.putDouble("ironLosses", ironLosses.get());
         compound.putDouble("openLoopLossesPercent", openLoopLossesPercent);
         compound.putDouble("shiftDegree", shiftDegree);
+
+        compound.putDouble("powerAtHighVoltageBus", powerAtHighVoltageBus.get());
+        compound.putDouble("reactivePowerAtHighVoltageBus", reactivePowerAtHighVoltageBus.get());
+        compound.putDouble("powerAtLowVoltageBus", powerAtLowVoltageBus.get());
+        compound.putDouble("reactivePowerAtLowVoltageBus", reactivePowerAtLowVoltageBus.get());
+        compound.putDouble("activePowerLosses", activePowerLosses.get());
+        compound.putDouble("reactivePowerConsumption", reactivePowerConsumption.get());
+        compound.putDouble("currentAtHighBus", currentAtHighBus.get());
+        compound.putDouble("currentAtLowBus", currentAtLowBus.get());
+        compound.putDouble("voltageMagnitudeAtHighVoltageBus", voltageMagnitudeAtHighVoltageBus);
+        compound.putDouble("voltageMagnitudeAtLowVoltageBus", voltageMagnitudeAtLowVoltageBus);
+        compound.putDouble("loadingPercent", loadingPercent);
         return super.write(compound);
     }
 
@@ -67,25 +83,56 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
         ironLosses = new MetricUnit(compound.getDouble("ironLosses"));
         openLoopLossesPercent = compound.getDouble("openLoopLossesPercent");
         shiftDegree = compound.getDouble("shiftDegree");
+
+        powerAtHighVoltageBus = new MetricUnit(compound.getDouble("powerAtHighVoltageBus")); // p_hv_mw
+        reactivePowerAtHighVoltageBus = new MetricUnit(compound.getDouble("reactivePowerAtHighVoltageBus")); // q_hv_mvar
+        powerAtLowVoltageBus = new MetricUnit(compound.getDouble("powerAtLowVoltageBus")); // p_lv_mw
+        reactivePowerAtLowVoltageBus = new MetricUnit(compound.getDouble("reactivePowerAtLowVoltageBus")); // q_lv_mw
+        activePowerLosses = new MetricUnit(compound.getDouble("activePowerLosses")); // pl_mw
+        reactivePowerConsumption = new MetricUnit(compound.getDouble("reactivePowerConsumption")); // ql_mvar
+        currentAtHighBus = new MetricUnit(compound.getDouble("currentAtHighBus")); // i_hv_ka
+        currentAtLowBus = new MetricUnit(compound.getDouble("currentAtLowBus")); // i_lv_ka
+        voltageMagnitudeAtHighVoltageBus = compound.getDouble("voltageMagnitudeAtHighVoltageBus"); // vm_hv_pu
+        voltageMagnitudeAtLowVoltageBus = compound.getDouble("voltageMagnitudeAtLowVoltageBus");
+        loadingPercent = compound.getDouble("loadingPercent"); // loading_percent
         super.read(compound);
     }
 
     @Override
     public void receiveSimulationResults(JsonObject jsonObject) {
-        // TODO Auto-generated method stub
-
+        this.powerAtHighVoltageBus = new MetricUnit(jsonObject.get("p_hv_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.reactivePowerAtHighVoltageBus = new MetricUnit(jsonObject.get("q_hv_mvar").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.powerAtLowVoltageBus = new MetricUnit(jsonObject.get("p_lv_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.reactivePowerAtLowVoltageBus = new MetricUnit(jsonObject.get("q_lv_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.activePowerLosses = new MetricUnit(jsonObject.get("pl_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.reactivePowerConsumption = new MetricUnit(jsonObject.get("ql_mvar").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
+        this.currentAtHighBus = new MetricUnit(jsonObject.get("i_hv_ka").getAsDouble(), MetricUnit.MetricPrefix.KILO);
+        this.currentAtLowBus = new MetricUnit(jsonObject.get("i_lv_ka").getAsDouble(), MetricUnit.MetricPrefix.KILO);
+        this.voltageMagnitudeAtHighVoltageBus = jsonObject.get("vm_hv_pu").getAsDouble();
+        this.voltageMagnitudeAtLowVoltageBus = jsonObject.get("vm_lv_pu").getAsDouble();
+        this.loadingPercent = jsonObject.get("loading_percent").getAsDouble();
+        notifyUpdate();
     }
 
     @Override
     public void zeroSim() {
-        // TODO Auto-generated method stub
-
+        powerAtHighVoltageBus = new MetricUnit(0); // p_hv_mw
+        reactivePowerAtHighVoltageBus = new MetricUnit(0); // q_hv_mvar
+        powerAtLowVoltageBus = new MetricUnit(0); // p_lv_mw
+        reactivePowerAtLowVoltageBus = new MetricUnit(0); // q_lv_mw
+        activePowerLosses = new MetricUnit(0); // pl_mw
+        reactivePowerConsumption = new MetricUnit(0); // ql_mvar
+        currentAtHighBus = new MetricUnit(0); // i_hv_ka
+        currentAtLowBus = new MetricUnit(0); // i_lv_ka
+        voltageMagnitudeAtHighVoltageBus = 0.0; // vm_hv_pu
+        voltageMagnitudeAtLowVoltageBus = 0.0;
+        loadingPercent = 0.0; // loading_percent
     }
 
     @Override
     public void disable() {
-        // TODO Auto-generated method stub
-
+        inService = false;
+        ratedApparentPower = new MetricUnit(0);
     }
 
     @Override
@@ -96,14 +143,14 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
 
     @Override
     public void initEmbeddedBusses() {
-        // TODO Auto-generated method stub
-
+        embededBusses.put("lowVoltage", UUID.randomUUID());
+        embededBusses.put("highVoltage", UUID.randomUUID());
     }
 
     @Override
     public void updateOrToggle(PlayerEntity player) {
-        // TODO Auto-generated method stub
-
+        inService = !inService;
+        requestSimulation(player);
     }
 
     @Override
