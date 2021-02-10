@@ -2,6 +2,7 @@
   "itemGroup.ebtab": "Electric Blocks",
   "block.electricblocks.portablegenerator_block": "Portable Generator",
   "block.electricblocks.wire_block": "Wire",
+  "block.electricblocks.wire_block": "Battery",
   "block.electricblocks.bus_block": "Bus",
   "block.electricblocks.externalgrid_block": "External Grid",
   "block.electricblocks.lamp_block": "Lamp",

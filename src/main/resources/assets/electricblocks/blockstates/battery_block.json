@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "electricblocks:block/battery_block" }
+  }
+}

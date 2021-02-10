@@ -6,6 +6,7 @@ import edu.uidaho.electricblocks.blocks.LoadBlock;
 import edu.uidaho.electricblocks.blocks.PortableGeneratorBlock;
 import edu.uidaho.electricblocks.blocks.TransformerBlock;
 import edu.uidaho.electricblocks.blocks.WireBlock;
+import edu.uidaho.electricblocks.blocks.BatteryBlock;
 import edu.uidaho.electricblocks.blocks.BusBlock;
 import edu.uidaho.electricblocks.items.ExternalGridItem;
 import edu.uidaho.electricblocks.items.LampItem;
@@ -14,6 +15,7 @@ import edu.uidaho.electricblocks.items.MultimeterItem;
 import edu.uidaho.electricblocks.items.PortableGeneratorItem;
 import edu.uidaho.electricblocks.items.TransformerItem;
 import edu.uidaho.electricblocks.items.WireItem;
+import edu.uidaho.electricblocks.items.BatteryItem;
 import edu.uidaho.electricblocks.items.BusItem;
 import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
 import edu.uidaho.electricblocks.tileentities.GeneratorTileEntity;
@@ -38,6 +40,7 @@ public class RegistryHandler {
     // Blocks
     public static final RegistryObject<Block> PORTABLE_GENERATOR_BLOCK = BLOCKS.register("portablegenerator_block", PortableGeneratorBlock::new);
     public static final RegistryObject<Block> WIRE_BLOCK = BLOCKS.register("wire_block", WireBlock::new);
+    public static final RegistryObject<Block> BATTERY_BLOCK = BLOCKS.register("battery_block", BatteryBlock::new);
     public static final RegistryObject<Block> BUS_BLOCK = BLOCKS.register("bus_block", BusBlock::new);
     public static final RegistryObject<Block> EXTERNAL_GRID_BLOCK = BLOCKS.register("externalgrid_block", ExternalGridBlock::new);
     public static final RegistryObject<Block> LAMP_BLOCK = BLOCKS.register("lamp_block", LampBlock::new);
@@ -47,6 +50,7 @@ public class RegistryHandler {
     // Items
     public static final RegistryObject<Item> PORTABLE_GENERATOR_ITEM = ITEMS.register("portablegenerator_item", PortableGeneratorItem::new);
     public static final RegistryObject<Item> WIRE_ITEM = ITEMS.register("wire_item", WireItem::new);
+    public static final RegistryObject<Item> BATTERY_ITEM = ITEMS.register("battery_item", BatteryItem::new);
     public static final RegistryObject<Item> BUS_ITEM = ITEMS.register("bus_item", BusItem::new);
     public static final RegistryObject<Item> EXTERNAL_GRID_ITEM = ITEMS.register("externalgrid_item", ExternalGridItem::new);
     public static final RegistryObject<Item> LAMP_ITEM = ITEMS.register("lamp_item", LampItem::new);
