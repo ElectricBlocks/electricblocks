@@ -44,6 +44,8 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     private double voltageMagnitudeAtLowVoltageBus = 0.0;
     private double loadingPercent = 0.0; // loading_percent
 
+    private Direction cachedDirection = Direction.NORTH; // Cache direction for when block is broken
+
     public TransformerTileEntity() {
         super(RegistryHandler.TRANSFORMER_TILE_ENTITY.get(), SimulationType.TRANSFORMER);
     }
@@ -179,7 +181,13 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     @Override
     public UUID getEmbeddedBus(BlockPos pos) {
         if (getPos().manhattanDistance(pos) == 1) {
-            Direction d = getBlockState().get(TransformerBlock.FACING);
+            Direction d;
+            try {
+                d = getBlockState().get(TransformerBlock.FACING);
+                cachedDirection = d;
+            } catch (IllegalArgumentException e) {
+                d = cachedDirection;
+            }
             if (getPos().offset(d).equals(pos)) {
                 return embededBusses.get("highVoltage");
             }
