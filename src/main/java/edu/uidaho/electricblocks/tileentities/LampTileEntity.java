@@ -23,7 +23,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
     private boolean inService = false; // Whether or not the lamp is on
     private MetricUnit maxPower = new MetricUnit(60); // Maximum power this lamp can take
     private MetricUnit resultPower = new MetricUnit(0); // Amount of power being received
-    private MetricUnit reactivePower = new MetricUnit(0); // TODO: Make sure this gets updated!!!
+    private MetricUnit reactivePower = new MetricUnit(0);
 
     public LampTileEntity() {
         super(RegistryHandler.LAMP_TILE_ENTITY.get(), SimulationType.LOAD);
@@ -40,6 +40,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
         compound.putBoolean("inService", inService);
         compound.putDouble("maxPower", maxPower.get());
         compound.putDouble("resultPower", resultPower.get());
+        compound.putDouble("reactivePower", reactivePower.get());
         compound.putUniqueId("simId", simId);
         return compound;
     }
@@ -54,6 +55,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
         inService = compound.getBoolean("inService");
         maxPower = new MetricUnit(compound.getDouble("maxPower"));
         resultPower = new MetricUnit(compound.getDouble("resultPower"));
+        reactivePower = new MetricUnit(compound.getDouble("reactivePower"));
         simId = compound.getUniqueId("simId");
         if (world != null) {
             world.getLightManager().checkBlock(pos);
@@ -98,7 +100,6 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
 
     public void setResultPower(MetricUnit resultPower) {
         this.resultPower = resultPower;
-        
     }
 
     public void setInService(boolean inService) {
@@ -112,6 +113,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public void receiveSimulationResults(JsonObject results) {
         setResultPower(new MetricUnit(results.get("p_mw").getAsDouble(), MetricUnit.MetricPrefix.MEGA));
+        this.reactivePower = new MetricUnit(results.get("q_mvar").getAsDouble(), MetricUnit.MetricPrefix.MEGA);
         notifyUpdate();
     }
 
