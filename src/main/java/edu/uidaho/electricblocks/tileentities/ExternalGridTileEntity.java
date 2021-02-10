@@ -7,10 +7,13 @@ import edu.uidaho.electricblocks.guis.ExternalGridScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
 public class ExternalGridTileEntity extends SimulationTileEntity implements IMultimeter {
@@ -24,8 +27,10 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
         super(RegistryHandler.EXTERNAL_GRID_TILE_ENTITY.get(), SimulationType.EXT_GRID);
     }
 
+
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    @Nonnull
+    public CompoundNBT write(@Nonnull CompoundNBT compound) {
         super.write(compound);
         compound.putBoolean("inService", inService);
         compound.putDouble("voltage", voltage.get());
@@ -36,7 +41,7 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void read(@Nonnull CompoundNBT compound) {
         super.read(compound);
         inService = compound.getBoolean("inService");
         voltage = new MetricUnit(compound.getDouble("voltage"));

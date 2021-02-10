@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,10 +32,11 @@ public class BlockEventHandler {
             Block block = blockState.getBlock();
 
             IMultimeter multimeter = null;
+            TileEntity te;
             if (block instanceof IMultimeter) {
                 multimeter = (IMultimeter) block;
-            } else if (blockState.hasTileEntity() && world.getTileEntity(event.getPos()) instanceof IMultimeter) {
-                multimeter = (IMultimeter) world.getTileEntity(event.getPos());
+            } else if ((te = world.getTileEntity(event.getPos())) instanceof IMultimeter) {
+                multimeter = (IMultimeter) te;
             } else {
                 PlayerUtils.error(event.getPlayer(), "command.electricblocks.updatetoggle.err_invalid_block");
                 return;
@@ -56,10 +58,11 @@ public class BlockEventHandler {
             Block block = blockState.getBlock();
 
             IMultimeter multimeter = null;
+            TileEntity te;
             if (block instanceof IMultimeter) {
                 multimeter = (IMultimeter) block;
-            } else if (blockState.hasTileEntity() && world.getTileEntity(event.getPos()) instanceof IMultimeter) {
-                multimeter = (IMultimeter) world.getTileEntity(event.getPos());
+            } else if ((te = world.getTileEntity(event.getPos())) instanceof IMultimeter) {
+                multimeter = (IMultimeter) te;
             } else {
                 PlayerUtils.error(event.getPlayer(), "command.electricblocks.viewmodify.err_invalid_block");
                 return;

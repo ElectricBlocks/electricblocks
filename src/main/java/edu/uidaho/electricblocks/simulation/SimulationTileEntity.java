@@ -15,6 +15,8 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nullable;
+
 public abstract class SimulationTileEntity extends TileEntity {
 
     protected UUID simId = UUID.randomUUID();
@@ -89,9 +91,9 @@ public abstract class SimulationTileEntity extends TileEntity {
      * Request a simulation on this tile entity and its associated network of connected components.
      * This version is called when the player that requested the simulation is known. They will receive any errors or
      * other messages associated with this simulation request.
-     * @param player
+     * @param player The player that requested the simulation if they exist
      */
-    public void requestSimulation(PlayerEntity player) {
+    public void requestSimulation(@Nullable PlayerEntity player) {
         if (!world.isRemote()) {
             SimulationHandler.instance().newSimulationNetwork(this, player);
         }
@@ -135,8 +137,8 @@ public abstract class SimulationTileEntity extends TileEntity {
      * May return null if no embedded bus should be located there.
      * Should be overriden by blocks that have more complex behavior such as
      * having multiple buses and orientation specific behaviors.
-     * @param pos
-     * @return
+     * @param pos The position of the wire block that is connected to the embedded bus
+     * @return The UUID of the embedded bus assigned to the block at pos
      */
     public UUID getEmbeddedBus(BlockPos pos) {
         if (getPos().manhattanDistance(pos) == 1) {

@@ -12,6 +12,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
+import javax.annotation.Nonnull;
+
 public class TransformerTileEntity extends SimulationTileEntity implements IMultimeter {
 
     // Inputs
@@ -40,7 +42,8 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    @Nonnull
+    public CompoundNBT write(@Nonnull CompoundNBT compound) {
         compound.putBoolean("inService", inService);
         compound.putDouble("ratedApparentPower", ratedApparentPower.get());
         compound.putDouble("ratedVoltageAtHighBus", ratedVoltageAtHighBus.get());
@@ -54,7 +57,7 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void read(@Nonnull CompoundNBT compound) {
         inService = compound.getBoolean("inService");
         ratedApparentPower = new MetricUnit(compound.getDouble("ratedApparentPower"));
         ratedVoltageAtHighBus = new MetricUnit(compound.getDouble("ratedVoltageAtHighBus"));

@@ -14,6 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
+import javax.annotation.Nonnull;
+
 public class GeneratorTileEntity extends SimulationTileEntity implements IMultimeter {
 
     private boolean inService = false;
@@ -29,7 +31,8 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    @Nonnull
+    public CompoundNBT write(@Nonnull CompoundNBT compound) {
         super.write(compound);
         compound.putBoolean("inService", inService);
         compound.putBoolean("slack", slack);
@@ -43,7 +46,7 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void read(@Nonnull CompoundNBT compound) {
         super.read(compound);
         inService = compound.getBoolean("inService");
         slack = compound.getBoolean("slack");

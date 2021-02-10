@@ -8,8 +8,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 
-import java.awt.*;
-
 public abstract class AbstractScreen extends Screen {
     // Layout constants 
     // Width of a button

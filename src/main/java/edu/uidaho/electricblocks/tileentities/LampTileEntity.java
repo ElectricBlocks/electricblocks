@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 /**
@@ -35,7 +36,8 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
      * @return A complete NBT tag with Lamp specific information
      */
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    @Nonnull
+    public CompoundNBT write(@Nonnull CompoundNBT compound) {
         super.write(compound);
         compound.putBoolean("inService", inService);
         compound.putDouble("maxPower", maxPower.get());
@@ -50,7 +52,7 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
      * @param compound The NBT Tag to extract info from
      */
     @Override
-    public void read(CompoundNBT compound) {
+    public void read(@Nonnull CompoundNBT compound) {
         super.read(compound);
         inService = compound.getBoolean("inService");
         maxPower = new MetricUnit(compound.getDouble("maxPower"));

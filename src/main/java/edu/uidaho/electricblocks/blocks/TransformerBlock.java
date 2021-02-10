@@ -1,5 +1,6 @@
 package edu.uidaho.electricblocks.blocks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import edu.uidaho.electricblocks.tileentities.TransformerTileEntity;
@@ -45,7 +46,7 @@ public class TransformerBlock extends Block {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
         return super.getStateForPlacement(context).with(FACING, context.getPlacementHorizontalFacing());
     }
     
