@@ -115,32 +115,14 @@ public class SimulationHandler {
     }
 
     /**
-     * This function performs several jobs (maybe we should split this up in the future for improved modularity).
-     * It starts by building the the JSON for the simulation request by getting the information from all the
-     * SimulationTileEntities and SimulationConnections in the SimulationNetwork. The request is then sent to the EBPP
+     * This function starts by getting the JSON request from the simulation network. The request is sent to the EBPP
      * simulation server and the results are parsed into a JSON object.
      * @param simNetwork The simulation network that we are requesting a simulation for
      * @return The JSON object representing the response to this simulation request
      */
     @Nullable
     private JsonObject simRequest(SimulationNetwork simNetwork) {
-        JsonObject requestJson = new JsonObject();
-        requestJson.addProperty("status", "SIM_REQUEST");
-        requestJson.addProperty("3phase", false); // TODO make 3phase system work
-        JsonObject elements = new JsonObject();
-        for (SimulationTileEntity sim : simNetwork.getSimulationList()) {
-            JsonObject simJs = sim.toJson();
-            for (Map.Entry<String, JsonElement> entry : simJs.entrySet()) {
-                elements.add(entry.getKey(), entry.getValue());
-            }
-        }
-        for (SimulationConnection simConn : simNetwork.getSimulationConnections()) {
-            elements.add(simConn.getSimId().toString(), simConn.toJson());
-        }
-        requestJson.add("elements", elements);
-        if (ElectricBlocksConfig.getLogJSONRequests()) {
-            ElectricBlocksMod.LOGGER.debug(requestJson.toString());
-        }
+        JsonObject requestJson = simNetwork.toJson();
         String responseString;
         try {
             responseString = sendPost(requestJson.toString());

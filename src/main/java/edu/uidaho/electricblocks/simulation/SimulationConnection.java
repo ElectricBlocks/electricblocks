@@ -30,7 +30,7 @@ public class SimulationConnection {
      * Gets the JSON representation of this line for use in simulations
      * @return The JSON representation of this line
      */
-    public JsonObject toJson() {
+    public JsonObject toJson() throws NullPointerException {
         JsonObject json = new JsonObject();
         json.addProperty("etype", "line");
         json.addProperty("from_bus", fromBus.toString());

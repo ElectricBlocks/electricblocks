@@ -16,6 +16,7 @@
   "command.electricblocks.block_broken": "An electric block was broken. Requesting simulation update.",
   "command.electricblocks.requestsimulation.error_conn": "EletricBlocks could not connect to simulation server! Please notify your server administrator.",
   "command.electricblocks.requestsimulation.err": "Simulation request resulted in error \"%s\": \"%s\"\nPlease notify your server administrator.",
+  "command.electricblocks.requestsimulation.warn_conn": "The electrical network appears to have a connection that doesn't go to anywhere. Some blocks like transformers require two or more connections.",
   "command.electricblocks.requestsimulation.unknown_err": "Simulation request received a response, but it could not be parsed. Please notify your server administrator.",
   "command.electricblocks.requestsimulation.warn_loop": "Loop detected in wire. This loop will be ignored.",
   "command.electricblocks.requestsimulation.warn_conv": "The load flow failed to converge on a solution. Network will be zero'd out.",

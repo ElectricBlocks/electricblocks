@@ -1,13 +1,11 @@
 package edu.uidaho.electricblocks.simulation;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import edu.uidaho.electricblocks.ElectricBlocksConfig;
 import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
@@ -209,6 +207,31 @@ public class SimulationNetwork {
         if (World.isValid(west)) list.add(west);
 
         return list;
+    }
+
+    public JsonObject toJson() {
+        JsonObject requestJson = new JsonObject();
+        requestJson.addProperty("status", "SIM_REQUEST");
+        requestJson.addProperty("3phase", false); // TODO make 3phase system work
+        JsonObject elements = new JsonObject();
+        for (SimulationTileEntity sim : getSimulationList()) {
+            JsonObject simJs = sim.toJson();
+            for (Map.Entry<String, JsonElement> entry : simJs.entrySet()) {
+                elements.add(entry.getKey(), entry.getValue());
+            }
+        }
+        for (SimulationConnection simConn : getSimulationConnections()) {
+            try {
+                elements.add(simConn.getSimId().toString(), simConn.toJson());
+            } catch (NullPointerException e) {
+                PlayerUtils.warn(player, "command.electricblocks.requestsimulation.warn_conn");
+            }
+        }
+        requestJson.add("elements", elements);
+        if (ElectricBlocksConfig.getLogJSONRequests()) {
+            ElectricBlocksMod.LOGGER.debug(requestJson.toString());
+        }
+        return requestJson;
     }
 
     /**
