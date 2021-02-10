@@ -17,7 +17,6 @@ public class LoadScreen extends AbstractScreen {
 
     // Info needed to preload the form with data
     private LoadTileEntity loadTileEntity;
-    private boolean inService;
 
     public LoadScreen(LoadTileEntity loadTileEntity, PlayerEntity player) {
         super(new TranslationTextComponent("gui.electricblocks.loadscreen"));
@@ -43,21 +42,6 @@ public class LoadScreen extends AbstractScreen {
         textFieldReactivePower.setText(String.format("%f", loadTileEntity.getReactivePower().getMega()));
         initializeResultField(textFieldReactivePower);
 
-        this.addButton(new Button(
-            (this.width - BUTTON_WIDTH) / 2,
-            this.height - 2 * DONE_BUTTON_TOP_OFFSET,
-            BUTTON_WIDTH, BUTTON_HEIGHT,
-            inService ? "In Service: true" : "In Service: false",
-            button -> {
-                if (inService) {
-                    button.setMessage("In Service: false");
-                    inService = false;
-                } else {
-                    button.setMessage("In Service: true");
-                    inService = true;
-                }
-                onChange();
-            }));
         super.init();
     }
 

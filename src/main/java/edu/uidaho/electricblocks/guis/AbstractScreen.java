@@ -29,6 +29,8 @@ public abstract class AbstractScreen extends Screen {
     // Layout elements
     private boolean donePressed = false;
     protected Button doneButton;
+    protected boolean inService;
+    protected Button inServiceButton;
 
     // Info needed to preload the form with data
     protected boolean changed = false;
@@ -44,6 +46,23 @@ public abstract class AbstractScreen extends Screen {
      */
     @Override
     protected void init() {
+        // Add in service button
+        inServiceButton = new Button(
+                (this.width - BUTTON_WIDTH) / 2,
+                this.height - 2 * DONE_BUTTON_TOP_OFFSET,
+                BUTTON_WIDTH, BUTTON_HEIGHT,
+                inService ? "In Service: true" : "In Service: false",
+                button -> {
+                    if (inService) {
+                        button.setMessage("In Service: false");
+                        inService = false;
+                    } else {
+                        button.setMessage("In Service: true");
+                        inService = true;
+                    }
+                    onChange();
+                });
+        this.addButton(inServiceButton);
         // Add the "Done" button
         doneButton = new Button(
             (this.width - BUTTON_WIDTH) / 2,

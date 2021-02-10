@@ -15,11 +15,9 @@ public class TransformerScreen extends AbstractScreen {
 
     // Layout elements
     TextFieldWidget textFieldRatedApparentPower; // sn_mva
-    Button inServiceButton;
 
     // Instance specific info
     private TransformerTileEntity tileEntity;
-    private boolean inService;
     private int scrollPosition = 0;
 
     public TransformerScreen(TransformerTileEntity tileEntity, PlayerEntity player) {
@@ -56,22 +54,6 @@ public class TransformerScreen extends AbstractScreen {
         addButton(textFieldRatedApparentPower);
         setFocused(textFieldRatedApparentPower);
 
-        inServiceButton = new Button(
-                (this.width - BUTTON_WIDTH) / 2,
-                this.height - 2 * DONE_BUTTON_TOP_OFFSET,
-                BUTTON_WIDTH, BUTTON_HEIGHT,
-                inService ? "In Service: true" : "In Service: false",
-                button -> {
-                    if (inService) {
-                        button.setMessage("In Service: false");
-                        inService = false;
-                    } else {
-                        button.setMessage("In Service: true");
-                        inService = true;
-                    }
-                    onChange();
-                });
-        addButton(inServiceButton);
         super.init();
     }
 

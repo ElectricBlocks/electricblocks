@@ -19,7 +19,6 @@ public class GeneratorScreen extends AbstractScreen {
 
     // Info needed to preload the form with data
     private GeneratorTileEntity genTileEntity;
-    private boolean inService;
 
     public GeneratorScreen(GeneratorTileEntity genTileEntity, PlayerEntity player) {
         super(new TranslationTextComponent("gui.electricblocks.generatorscreen"));
@@ -53,22 +52,6 @@ public class GeneratorScreen extends AbstractScreen {
         textFieldResultVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 150, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultVoltage.setText(String.format("%f", genTileEntity.getReactivePower().getMega()));
         initializeResultField(textFieldResultVoltage);
-
-        this.addButton(new Button(
-            (this.width - BUTTON_WIDTH) / 2,
-            this.height - 2 * DONE_BUTTON_TOP_OFFSET,
-            BUTTON_WIDTH, BUTTON_HEIGHT,
-            inService ? "In Service: true" : "In Service: false",
-            button -> {
-                if (inService) {
-                    button.setMessage("In Service: false");
-                    inService = false;
-                } else {
-                    button.setMessage("In Service: true");
-                    inService = true;
-                }
-                onChange();
-            }));
 
         super.init();
     }

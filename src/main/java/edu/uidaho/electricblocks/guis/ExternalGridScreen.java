@@ -15,7 +15,6 @@ public class ExternalGridScreen extends AbstractScreen {
     private TextFieldWidget textFieldReactivePower;
 
     private ExternalGridTileEntity externalGridTileEntity;
-    private boolean inService;
 
     public ExternalGridScreen(ExternalGridTileEntity externalGridTileEntity, PlayerEntity player) {
         super(new TranslationTextComponent("gui.electricblocks.externalgridscreen"));
@@ -31,6 +30,7 @@ public class ExternalGridScreen extends AbstractScreen {
         textFieldVoltage.setFocused2(true);
         textFieldVoltage.setVisible(true);
         addButton(textFieldVoltage);
+        setFocused(textFieldVoltage);
 
         textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultPower.setText(String.format("%f", externalGridTileEntity.getResultPower().getMega()));
@@ -40,21 +40,6 @@ public class ExternalGridScreen extends AbstractScreen {
         textFieldReactivePower.setText(String.format("%f", externalGridTileEntity.getReactivePower().getMega()));
         initializeResultField(textFieldReactivePower);
 
-        this.addButton(new Button(
-            (this.width - BUTTON_WIDTH) / 2,
-            this.height - 2 * DONE_BUTTON_TOP_OFFSET,
-            BUTTON_WIDTH, BUTTON_HEIGHT,
-            inService ? "In Service: true" : "In Service: false",
-            button -> {
-                if (inService) {
-                    button.setMessage("In Service: false");
-                    inService = false;
-                } else {
-                    button.setMessage("In Service: true");
-                    inService = true;
-                }
-                onChange();
-            }));
         super.init();
     }
 
