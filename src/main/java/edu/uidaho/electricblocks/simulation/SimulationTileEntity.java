@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.google.gson.JsonObject;
 
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -158,6 +159,17 @@ public abstract class SimulationTileEntity extends TileEntity {
         if (world != null) {
             world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
         }
+    }
+
+    public JsonObject getBusJson() {
+        return getBusJson(new MetricUnit(20, MetricUnit.MetricPrefix.KILO));
+    }
+
+    public JsonObject getBusJson(MetricUnit ratedVoltageKV) {
+        JsonObject bus = new JsonObject();
+        bus.addProperty("etype", SimulationType.BUS.toString());
+        bus.addProperty("vn_kv", ratedVoltageKV.getKilo());
+        return bus;
     }
     
 }

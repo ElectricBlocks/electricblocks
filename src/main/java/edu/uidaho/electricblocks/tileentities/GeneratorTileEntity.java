@@ -77,9 +77,8 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        JsonObject bus = new JsonObject();
+        JsonObject bus = getBusJson();
         UUID busId = embededBusses.get("main");
-        bus.addProperty("etype", SimulationType.BUS.toString());
 
         JsonObject obj = new JsonObject();
         obj.addProperty("etype", getSimulationType().toString());

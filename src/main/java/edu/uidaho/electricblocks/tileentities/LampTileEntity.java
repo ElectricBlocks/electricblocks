@@ -122,15 +122,15 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        JsonObject bus = new JsonObject();
+        JsonObject bus = getBusJson();
         UUID busId = embededBusses.get("main");
-        bus.addProperty("etype", SimulationType.BUS.toString());
 
         JsonObject obj = new JsonObject();
         obj.addProperty("etype", getSimulationType().toString());
         obj.addProperty("in_service", inService);
-        obj.addProperty("p_mw", maxPower.getMega());
         obj.addProperty("bus", busId.toString());
+        obj.addProperty("p_mw", maxPower.getMega());
+
 
         json.add(busId.toString(), bus);
         json.add(getSimulationID().toString(), obj);

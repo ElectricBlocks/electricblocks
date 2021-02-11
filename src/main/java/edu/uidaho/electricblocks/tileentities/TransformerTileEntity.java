@@ -144,17 +144,17 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
 
-        JsonObject lvBus = new JsonObject();
+        JsonObject lvBus = getBusJson();
         UUID lvBusId = embededBusses.get("lowVoltage");
-        lvBus.addProperty("etype", SimulationType.BUS.toString());
 
-        JsonObject hvBus = new JsonObject();
+        JsonObject hvBus = getBusJson();
         UUID hvBusId = embededBusses.get("highVoltage");
-        hvBus.addProperty("etype", SimulationType.BUS.toString());
 
         JsonObject obj = new JsonObject();
         obj.addProperty("etype", getSimulationType().toString());
         obj.addProperty("in_service", inService);
+        obj.addProperty("hv_bus", hvBusId.toString());
+        obj.addProperty("lv_bus", lvBusId.toString());
         obj.addProperty("sn_mva", ratedApparentPower.getMega());
         obj.addProperty("vn_hv_kv", ratedVoltageAtHighBus.getKilo());
         obj.addProperty("vn_lv_kv", ratedVoltageAtLowBus.getKilo());
@@ -163,8 +163,8 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
         obj.addProperty("pfe_kw", ironLosses.getKilo());
         obj.addProperty("i0_percent", openLoopLossesPercent);
         obj.addProperty("shift_degree", shiftDegree);
-        obj.addProperty("lv_bus", lvBusId.toString());
-        obj.addProperty("hv_bus", hvBusId.toString());
+
+
 
         json.add(lvBusId.toString(), lvBus);
         json.add(hvBusId.toString(), hvBus);

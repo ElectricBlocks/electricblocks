@@ -58,15 +58,15 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        JsonObject bus = new JsonObject();
+        JsonObject bus = getBusJson();
         UUID busId = embededBusses.get("main");
-        bus.addProperty("etype", SimulationType.BUS.toString());
 
         JsonObject obj = new JsonObject();
         obj.addProperty("etype", getSimulationType().toString());
         obj.addProperty("in_service", inService);
-        obj.addProperty("vm_pu", voltage.get());
         obj.addProperty("bus", busId.toString());
+        obj.addProperty("vm_pu", voltage.get());
+
 
         json.add(busId.toString(), bus);
         json.add(getSimulationID().toString(), obj);
