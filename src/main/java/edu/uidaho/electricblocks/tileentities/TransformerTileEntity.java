@@ -35,7 +35,7 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     private MetricUnit powerAtHighVoltageBus = new MetricUnit(0); // p_hv_mw
     private MetricUnit reactivePowerAtHighVoltageBus = new MetricUnit(0); // q_hv_mvar
     private MetricUnit powerAtLowVoltageBus = new MetricUnit(0); // p_lv_mw
-    private MetricUnit reactivePowerAtLowVoltageBus = new MetricUnit(0); // q_lv_mw
+    private MetricUnit reactivePowerAtLowVoltageBus = new MetricUnit(0); // q_lv_mvar
     private MetricUnit activePowerLosses = new MetricUnit(0); // pl_mw
     private MetricUnit reactivePowerConsumption = new MetricUnit(0); // ql_mvar
     private MetricUnit currentAtHighBus = new MetricUnit(0); // i_hv_ka
@@ -209,15 +209,163 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
         Minecraft.getInstance().displayGuiScreen(new TransformerScreen(this, player));
     }
 
-    public boolean getInService() {
-        return inService;
-    }
-
     public MetricUnit getRatedApparentPower() {
         return ratedApparentPower;
     }
 
     public void setRatedApparentPower(MetricUnit ratedApparentPower) {
         this.ratedApparentPower = ratedApparentPower;
+    }
+
+    public boolean isInService() {
+        return inService;
+    }
+
+    public void setInService(boolean inService) {
+        this.inService = inService;
+    }
+
+    public MetricUnit getRatedVoltageAtHighBus() {
+        return ratedVoltageAtHighBus;
+    }
+
+    public void setRatedVoltageAtHighBus(MetricUnit ratedVoltageAtHighBus) {
+        this.ratedVoltageAtHighBus = ratedVoltageAtHighBus;
+    }
+
+    public MetricUnit getRatedVoltageAtLowBus() {
+        return ratedVoltageAtLowBus;
+    }
+
+    public void setRatedVoltageAtLowBus(MetricUnit ratedVoltageAtLowBus) {
+        this.ratedVoltageAtLowBus = ratedVoltageAtLowBus;
+    }
+
+    public double getShortCircuitVoltagePercent() {
+        return shortCircuitVoltagePercent;
+    }
+
+    public void setShortCircuitVoltagePercent(double shortCircuitVoltagePercent) {
+        this.shortCircuitVoltagePercent = shortCircuitVoltagePercent;
+    }
+
+    public double getShortCircuitVoltageRealComponentPercent() {
+        return shortCircuitVoltageRealComponentPercent;
+    }
+
+    public void setShortCircuitVoltageRealComponentPercent(double shortCircuitVoltageRealComponentPercent) {
+        this.shortCircuitVoltageRealComponentPercent = shortCircuitVoltageRealComponentPercent;
+    }
+
+    public MetricUnit getIronLosses() {
+        return ironLosses;
+    }
+
+    public void setIronLosses(MetricUnit ironLosses) {
+        this.ironLosses = ironLosses;
+    }
+
+    public double getOpenLoopLossesPercent() {
+        return openLoopLossesPercent;
+    }
+
+    public void setOpenLoopLossesPercent(double openLoopLossesPercent) {
+        this.openLoopLossesPercent = openLoopLossesPercent;
+    }
+
+    public double getShiftDegree() {
+        return shiftDegree;
+    }
+
+    public void setShiftDegree(double shiftDegree) {
+        this.shiftDegree = shiftDegree;
+    }
+
+    public MetricUnit getPowerAtHighVoltageBus() {
+        return powerAtHighVoltageBus;
+    }
+
+    public void setPowerAtHighVoltageBus(MetricUnit powerAtHighVoltageBus) {
+        this.powerAtHighVoltageBus = powerAtHighVoltageBus;
+    }
+
+    public MetricUnit getReactivePowerAtHighVoltageBus() {
+        return reactivePowerAtHighVoltageBus;
+    }
+
+    public void setReactivePowerAtHighVoltageBus(MetricUnit reactivePowerAtHighVoltageBus) {
+        this.reactivePowerAtHighVoltageBus = reactivePowerAtHighVoltageBus;
+    }
+
+    public MetricUnit getPowerAtLowVoltageBus() {
+        return powerAtLowVoltageBus;
+    }
+
+    public void setPowerAtLowVoltageBus(MetricUnit powerAtLowVoltageBus) {
+        this.powerAtLowVoltageBus = powerAtLowVoltageBus;
+    }
+
+    public MetricUnit getReactivePowerAtLowVoltageBus() {
+        return reactivePowerAtLowVoltageBus;
+    }
+
+    public void setReactivePowerAtLowVoltageBus(MetricUnit reactivePowerAtLowVoltageBus) {
+        this.reactivePowerAtLowVoltageBus = reactivePowerAtLowVoltageBus;
+    }
+
+    public MetricUnit getActivePowerLosses() {
+        return activePowerLosses;
+    }
+
+    public void setActivePowerLosses(MetricUnit activePowerLosses) {
+        this.activePowerLosses = activePowerLosses;
+    }
+
+    public MetricUnit getReactivePowerConsumption() {
+        return reactivePowerConsumption;
+    }
+
+    public void setReactivePowerConsumption(MetricUnit reactivePowerConsumption) {
+        this.reactivePowerConsumption = reactivePowerConsumption;
+    }
+
+    public MetricUnit getCurrentAtHighBus() {
+        return currentAtHighBus;
+    }
+
+    public void setCurrentAtHighBus(MetricUnit currentAtHighBus) {
+        this.currentAtHighBus = currentAtHighBus;
+    }
+
+    public MetricUnit getCurrentAtLowBus() {
+        return currentAtLowBus;
+    }
+
+    public void setCurrentAtLowBus(MetricUnit currentAtLowBus) {
+        this.currentAtLowBus = currentAtLowBus;
+    }
+
+    public double getVoltageMagnitudeAtHighVoltageBus() {
+        return voltageMagnitudeAtHighVoltageBus;
+    }
+
+    public void setVoltageMagnitudeAtHighVoltageBus(double voltageMagnitudeAtHighVoltageBus) {
+        this.voltageMagnitudeAtHighVoltageBus = voltageMagnitudeAtHighVoltageBus;
+    }
+
+    public double getVoltageMagnitudeAtLowVoltageBus() {
+        return voltageMagnitudeAtLowVoltageBus;
+    }
+
+    public void setVoltageMagnitudeAtLowVoltageBus(double voltageMagnitudeAtLowVoltageBus) {
+        this.voltageMagnitudeAtLowVoltageBus = voltageMagnitudeAtLowVoltageBus;
+    }
+
+    public double getLoadingPercent() {
+        return loadingPercent;
+    }
+
+    public void setLoadingPercent(double loadingPercent) {
+        this.loadingPercent = loadingPercent;
     }
 }
