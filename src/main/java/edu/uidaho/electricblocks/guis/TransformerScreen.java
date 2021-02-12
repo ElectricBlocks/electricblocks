@@ -14,7 +14,7 @@ public class TransformerScreen extends AbstractScreen {
 
     // Constants
     private static final int MAX_SCROLL = 0;
-    private static final int MIN_SCROLL = -250;
+    private static final int MIN_SCROLL = -420;
     private static final int SCROLL_VISIBILITY_CUTOFF = 20;
 
     // Layout elements
@@ -71,6 +71,7 @@ public class TransformerScreen extends AbstractScreen {
     protected void init() {
         inService = tileEntity.isInService();
 
+        // Inputs
         textFieldRatedApparentPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldRatedApparentPower.setText(String.format("%f", tileEntity.getRatedApparentPower().getMega()));
         textFieldRatedApparentPower.setFocused2(true);
@@ -113,12 +114,58 @@ public class TransformerScreen extends AbstractScreen {
         textFieldShiftDegree.setVisible(true);
         addButton(textFieldShiftDegree);
 
+        // Results
+        textFieldPowerAtHighVoltageBus = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 270, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldPowerAtHighVoltageBus.setText(String.format("%f", tileEntity.getPowerAtHighVoltageBus().getMega()));
+        initializeResultField(textFieldPowerAtHighVoltageBus);
+
+        textFieldReactivePowerAtHighVoltageBus = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 300, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldReactivePowerAtHighVoltageBus.setText(String.format("%f", tileEntity.getReactivePowerAtHighVoltageBus().getMega()));
+        initializeResultField(textFieldReactivePowerAtHighVoltageBus);
+
+        textFieldPowerAtLowVoltageBus = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 330, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldPowerAtLowVoltageBus.setText(String.format("%f", tileEntity.getPowerAtLowVoltageBus().getMega()));
+        initializeResultField(textFieldPowerAtLowVoltageBus);
+
+        textFieldReactivePowerAtLowVoltageBus = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 360, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldReactivePowerAtLowVoltageBus.setText(String.format("%f", tileEntity.getReactivePowerAtLowVoltageBus().getMega()));
+        initializeResultField(textFieldReactivePowerAtLowVoltageBus);
+
+        textFieldActivePowerLosses = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 390, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldActivePowerLosses.setText(String.format("%f", tileEntity.getActivePowerLosses().getMega()));
+        initializeResultField(textFieldActivePowerLosses);
+
+        textFieldReactivePowerConsumption = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 420, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldReactivePowerConsumption.setText(String.format("%f", tileEntity.getReactivePowerConsumption().getMega()));
+        initializeResultField(textFieldReactivePowerConsumption);
+
+        textFieldCurrentAtHighBus = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 450, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldCurrentAtHighBus.setText(String.format("%f", tileEntity.getCurrentAtHighBus().getKilo()));
+        initializeResultField(textFieldCurrentAtHighBus);
+
+        textFieldCurrentAtLowBus = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 480, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldCurrentAtLowBus.setText(String.format("%f", tileEntity.getCurrentAtLowBus().getKilo()));
+        initializeResultField(textFieldCurrentAtLowBus);
+
+        textFieldVoltageMagnitudeAtHighBus = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 510, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldVoltageMagnitudeAtHighBus.setText(String.format("%f", tileEntity.getVoltageMagnitudeAtHighVoltageBus()));
+        initializeResultField(textFieldVoltageMagnitudeAtHighBus);
+
+        textFieldVoltageMagnitudeAtLowBus = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 540, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldVoltageMagnitudeAtLowBus.setText(String.format("%f", tileEntity.getVoltageMagnitudeAtLowVoltageBus()));
+        initializeResultField(textFieldVoltageMagnitudeAtLowBus);
+
+        textFieldLoadingPercent = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 570, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldLoadingPercent.setText(String.format("%f", tileEntity.getLoadingPercent()));
+        initializeResultField(textFieldLoadingPercent);
+
         super.init();
     }
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
+        // Inputs
         this.drawString(this.font, "Apparent Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "High Bus Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 55 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "Low Bus Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 85 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
@@ -128,7 +175,20 @@ public class TransformerScreen extends AbstractScreen {
         this.drawString(this.font, "Open Loop Losses", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 205 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "Shift Degree", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 235 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
 
-        // Draw mw label
+        // Results
+        this.drawString(this.font, "HV Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 270 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "HV Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 300 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "LV Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 330 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "LV Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 360 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Power Losses", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 390 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "R Power Losses", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 420 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "HV Bus Current", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 450 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "LV Bus Current", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 480 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "HV Voltage MAG", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 510 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "LV Voltage MAG", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 540 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Loading Percent", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, scrollPosition + 570 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+
+        // Input Units
         this.drawString(this.font, "MVA", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "kV", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 55 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "kV", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 85 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
@@ -137,6 +197,20 @@ public class TransformerScreen extends AbstractScreen {
         this.drawString(this.font, "kW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 175 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "%", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 205 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "degrees", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 235 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+
+        // Output Units
+        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 270 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MVar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 300 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 330 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MVar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 360 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 390 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MVar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 420 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "kA", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 450 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "kA", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 480 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "pu", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 510 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "pu", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 540 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "%", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, scrollPosition + 570 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+
         // Draw separator
         int dividerHeight = scrollPosition + 255 + (this.font.FONT_HEIGHT / 2);
         if (dividerHeight >= SCROLL_VISIBILITY_CUTOFF) {
