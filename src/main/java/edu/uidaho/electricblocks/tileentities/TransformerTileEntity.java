@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.blocks.TransformerBlock;
+import edu.uidaho.electricblocks.utils.ClientUtils;
 import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.guis.TransformerScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
@@ -14,6 +15,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
@@ -206,7 +209,7 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
 
     @Override
     public void viewOrModify(PlayerEntity player) {
-        Minecraft.getInstance().displayGuiScreen(new TransformerScreen(this, player));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ClientUtils.openTransformerScreen(this, player));
     }
 
     public MetricUnit getRatedApparentPower() {

@@ -28,3 +28,4 @@ run
 # Files from Forge MDK
 forge*changelog.txt
 changelog.txt
+logs/

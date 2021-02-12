@@ -5,14 +5,15 @@ import java.util.UUID;
 import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.RegistryHandler;
+import edu.uidaho.electricblocks.utils.ClientUtils;
 import edu.uidaho.electricblocks.utils.MetricUnit;
-import edu.uidaho.electricblocks.guis.GeneratorScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nonnull;
 
@@ -162,7 +163,7 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
 
     @Override
     public void viewOrModify(PlayerEntity player) {
-        Minecraft.getInstance().displayGuiScreen(new GeneratorScreen(this, player));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ClientUtils.openGeneratorScreen(this, player));
     }
 
     @Override

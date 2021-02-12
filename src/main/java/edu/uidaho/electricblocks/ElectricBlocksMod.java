@@ -1,10 +1,12 @@
 package edu.uidaho.electricblocks;
 
+import edu.uidaho.electricblocks.utils.ClientUtils;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -16,7 +18,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import edu.uidaho.electricblocks.eventhandlers.BlockEventHandler;
-import edu.uidaho.electricblocks.guis.ConfigScreen;
 import edu.uidaho.electricblocks.simulation.SimulationHandler;
 
 /**
@@ -52,10 +53,6 @@ public class ElectricBlocksMod {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
 
-        // Register config gui screen
-        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY,
-                () -> (mc, screen) -> new ConfigScreen());
-
         RegistryHandler.init();
     }
 
@@ -65,7 +62,7 @@ public class ElectricBlocksMod {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
-        
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> ClientUtils::registerConfigScreen);
     }
 
     @SubscribeEvent
