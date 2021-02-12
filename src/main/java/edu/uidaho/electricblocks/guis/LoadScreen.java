@@ -75,7 +75,7 @@ public class LoadScreen extends AbstractScreen {
         if (shouldUpdate) {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             loadTileEntity.setInService(inService);
-            loadTileEntity.setMaxPower(new MetricUnit(maxPower * 1000000));
+            loadTileEntity.setMaxPower(new MetricUnit(maxPower, MetricUnit.MetricPrefix.MEGA));
             TileEntityMessageToServer teMSG = new TileEntityMessageToServer(loadTileEntity, player);
             ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
         }

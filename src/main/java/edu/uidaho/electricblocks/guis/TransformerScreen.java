@@ -1,5 +1,7 @@
 package edu.uidaho.electricblocks.guis;
 
+import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
+import edu.uidaho.electricblocks.network.TileEntityMessageToServer;
 import edu.uidaho.electricblocks.tileentities.TransformerTileEntity;
 import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
@@ -232,7 +234,37 @@ public class TransformerScreen extends AbstractScreen {
 
     @Override
     protected void submitChanges() {
+        boolean shouldUpdate = true;
+        double apparentPower = 0, voltageAtHighBus = 0, voltageAtLowBus = 0, shortCircuitVoltagePercent = 0,
+                shortCircuitVoltagePercentRealComponent = 0, ironLosses = 0, openLoopLossesPercent = 0, shiftDegree = 0;
+        try {
+            apparentPower = Double.parseDouble(textFieldRatedApparentPower.getText());
+            voltageAtHighBus = Double.parseDouble(textFieldRatedVoltageAtHighBus.getText());
+            voltageAtLowBus = Double.parseDouble(textFieldRatedVoltageAtLowBus.getText());
+            shortCircuitVoltagePercent = Double.parseDouble(textFieldShortCircuitVoltagePercent.getText());
+            shortCircuitVoltagePercentRealComponent = Double.parseDouble(textFieldShortCircuitVoltageRealComponentPercent.getText());
+            ironLosses = Double.parseDouble(textFieldIronLosses.getText());
+            openLoopLossesPercent = Double.parseDouble(textFieldOpenLoopLossesPercent.getText());
+            shiftDegree = Double.parseDouble(textFieldShiftDegree.getText());
+        } catch (NumberFormatException e) {
+            shouldUpdate = false;
+            PlayerUtils.error(player, "gui.electricblocks.err_invalid_number");
+        }
 
+        if (shouldUpdate) {
+            PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
+            tileEntity.setInService(inService);
+            tileEntity.setRatedApparentPower(new MetricUnit(apparentPower, MetricUnit.MetricPrefix.MEGA));
+            tileEntity.setRatedVoltageAtHighBus(new MetricUnit(voltageAtHighBus, MetricUnit.MetricPrefix.KILO));
+            tileEntity.setRatedVoltageAtLowBus(new MetricUnit(voltageAtLowBus, MetricUnit.MetricPrefix.KILO));
+            tileEntity.setShortCircuitVoltagePercent(shortCircuitVoltagePercent);
+            tileEntity.setShortCircuitVoltageRealComponentPercent(shortCircuitVoltagePercentRealComponent);
+            tileEntity.setIronLosses(new MetricUnit(ironLosses, MetricUnit.MetricPrefix.KILO));
+            tileEntity.setOpenLoopLossesPercent(openLoopLossesPercent);
+            tileEntity.setShiftDegree(shiftDegree);
+            TileEntityMessageToServer teMSG = new TileEntityMessageToServer(tileEntity, player);
+            ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
+        }
     }
     
 }

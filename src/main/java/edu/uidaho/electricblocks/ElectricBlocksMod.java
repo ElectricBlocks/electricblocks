@@ -1,5 +1,6 @@
 package edu.uidaho.electricblocks;
 
+import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
 import edu.uidaho.electricblocks.utils.ClientUtils;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -52,6 +53,8 @@ public class ElectricBlocksMod {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
+
+        ElectricBlocksPacketHandler.registerPackets();
 
         RegistryHandler.init();
     }

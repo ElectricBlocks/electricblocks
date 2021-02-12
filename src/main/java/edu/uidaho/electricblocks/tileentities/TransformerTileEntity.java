@@ -30,7 +30,7 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     private MetricUnit ratedVoltageAtLowBus = new MetricUnit(10000); // vn_lv_kv
     private double shortCircuitVoltagePercent = 10.0; // vk_percent
     private double shortCircuitVoltageRealComponentPercent = 0.3; // vkr_percent
-    private MetricUnit ironLosses = new MetricUnit(30000); // pfw_kw
+    private MetricUnit ironLosses = new MetricUnit(30000); // pfe_kw
     private double openLoopLossesPercent = 0.1; // i0_percent
     private double shiftDegree = 30.0; // shift_degree
 
@@ -140,7 +140,6 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     @Override
     public void disable() {
         inService = false;
-        ratedApparentPower = new MetricUnit(0);
     }
 
     @Override

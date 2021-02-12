@@ -83,7 +83,7 @@ public class LampScreen extends AbstractScreen {
         if (shouldUpdate) {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             lampTileEntity.setInService(inService);
-            lampTileEntity.setMaxPower(new MetricUnit(maxPower * 1000000));
+            lampTileEntity.setMaxPower(new MetricUnit(maxPower, MetricUnit.MetricPrefix.MEGA));
             TileEntityMessageToServer teMSG = new TileEntityMessageToServer(lampTileEntity, player);
             ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
         }
