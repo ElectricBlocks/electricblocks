@@ -1,5 +1,7 @@
 package edu.uidaho.electricblocks.guis;
 
+import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
+import edu.uidaho.electricblocks.network.TileEntityMessageToServer;
 import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.tileentities.LoadTileEntity;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
@@ -74,9 +76,8 @@ public class LoadScreen extends AbstractScreen {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             loadTileEntity.setInService(inService);
             loadTileEntity.setMaxPower(new MetricUnit(maxPower * 1000000));
-            loadTileEntity.notifyUpdate();
-
-            loadTileEntity.requestSimulation(player);
+            TileEntityMessageToServer teMSG = new TileEntityMessageToServer(loadTileEntity, player);
+            ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
         }
     }
 

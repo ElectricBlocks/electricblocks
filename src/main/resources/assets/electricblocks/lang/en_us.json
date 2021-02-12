@@ -24,6 +24,7 @@
   "command.electricblocks.updatetoggle.err_invalid_block": "The multimeter is unable to update or toggle this block.",
   "command.electricblocks.viewmodify.err_invalid_block": "The multimeter is unable to view or modify this block.",
   "command.electricblocks.viewmodify.submit": "Submitting changes to simulation handler.",
+  "command.electricblocks.viewmodify.err_block": "This block cannot be modified. It doesn't exist, is too far away, or you don't have permission.",
   "gui.electricblocks.scrollable": "(use scroll wheel)",
   "gui.electricblocks.err_invalid_number": "Unable to parse one more numbers entered.",
   "gui.electricblocks.warn_escape": "Changes not submitted. Press the \"Done\" button instead of escape to submit changes.",

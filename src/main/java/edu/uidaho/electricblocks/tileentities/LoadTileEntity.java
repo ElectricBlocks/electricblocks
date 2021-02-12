@@ -70,14 +70,6 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
         requestSimulation(player);
     }
 
-    public void setInService(boolean inService) {
-        this.inService = inService;
-    }
-
-    public boolean isInService() {
-        return inService;
-    }
-
     /**
      * Return the max power
      * @return The max power of this load
@@ -141,6 +133,16 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public void initEmbeddedBusses() {
         embededBusses.put("main", UUID.randomUUID());
+    }
+
+    @Override
+    public void fillPacketBuffer(double[] d) {
+        d[0] = maxPower.get();
+    }
+
+    @Override
+    public int getNumInputs() {
+        return 1;
     }
 
     @Override

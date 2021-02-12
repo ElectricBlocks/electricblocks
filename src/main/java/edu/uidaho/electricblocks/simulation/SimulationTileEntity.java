@@ -10,6 +10,7 @@ import edu.uidaho.electricblocks.utils.MetricUnit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -20,6 +21,7 @@ import javax.annotation.Nullable;
 
 public abstract class SimulationTileEntity extends TileEntity {
 
+    protected boolean inService = false;
     protected UUID simId = UUID.randomUUID();
     protected final SimulationType simulationType;
     protected Map<String, UUID> embededBusses = new HashMap<>();
@@ -149,8 +151,8 @@ public abstract class SimulationTileEntity extends TileEntity {
     }
 
     /**
-     * Called to notify the client or server of changes made involving this tile entity. This function write's the NBT
-     * tag, marks it as dirty, and then runs the notifyBlockUpdate function.
+     * Called to send update from server to client of changes made involving this tile entity. This function write's the
+     * NBT tag, marks it as dirty, and then runs the notifyBlockUpdate function.
      */
     public void notifyUpdate() {
         CompoundNBT tag = new CompoundNBT();
@@ -171,5 +173,21 @@ public abstract class SimulationTileEntity extends TileEntity {
         bus.addProperty("vn_kv", ratedVoltageKV.getKilo());
         return bus;
     }
+
+    public boolean isInService() {
+        return inService;
+    }
+
+    public void setInService(boolean inService) {
+        this.inService = inService;
+    }
+
+    public abstract void fillPacketBuffer(double[] d);
+
+    /**
+     * Gets the number of numerical inputs that the SimulationTileEntity requires for simulation.
+     * @return The number of numerical inputs that the SimulationTileEntity requires for simulation.
+     */
+    public abstract int getNumInputs();
     
 }

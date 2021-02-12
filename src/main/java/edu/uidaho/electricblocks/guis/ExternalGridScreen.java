@@ -1,5 +1,7 @@
 package edu.uidaho.electricblocks.guis;
 
+import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
+import edu.uidaho.electricblocks.network.TileEntityMessageToServer;
 import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
 import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
@@ -50,7 +52,7 @@ public class ExternalGridScreen extends AbstractScreen {
         this.drawString(this.font, "Result Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw mw label
-        this.drawString(this.font, "V", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "pu", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "MVar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw separator
@@ -72,9 +74,8 @@ public class ExternalGridScreen extends AbstractScreen {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             externalGridTileEntity.setInService(inService);
             externalGridTileEntity.setVoltage(new MetricUnit(voltage));
-            externalGridTileEntity.notifyUpdate();
-
-            externalGridTileEntity.requestSimulation(player);
+            TileEntityMessageToServer teMSG = new TileEntityMessageToServer(externalGridTileEntity, player);
+            ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
         }
     }
 

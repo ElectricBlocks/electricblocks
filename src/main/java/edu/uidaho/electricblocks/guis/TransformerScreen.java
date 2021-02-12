@@ -1,6 +1,8 @@
 package edu.uidaho.electricblocks.guis;
 
 import edu.uidaho.electricblocks.tileentities.TransformerTileEntity;
+import edu.uidaho.electricblocks.utils.MetricUnit;
+import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;

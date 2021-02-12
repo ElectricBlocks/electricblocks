@@ -22,7 +22,6 @@ import java.util.UUID;
  */
 public class LampTileEntity extends SimulationTileEntity implements IMultimeter {
 
-    private boolean inService = false; // Whether or not the lamp is on
     private MetricUnit maxPower = new MetricUnit(60); // Maximum power this lamp can take
     private MetricUnit resultPower = new MetricUnit(0); // Amount of power being received
     private MetricUnit reactivePower = new MetricUnit(0);
@@ -82,10 +81,6 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
         return (int) Math.round(percentPower * 15);
     }
 
-    public boolean isInService() {
-        return inService;
-    }
-
     public double getLightPercentage() {
         return this.resultPower.get() / this.maxPower.get() * 100;
     }
@@ -103,10 +98,6 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
 
     public void setResultPower(MetricUnit resultPower) {
         this.resultPower = resultPower;
-    }
-
-    public void setInService(boolean inService) {
-        this.inService = inService;
     }
 
     public MetricUnit getReactivePower() {
@@ -152,6 +143,16 @@ public class LampTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public void initEmbeddedBusses() {
         embededBusses.put("main", UUID.randomUUID());
+    }
+
+    @Override
+    public void fillPacketBuffer(double[] d) {
+        d[0] = maxPower.get();
+    }
+
+    @Override
+    public int getNumInputs() {
+        return 1;
     }
 
     @Override

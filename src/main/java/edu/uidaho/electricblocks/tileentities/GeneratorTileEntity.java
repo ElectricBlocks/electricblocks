@@ -19,7 +19,6 @@ import javax.annotation.Nonnull;
 
 public class GeneratorTileEntity extends SimulationTileEntity implements IMultimeter {
 
-    private boolean inService = false;
     private boolean slack = false;
     private MetricUnit maxPower = new MetricUnit(1000);
     private MetricUnit resultPower = new MetricUnit(0);
@@ -99,12 +98,15 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         embededBusses.put("main", UUID.randomUUID());
     }
 
-    public boolean isInService() {
-        return this.inService;
+    @Override
+    public void fillPacketBuffer(double[] d) {
+        d[0] = maxPower.get();
+        d[1] = nominalVoltage.get();
     }
 
-    public void setInService(boolean inService) {
-        this.inService = inService;
+    @Override
+    public int getNumInputs() {
+        return 2;
     }
 
     public MetricUnit getMaxPower() {

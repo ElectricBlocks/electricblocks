@@ -1,5 +1,7 @@
 package edu.uidaho.electricblocks.guis;
 
+import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
+import edu.uidaho.electricblocks.network.TileEntityMessageToServer;
 import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.tileentities.GeneratorTileEntity;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
@@ -92,9 +94,8 @@ public class GeneratorScreen extends AbstractScreen {
             genTileEntity.setInService(inService);
             genTileEntity.setMaxPower(new MetricUnit(maxPower * 1000000));
             genTileEntity.setNominalVoltage(new MetricUnit(voltage));
-            genTileEntity.notifyUpdate();
-
-            genTileEntity.requestSimulation(player);
+            TileEntityMessageToServer teMSG = new TileEntityMessageToServer(genTileEntity, player);
+            ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
         }
     }
     

@@ -228,6 +228,23 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
         this.inService = inService;
     }
 
+    @Override
+    public void fillPacketBuffer(double[] d) {
+        d[0] = getRatedApparentPower().get();
+        d[1] = getRatedVoltageAtHighBus().get();
+        d[2] = getRatedVoltageAtLowBus().get();
+        d[3] = getShortCircuitVoltagePercent();
+        d[4] = getShortCircuitVoltageRealComponentPercent();
+        d[5] = getIronLosses().get();
+        d[6] = getOpenLoopLossesPercent();
+        d[7] = getShiftDegree();
+    }
+
+    @Override
+    public int getNumInputs() {
+        return 8;
+    }
+
     public MetricUnit getRatedVoltageAtHighBus() {
         return ratedVoltageAtHighBus;
     }

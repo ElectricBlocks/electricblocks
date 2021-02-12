@@ -17,7 +17,6 @@ import java.util.UUID;
 
 public class ExternalGridTileEntity extends SimulationTileEntity implements IMultimeter {
 
-    private boolean inService = false;
     private MetricUnit voltage = new MetricUnit(1);
     private MetricUnit resultPower = new MetricUnit(0);
     private MetricUnit reactivePower = new MetricUnit(0);
@@ -86,14 +85,16 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
         embededBusses.put("main", UUID.randomUUID());
     }
 
-    public boolean isInService() {
-        return inService;
+    @Override
+    public void fillPacketBuffer(double[] d) {
+        d[0] = voltage.get();
     }
 
-    public void setInService(boolean inService) {
-        this.inService = inService;
+    @Override
+    public int getNumInputs() {
+        return 1;
     }
-    
+
     public MetricUnit getVoltage() {
         return this.voltage;
     }
