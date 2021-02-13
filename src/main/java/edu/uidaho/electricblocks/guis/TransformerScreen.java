@@ -1,5 +1,6 @@
 package edu.uidaho.electricblocks.guis;
 
+import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
 import edu.uidaho.electricblocks.network.TileEntityMessageToServer;
 import edu.uidaho.electricblocks.tileentities.TransformerTileEntity;
@@ -12,14 +13,12 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.awt.*;
-
 public class TransformerScreen extends AbstractScreen {
 
     // Constants
     private static final int MAX_SCROLL = 0;
     private static final int MIN_SCROLL = -420;
-    private static final int SCROLL_VISIBILITY_CUTOFF = 20;
+    private static final int SCROLL_CUTOFF_MIN = 20;
 
     // Layout elements
     TextFieldWidget textFieldRatedApparentPower; // sn_mva
@@ -64,7 +63,7 @@ public class TransformerScreen extends AbstractScreen {
             for (Widget w : this.buttons) {
                 if (!(w instanceof Button)) {
                     w.y += scroll;
-                    w.visible = w.y >= SCROLL_VISIBILITY_CUTOFF;
+                    w.visible = w.y <= getMaxCutoff() && w.y >= SCROLL_CUTOFF_MIN;
                 }
             }
         }
@@ -217,7 +216,7 @@ public class TransformerScreen extends AbstractScreen {
 
         // Draw separator
         int dividerHeight = scrollPosition + 255 + (this.font.FONT_HEIGHT / 2);
-        if (dividerHeight >= SCROLL_VISIBILITY_CUTOFF) {
+        if (dividerHeight >= SCROLL_CUTOFF_MIN) {
             this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, dividerHeight, 0xFFFFFF);
         }
 
@@ -228,7 +227,7 @@ public class TransformerScreen extends AbstractScreen {
 
     @Override
     public void drawString(FontRenderer p_drawString_1_, String p_drawString_2_, int p_drawString_3_, int p_drawString_4_, int p_drawString_5_) {
-        if (p_drawString_4_ >= SCROLL_VISIBILITY_CUTOFF)
+        if (p_drawString_4_ <= getMaxCutoff() && p_drawString_4_ >= SCROLL_CUTOFF_MIN)
             super.drawString(p_drawString_1_, p_drawString_2_, p_drawString_3_, p_drawString_4_, p_drawString_5_);
     }
 
@@ -265,6 +264,10 @@ public class TransformerScreen extends AbstractScreen {
             TileEntityMessageToServer teMSG = new TileEntityMessageToServer(tileEntity, player);
             ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
         }
+    }
+
+    public int getMaxCutoff() {
+        return inServiceButton.y - BUTTON_HEIGHT;
     }
     
 }
