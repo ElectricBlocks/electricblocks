@@ -122,6 +122,16 @@ public abstract class SimulationTileEntity extends TileEntity {
         return new SUpdateTileEntityPacket(getPos(), -1, tag);
     }
 
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return write(new CompoundNBT());
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundNBT tag) {
+        read(tag);
+    }
+
     /**
      * Called whenever a data packet is received concerning this tile entity.
      * @param net The network manager
