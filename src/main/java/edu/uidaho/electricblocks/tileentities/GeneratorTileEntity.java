@@ -21,9 +21,10 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
 
     private boolean slack = false;
     private MetricUnit maxPower = new MetricUnit(1000);
+    private MetricUnit peakVoltage = new MetricUnit(1);
+    private MetricUnit busVoltage = new MetricUnit(20, MetricUnit.MetricPrefix.KILO);
     private MetricUnit resultPower = new MetricUnit(0);
     private MetricUnit reactivePower = new MetricUnit(0);
-    private MetricUnit nominalVoltage = new MetricUnit(120);
     private MetricUnit resultVoltage = new MetricUnit(0);
 
     public GeneratorTileEntity() {
@@ -37,9 +38,10 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         compound.putBoolean("inService", inService);
         compound.putBoolean("slack", slack);
         compound.putDouble("maxPower", maxPower.get());
+        compound.putDouble("peakVoltage", peakVoltage.get());
+        compound.putDouble("busVoltage", busVoltage.get());
         compound.putDouble("resultPower", resultPower.get());
         compound.putDouble("reactivePower", reactivePower.get());
-        compound.putDouble("nominalVoltage", nominalVoltage.get());
         compound.putDouble("resultVoltage", resultVoltage.get());
         compound.putUniqueId("simId", simId);
         return compound;
@@ -51,9 +53,10 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         inService = compound.getBoolean("inService");
         slack = compound.getBoolean("slack");
         maxPower = new MetricUnit(compound.getDouble("maxPower"));
+        peakVoltage = new MetricUnit(compound.getDouble("peakVoltage"));
+        busVoltage = new MetricUnit(compound.getDouble("busVoltage"));
         resultPower = new MetricUnit(compound.getDouble("resultPower"));
         reactivePower = new MetricUnit(compound.getDouble("reactivePower"));
-        nominalVoltage = new MetricUnit(compound.getDouble("nominalVoltage"));
         resultVoltage = new MetricUnit(compound.getDouble("resultVoltage"));
         simId = compound.getUniqueId("simId");
     }
@@ -77,7 +80,7 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        JsonObject bus = getBusJson();
+        JsonObject bus = getBusJson(busVoltage);
         UUID busId = embededBusses.get("main");
 
         JsonObject obj = new JsonObject();
@@ -86,7 +89,7 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         obj.addProperty("in_service", inService);
         obj.addProperty("bus", busId.toString());
         obj.addProperty("p_mw", maxPower.getMega());
-        obj.addProperty("vm_pu", nominalVoltage.get());
+        obj.addProperty("vm_pu", peakVoltage.get());
 
         json.add(busId.toString(), bus);
         json.add(getSimulationID().toString(), obj);
@@ -101,12 +104,13 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
     @Override
     public void fillPacketBuffer(double[] d) {
         d[0] = maxPower.get();
-        d[1] = nominalVoltage.get();
+        d[1] = peakVoltage.get();
+        d[2] = busVoltage.get();
     }
 
     @Override
     public int getNumInputs() {
-        return 2;
+        return 3;
     }
 
     public MetricUnit getMaxPower() {
@@ -117,20 +121,28 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
         this.maxPower = maxPower;
     }
 
+    public MetricUnit getPeakVoltage() {
+        return peakVoltage;
+    }
+
+    public void setPeakVoltage(MetricUnit peakVoltage) {
+        this.peakVoltage = peakVoltage;
+    }
+
+    public MetricUnit getBusVoltage() {
+        return busVoltage;
+    }
+
+    public void setBusVoltage(MetricUnit busVoltage) {
+        this.busVoltage = busVoltage;
+    }
+
     public boolean isSlack() {
         return slack;
     }
 
     public void setSlack(boolean slack) {
         this.slack = slack;
-    }
-
-    public MetricUnit getNominalVoltage() {
-        return nominalVoltage;
-    }
-
-    public void setNominalVoltage(MetricUnit nominalVoltage) {
-        this.nominalVoltage = nominalVoltage;
     }
 
     public MetricUnit getResultPower() {
@@ -171,7 +183,7 @@ public class GeneratorTileEntity extends SimulationTileEntity implements IMultim
     @Override
     public void disable() {
         inService = false;
-        nominalVoltage = new MetricUnit(0);
+        peakVoltage = new MetricUnit(0);
         maxPower = new MetricUnit(0);
     }
     

@@ -72,7 +72,8 @@ public class ElectricBlocksPacketHandler {
         } else if (aste instanceof GeneratorTileEntity) {
             GeneratorTileEntity ste = (GeneratorTileEntity) aste;
             ste.setMaxPower(new MetricUnit(inputs[0]));
-            ste.setNominalVoltage(new MetricUnit(inputs[1]));
+            ste.setPeakVoltage(new MetricUnit(inputs[1]));
+            ste.setBusVoltage(new MetricUnit(inputs[2]));
         } else if (aste instanceof LampTileEntity) {
             LampTileEntity ste = (LampTileEntity) aste;
             ste.setMaxPower(new MetricUnit(inputs[0]));

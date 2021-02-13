@@ -13,7 +13,8 @@ public class GeneratorScreen extends AbstractScreen {
 
     // Layout elements
     private TextFieldWidget textFieldMaxPower;
-    private TextFieldWidget textFieldVoltage;
+    private TextFieldWidget textFieldPeakVoltage;
+    private TextFieldWidget textFieldBusVoltage;
     private TextFieldWidget textFieldResultPower;
     private TextFieldWidget textFieldReactivePower;
     private TextFieldWidget textFieldResultVoltage;
@@ -37,20 +38,25 @@ public class GeneratorScreen extends AbstractScreen {
         this.addButton(textFieldMaxPower);
         this.setFocused(textFieldMaxPower);
 
-        textFieldVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 55, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldVoltage.setText(String.format("%f", genTileEntity.getNominalVoltage().get()));
-        textFieldVoltage.setVisible(true);
-        this.addButton(textFieldVoltage);
+        textFieldBusVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 55, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldBusVoltage.setText(String.format("%f", genTileEntity.getBusVoltage().getKilo()));
+        textFieldBusVoltage.setVisible(true);
+        addButton(textFieldBusVoltage);
 
-        textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldPeakVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 85, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldPeakVoltage.setText(String.format("%f", genTileEntity.getPeakVoltage().get()));
+        textFieldPeakVoltage.setVisible(true);
+        this.addButton(textFieldPeakVoltage);
+
+        textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultPower.setText(String.format("%f", genTileEntity.getResultPower().getMega()));
         initializeResultField(textFieldResultPower);
 
-        textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 150, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldReactivePower.setText(String.format("%f", genTileEntity.getReactivePower().getMega()));
         initializeResultField(textFieldReactivePower);
 
-        textFieldResultVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 150, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldResultVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 180, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultVoltage.setText(String.format("%f", genTileEntity.getReactivePower().getMega()));
         initializeResultField(textFieldResultVoltage);
 
@@ -62,18 +68,20 @@ public class GeneratorScreen extends AbstractScreen {
         super.render(mouseX, mouseY, partialTicks);
         // Draw property labels
         this.drawString(this.font, "Max Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 55 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "Result Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "Result Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 150 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Peak Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 55 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Bus Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 85 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Result Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 150 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Result Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 180 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw mw label
         this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         this.drawString(this.font, "pu", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 55 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "Mvar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 120 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "V", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 150 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "kV", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 85 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 120 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Mvar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 150 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "V", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 180 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw separator
-        this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, 75 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, 105 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
     }
 
     @Override
@@ -83,7 +91,7 @@ public class GeneratorScreen extends AbstractScreen {
         double voltage = 0;
         try {
             maxPower = Double.parseDouble(textFieldMaxPower.getText());
-            voltage = Double.parseDouble(textFieldVoltage.getText());
+            voltage = Double.parseDouble(textFieldPeakVoltage.getText());
         } catch (NumberFormatException e) {
             shouldUpdate = false;
             PlayerUtils.error(player, "gui.electricblocks.err_invalid_number");
@@ -93,7 +101,7 @@ public class GeneratorScreen extends AbstractScreen {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             genTileEntity.setInService(inService);
             genTileEntity.setMaxPower(new MetricUnit(maxPower, MetricUnit.MetricPrefix.MEGA));
-            genTileEntity.setNominalVoltage(new MetricUnit(voltage));
+            genTileEntity.setPeakVoltage(new MetricUnit(voltage));
             TileEntityMessageToServer teMSG = new TileEntityMessageToServer(genTileEntity, player);
             ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
         }
