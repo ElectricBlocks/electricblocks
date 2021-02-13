@@ -12,6 +12,7 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.LogicalSide;
 
 public class TransformerScreen extends AbstractScreen {
 
@@ -247,11 +248,11 @@ public class TransformerScreen extends AbstractScreen {
             shiftDegree = Double.parseDouble(textFieldShiftDegree.getText());
         } catch (NumberFormatException e) {
             shouldUpdate = false;
-            PlayerUtils.error(player, "gui.electricblocks.err_invalid_number");
+            PlayerUtils.error(player, LogicalSide.CLIENT, "gui.electricblocks.err_invalid_number");
         }
 
         if (shouldUpdate) {
-            PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
+            PlayerUtils.sendMessage(player, LogicalSide.CLIENT, "command.electricblocks.viewmodify.submit");
             tileEntity.setInService(inService);
             tileEntity.setRatedApparentPower(new MetricUnit(apparentPower, MetricUnit.MetricPrefix.MEGA));
             tileEntity.setRatedVoltageAtHighBus(new MetricUnit(voltageAtHighBus, MetricUnit.MetricPrefix.KILO));

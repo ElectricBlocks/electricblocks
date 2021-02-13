@@ -1,7 +1,14 @@
 package edu.uidaho.electricblocks.utils;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftGame;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.*;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.LogicalSide;
+
+import javax.annotation.Nullable;
 
 public class PlayerUtils {
 
@@ -16,8 +23,20 @@ public class PlayerUtils {
             return;
         }
 
-        player.sendMessage(new TranslationTextComponent(message, args));
+        sendMessage(player, LogicalSide.SERVER, message, args);
     }
+
+    public static void sendMessage(PlayerEntity player, LogicalSide logicalSide, String message, Object... args) {
+        if (logicalSide.isClient()) {
+            player = Minecraft.getInstance().player;
+        }
+        if (player == null) {
+            return;
+        }
+        player.sendMessage(new TranslationTextComponent(message, args));
+
+    }
+
 
     /**
      * Sends a localized message to the player with a red [WARNING] tag in front of it.
@@ -27,6 +46,17 @@ public class PlayerUtils {
      */
     public static void warn(PlayerEntity player, String warning, Object... args) {
         if (playerIsClientSide(player)) {
+            return;
+        }
+
+        warn(player, LogicalSide.SERVER, warning, args);
+    }
+
+    public static void warn(PlayerEntity player, LogicalSide logicalSide, String warning, Object... args) {
+        if (logicalSide.isClient()) {
+            player = Minecraft.getInstance().player;
+        }
+        if (player == null) {
             return;
         }
 
@@ -49,6 +79,17 @@ public class PlayerUtils {
      */
     public static void error(PlayerEntity player, String err, Object... args) {
         if (playerIsClientSide(player)) {
+            return;
+        }
+
+        error(player, LogicalSide.SERVER, err, args);
+    }
+
+    public static void error(PlayerEntity player, LogicalSide logicalSide, String err, Object... args) {
+        if (logicalSide.isClient()) {
+            player = Minecraft.getInstance().player;
+        }
+        if (player == null) {
             return;
         }
 

@@ -7,6 +7,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fml.LogicalSide;
 
 public abstract class AbstractScreen extends Screen {
     // Layout constants 
@@ -117,7 +118,7 @@ public abstract class AbstractScreen extends Screen {
             if (donePressed) {
                 submitChanges();
             } else {
-                PlayerUtils.warn(player, "gui.electricblocks.warn_escape");
+                PlayerUtils.warn(player, LogicalSide.CLIENT, "gui.electricblocks.warn_escape");
             }
         }
         super.onClose();

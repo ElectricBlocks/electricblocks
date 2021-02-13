@@ -8,6 +8,7 @@ import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.LogicalSide;
 
 public class ExternalGridScreen extends AbstractScreen {
 
@@ -77,11 +78,11 @@ public class ExternalGridScreen extends AbstractScreen {
             busVoltage = Double.parseDouble(textFieldBusVoltage.getText());
         } catch (NumberFormatException e) {
             shouldUpdate = false;
-            PlayerUtils.error(player, "gui.electricblocks.err_invalid_number");
+            PlayerUtils.error(player, LogicalSide.CLIENT, "gui.electricblocks.err_invalid_number");
         }
 
         if (shouldUpdate) {
-            PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
+            PlayerUtils.sendMessage(player, LogicalSide.CLIENT, "command.electricblocks.viewmodify.submit");
             externalGridTileEntity.setInService(inService);
             externalGridTileEntity.setSlackVoltage(new MetricUnit(slackVoltage));
             externalGridTileEntity.setBusVoltage(new MetricUnit(busVoltage, MetricUnit.MetricPrefix.KILO));
