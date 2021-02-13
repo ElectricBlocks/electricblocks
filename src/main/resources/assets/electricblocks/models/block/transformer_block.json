@@ -1,6 +1,11 @@
 {
-    "parent": "block/cube_all",
+    "parent": "block/cube",
     "textures": {
-      "all": "electricblocks:blocks/transformer_block"
+      "up": "electricblocks:blocks/transformer_block",
+      "down": "electricblocks:blocks/transformer_block",
+      "north": "electricblocks:blocks/transformer_block_hv",
+      "south": "electricblocks:blocks/transformer_block_lv",
+      "east": "electricblocks:blocks/transformer_block",
+      "west": "electricblocks:blocks/transformer_block"
     }
-  }
+}

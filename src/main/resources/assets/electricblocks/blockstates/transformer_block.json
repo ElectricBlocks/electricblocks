@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "electricblocks:block/transformer_block" },
+    "facing=south": { "model": "electricblocks:block/transformer_block", "y": 180 },
+    "facing=west":  { "model": "electricblocks:block/transformer_block", "y": 270 },
+    "facing=east":  { "model": "electricblocks:block/transformer_block", "y": 90 }
+  }
+}
