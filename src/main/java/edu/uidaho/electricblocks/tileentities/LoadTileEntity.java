@@ -24,6 +24,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
 
     private boolean inService = false;
     private MetricUnit maxPower = new MetricUnit(100);
+    private MetricUnit busVoltage = new MetricUnit(20, MetricUnit.MetricPrefix.KILO);
     private MetricUnit resultPower = new MetricUnit(0);
     private MetricUnit reactivePower = new MetricUnit(0);
 
@@ -42,6 +43,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
         super.write(compound);
         compound.putBoolean("inService", inService);
         compound.putDouble("maxPower", maxPower.get());
+        compound.putDouble("busVoltage", busVoltage.get());
         compound.putDouble("resultPower", resultPower.get());
         compound.putDouble("reactivePower", reactivePower.get());
         compound.putUniqueId("simId", simId);
@@ -57,6 +59,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
         super.read(compound);
         inService = compound.getBoolean("inService");
         maxPower = new MetricUnit(compound.getDouble("maxPower"));
+        busVoltage = new MetricUnit(compound.getDouble("busVoltage"));
         resultPower = new MetricUnit(compound.getDouble("resultPower"));
         reactivePower = new MetricUnit(compound.getDouble("reactivePower"));
         simId = compound.getUniqueId("simId");
@@ -80,6 +83,14 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
 
     public void setMaxPower(MetricUnit maxPower) {
         this.maxPower = maxPower;
+    }
+
+    public MetricUnit getBusVoltage() {
+        return this.busVoltage;
+    }
+
+    public void setBusVoltage(MetricUnit busVoltage) {
+        this.busVoltage = busVoltage;
     }
 
     public MetricUnit getResultPower() {
@@ -108,7 +119,7 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        JsonObject bus = getBusJson();
+        JsonObject bus = getBusJson(busVoltage);
         UUID busId = embededBusses.get("main");
 
         JsonObject obj = new JsonObject();
@@ -138,11 +149,12 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public void fillPacketBuffer(double[] d) {
         d[0] = maxPower.get();
+        d[1] = busVoltage.get();
     }
 
     @Override
     public int getNumInputs() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -158,7 +170,6 @@ public class LoadTileEntity extends SimulationTileEntity implements IMultimeter 
     @Override
     public void disable() {
         inService = false;
-        maxPower = new MetricUnit(0);
     }
     
 }

@@ -11,7 +11,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class ExternalGridScreen extends AbstractScreen {
 
-    private TextFieldWidget textFieldVoltage;
+    private TextFieldWidget textFieldSlackVoltage;
+    private TextFieldWidget textFieldBusVoltage;
     private TextFieldWidget textFieldResultPower;
     private TextFieldWidget textFieldReactivePower;
 
@@ -26,18 +27,23 @@ public class ExternalGridScreen extends AbstractScreen {
     @Override
     protected void init() {
         inService = externalGridTileEntity.isInService();
-        textFieldVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-        textFieldVoltage.setText(String.format("%f", externalGridTileEntity.getVoltage().get()));
-        textFieldVoltage.setFocused2(true);
-        textFieldVoltage.setVisible(true);
-        addButton(textFieldVoltage);
-        setFocused(textFieldVoltage);
+        textFieldSlackVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldSlackVoltage.setText(String.format("%f", externalGridTileEntity.getSlackVoltage().get()));
+        textFieldSlackVoltage.setFocused2(true);
+        textFieldSlackVoltage.setVisible(true);
+        addButton(textFieldSlackVoltage);
+        setFocused(textFieldSlackVoltage);
 
-        textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldBusVoltage = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 55, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldBusVoltage.setText(String.format("%f", externalGridTileEntity.getBusVoltage().getKilo()));
+        textFieldBusVoltage.setVisible(true);
+        addButton(textFieldBusVoltage);
+
+        textFieldResultPower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldResultPower.setText(String.format("%f", externalGridTileEntity.getResultPower().getMega()));
         initializeResultField(textFieldResultPower);
 
-        textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+        textFieldReactivePower = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
         textFieldReactivePower.setText(String.format("%f", externalGridTileEntity.getReactivePower().getMega()));
         initializeResultField(textFieldReactivePower);
 
@@ -48,23 +54,27 @@ public class ExternalGridScreen extends AbstractScreen {
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
         // Draw property labels
-        this.drawString(this.font, "Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "Result Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Slack Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Bus Voltage", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 55 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, 75 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Result Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "Reactive Power", (this.width - TEXT_INPUT_WIDTH) / 2 - (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, 120 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw mw label
         this.drawString(this.font, "pu", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 25 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 60 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
-        this.drawString(this.font, "MVar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "kV", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 55 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MW", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 90 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+        this.drawString(this.font, "MVar", (this.width / 2) + (TEXT_INPUT_WIDTH / 2) + 55, 120 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
         // Draw separator
-        this.drawCenteredString(this.font, "- - - - - - - - - - - - - - - - - - - -", this.width / 2, 45 + (this.font.FONT_HEIGHT / 2), 0xFFFFFF);
+
     }
 
     @Override
     protected void submitChanges() {
         boolean shouldUpdate = true;
-        double voltage = 0;
+        double slackVoltage = 0, busVoltage = 0;
         try {
-            voltage = Double.parseDouble(textFieldVoltage.getText());
+            slackVoltage = Double.parseDouble(textFieldSlackVoltage.getText());
+            busVoltage = Double.parseDouble(textFieldBusVoltage.getText());
         } catch (NumberFormatException e) {
             shouldUpdate = false;
             PlayerUtils.error(player, "gui.electricblocks.err_invalid_number");
@@ -73,7 +83,8 @@ public class ExternalGridScreen extends AbstractScreen {
         if (shouldUpdate) {
             PlayerUtils.sendMessage(player, "command.electricblocks.viewmodify.submit");
             externalGridTileEntity.setInService(inService);
-            externalGridTileEntity.setVoltage(new MetricUnit(voltage));
+            externalGridTileEntity.setSlackVoltage(new MetricUnit(slackVoltage));
+            externalGridTileEntity.setBusVoltage(new MetricUnit(busVoltage, MetricUnit.MetricPrefix.KILO));
             TileEntityMessageToServer teMSG = new TileEntityMessageToServer(externalGridTileEntity, player);
             ElectricBlocksPacketHandler.INSTANCE.sendToServer(teMSG);
         }

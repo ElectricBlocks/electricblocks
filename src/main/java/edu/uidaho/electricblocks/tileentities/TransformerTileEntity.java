@@ -6,11 +6,9 @@ import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.blocks.TransformerBlock;
 import edu.uidaho.electricblocks.utils.ClientUtils;
 import edu.uidaho.electricblocks.utils.MetricUnit;
-import edu.uidaho.electricblocks.guis.TransformerScreen;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -146,10 +144,10 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
 
-        JsonObject lvBus = getBusJson();
+        JsonObject lvBus = getBusJson(ratedVoltageAtLowBus);
         UUID lvBusId = embededBusses.get("lowVoltage");
 
-        JsonObject hvBus = getBusJson();
+        JsonObject hvBus = getBusJson(ratedVoltageAtHighBus);
         UUID hvBusId = embededBusses.get("highVoltage");
 
         JsonObject obj = new JsonObject();
@@ -160,13 +158,11 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
         obj.addProperty("sn_mva", ratedApparentPower.getMega());
         obj.addProperty("vn_hv_kv", ratedVoltageAtHighBus.getKilo());
         obj.addProperty("vn_lv_kv", ratedVoltageAtLowBus.getKilo());
-        obj.addProperty("vk_percent", shortCircuitVoltagePercent);
         obj.addProperty("vkr_percent", shortCircuitVoltageRealComponentPercent);
+        obj.addProperty("vk_percent", shortCircuitVoltagePercent);
         obj.addProperty("pfe_kw", ironLosses.getKilo());
         obj.addProperty("i0_percent", openLoopLossesPercent);
         obj.addProperty("shift_degree", shiftDegree);
-
-
 
         json.add(lvBusId.toString(), lvBus);
         json.add(hvBusId.toString(), hvBus);
@@ -190,6 +186,7 @@ public class TransformerTileEntity extends SimulationTileEntity implements IMult
             } catch (IllegalArgumentException e) {
                 d = cachedDirection;
             }
+
             if (getPos().offset(d).equals(pos)) {
                 return embededBusses.get("highVoltage");
             }

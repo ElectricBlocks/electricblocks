@@ -41,6 +41,15 @@ public class SimulationConnection {
     }
 
     /**
+     * Checks whether or not a specific busId is a part fo this connection.
+     * @param busId The unique ID of the bus to check
+     * @return True if this connection contains busId, false otherwise
+     */
+    public boolean hasBus(UUID busId) {
+        return busId.equals(fromBus) || busId.equals(toBus);
+    }
+
+    /**
      * Increments the length of this line by 1 meter (one block)
      */
     public void incrementLength() {

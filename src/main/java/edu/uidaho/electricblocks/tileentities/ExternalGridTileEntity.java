@@ -17,7 +17,8 @@ import java.util.UUID;
 
 public class ExternalGridTileEntity extends SimulationTileEntity implements IMultimeter {
 
-    private MetricUnit voltage = new MetricUnit(1);
+    private MetricUnit slackVoltage = new MetricUnit(1);
+    private MetricUnit busVoltage = new MetricUnit(20, MetricUnit.MetricPrefix.KILO);
     private MetricUnit resultPower = new MetricUnit(0);
     private MetricUnit reactivePower = new MetricUnit(0);
 
@@ -31,7 +32,8 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     public CompoundNBT write(@Nonnull CompoundNBT compound) {
         super.write(compound);
         compound.putBoolean("inService", inService);
-        compound.putDouble("voltage", voltage.get());
+        compound.putDouble("slackVoltage", slackVoltage.get());
+        compound.putDouble("busVoltage", busVoltage.get());
         compound.putDouble("resultPower", resultPower.get());
         compound.putDouble("reactivePower", reactivePower.get());
         compound.putUniqueId("simId", simId);
@@ -42,7 +44,8 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     public void read(@Nonnull CompoundNBT compound) {
         super.read(compound);
         inService = compound.getBoolean("inService");
-        voltage = new MetricUnit(compound.getDouble("voltage"));
+        slackVoltage = new MetricUnit(compound.getDouble("slackVoltage"));
+        busVoltage = new MetricUnit(compound.getDouble("busVoltage"));
         resultPower = new MetricUnit(compound.getDouble("resultPower"));
         reactivePower = new MetricUnit(compound.getDouble("reactivePower"));
         simId = compound.getUniqueId("simId");
@@ -58,14 +61,14 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     @Override
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
-        JsonObject bus = getBusJson();
+        JsonObject bus = getBusJson(busVoltage);
         UUID busId = embededBusses.get("main");
 
         JsonObject obj = new JsonObject();
         obj.addProperty("etype", getSimulationType().toString());
         obj.addProperty("in_service", inService);
         obj.addProperty("bus", busId.toString());
-        obj.addProperty("vm_pu", voltage.get());
+        obj.addProperty("vm_pu", slackVoltage.get());
 
 
         json.add(busId.toString(), bus);
@@ -87,20 +90,29 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
 
     @Override
     public void fillPacketBuffer(double[] d) {
-        d[0] = voltage.get();
+        d[0] = slackVoltage.get();
+        d[1] = busVoltage.get();
     }
 
     @Override
     public int getNumInputs() {
-        return 1;
+        return 2;
     }
 
-    public MetricUnit getVoltage() {
-        return this.voltage;
+    public MetricUnit getSlackVoltage() {
+        return this.slackVoltage;
     }
 
-    public void setVoltage(MetricUnit voltage) {
-        this.voltage = voltage;
+    public void setSlackVoltage(MetricUnit slackVoltage) {
+        this.slackVoltage = slackVoltage;
+    }
+
+    public MetricUnit getBusVoltage() {
+        return this.busVoltage;
+    }
+
+    public void setBusVoltage(MetricUnit busVoltage) {
+        this.busVoltage = busVoltage;
     }
 
     public MetricUnit getResultPower() {
@@ -133,6 +145,6 @@ public class ExternalGridTileEntity extends SimulationTileEntity implements IMul
     @Override
     public void disable() {
         inService = false;
-        voltage = new MetricUnit(0);
+        slackVoltage = new MetricUnit(0);
     }
 }

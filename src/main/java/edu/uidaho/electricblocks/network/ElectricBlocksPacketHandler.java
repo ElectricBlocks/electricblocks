@@ -57,7 +57,7 @@ public class ElectricBlocksPacketHandler {
         BlockPos pos = new BlockPos(message.getX(), message.getY(), message.getZ());
         double[] inputs = message.getInputs();
         // Verify that the block position
-        if (!World.isValid(pos) || !world.isBlockModifiable(player, pos) || !player.getPosition().withinDistance(pos, 3.0)) {
+        if (!World.isValid(pos) || !world.isBlockModifiable(player, pos) || !player.getPosition().withinDistance(pos, 5.0)) {
             PlayerUtils.error(player, "command.electricblocks.viewmodify.err_block");
             return;
         }
@@ -67,7 +67,8 @@ public class ElectricBlocksPacketHandler {
 
         if (aste instanceof ExternalGridTileEntity) {
             ExternalGridTileEntity ste = (ExternalGridTileEntity) aste;
-            ste.setVoltage(new MetricUnit(inputs[0]));
+            ste.setSlackVoltage(new MetricUnit(inputs[0]));
+            ste.setBusVoltage(new MetricUnit(inputs[1]));
         } else if (aste instanceof GeneratorTileEntity) {
             GeneratorTileEntity ste = (GeneratorTileEntity) aste;
             ste.setMaxPower(new MetricUnit(inputs[0]));
@@ -75,9 +76,11 @@ public class ElectricBlocksPacketHandler {
         } else if (aste instanceof LampTileEntity) {
             LampTileEntity ste = (LampTileEntity) aste;
             ste.setMaxPower(new MetricUnit(inputs[0]));
+            ste.setBusVoltage(new MetricUnit(inputs[1]));
         } else if (aste instanceof LoadTileEntity) {
             LoadTileEntity ste = (LoadTileEntity) aste;
             ste.setMaxPower(new MetricUnit(inputs[0]));
+            ste.setBusVoltage(new MetricUnit(inputs[1]));
         } else if (aste instanceof TransformerTileEntity) {
             TransformerTileEntity ste = (TransformerTileEntity) aste;
             ste.setRatedApparentPower(new MetricUnit(inputs[0]));
