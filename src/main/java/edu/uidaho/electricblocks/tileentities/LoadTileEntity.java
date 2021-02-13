@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
  */
 public class LoadTileEntity extends SimulationTileEntity implements IMultimeter {
 
-    private boolean inService = false;
     private MetricUnit maxPower = new MetricUnit(100);
     private MetricUnit busVoltage = new MetricUnit(20, MetricUnit.MetricPrefix.KILO);
     private MetricUnit resultPower = new MetricUnit(0);
