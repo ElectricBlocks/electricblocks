@@ -17,11 +17,7 @@ import edu.uidaho.electricblocks.items.TransformerItem;
 import edu.uidaho.electricblocks.items.WireItem;
 import edu.uidaho.electricblocks.items.BatteryItem;
 import edu.uidaho.electricblocks.items.BusItem;
-import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
-import edu.uidaho.electricblocks.tileentities.GeneratorTileEntity;
-import edu.uidaho.electricblocks.tileentities.LampTileEntity;
-import edu.uidaho.electricblocks.tileentities.LoadTileEntity;
-import edu.uidaho.electricblocks.tileentities.TransformerTileEntity;
+import edu.uidaho.electricblocks.tileentities.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
@@ -75,6 +71,8 @@ public final class RegistryHandler {
             TILE_ENTITIES.register("load_tileentity", () -> TileEntityType.Builder.create(LoadTileEntity::new).build(null));
     public static final RegistryObject<TileEntityType<TransformerTileEntity>> TRANSFORMER_TILE_ENTITY =
             TILE_ENTITIES.register("transformer_tileentity", () -> TileEntityType.Builder.create(TransformerTileEntity::new).build(null));
+    public static final RegistryObject<TileEntityType<BusTileEntity>> BUS_TILE_ENTITY =
+            TILE_ENTITIES.register("bus_tileentity", () -> TileEntityType.Builder.create(BusTileEntity::new).build(null));
 
     /**
      * Initializes all of the registers with the event mod bus so that blocks, items, and tile entities will be
