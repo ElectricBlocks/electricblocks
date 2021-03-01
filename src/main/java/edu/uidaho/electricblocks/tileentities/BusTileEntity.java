@@ -15,6 +15,10 @@ import java.util.UUID;
 
 public class BusTileEntity extends SimulationTileEntity implements IMultimeter {
 
+    static {
+
+    }
+
     // Inputs
     private MetricUnit busVoltage = new MetricUnit(20, MetricUnit.MetricPrefix.KILO); // vn_kv
 
