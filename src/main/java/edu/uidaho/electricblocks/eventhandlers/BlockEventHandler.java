@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
@@ -86,7 +87,7 @@ public class BlockEventHandler {
         if (ElectricBlocksConfig.getUpdateOnBlockBreak()) {
             TileEntity te;
             if ((te = event.getWorld().getTileEntity(pos)) instanceof SimulationTileEntity) {
-                PlayerUtils.warn(player, "command.electricblocks.block_broken");
+                PlayerUtils.warn(player,"command.electricblocks.block_broken");
                 SimulationTileEntity simulationTileEntity = (SimulationTileEntity) te;
                 simulationTileEntity.disable();
                 simulationTileEntity.requestSimulation(player);

@@ -92,6 +92,9 @@ public class ElectricBlocksPacketHandler {
             ste.setIronLosses(new MetricUnit(inputs[5]));
             ste.setOpenLoopLossesPercent(inputs[6]);
             ste.setShiftDegree(inputs[7]);
+        } else if (aste instanceof BusTileEntity) {
+            BusTileEntity ste = (BusTileEntity) aste;
+            ste.setBusVoltage(new MetricUnit(inputs[0]));
         } else {
             PlayerUtils.error(player, "command.electricblocks.viewmodify.err_block");
             return;

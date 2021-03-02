@@ -34,5 +34,6 @@
   "gui.electricblocks.lampscreen": "Lamp",
   "gui.electricblocks.externalgridscreen": "External Grid",
   "gui.electricblocks.generatorscreen": "Single Phase Generator",
-  "gui.electricblocks.transformerscreen": "Transformer"
+  "gui.electricblocks.transformerscreen": "Transformer",
+  "gui.electricblocks.busscreen": "Bus"
 }

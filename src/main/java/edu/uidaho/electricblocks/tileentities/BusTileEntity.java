@@ -5,10 +5,13 @@ import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
+import edu.uidaho.electricblocks.utils.ClientUtils;
 import edu.uidaho.electricblocks.utils.MetricUnit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
@@ -123,7 +126,7 @@ public class BusTileEntity extends SimulationTileEntity implements IMultimeter {
 
     @Override
     public void viewOrModify(PlayerEntity player) {
-
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ClientUtils.openBusScreen(this, player));
     }
 
     public MetricUnit getBusVoltage() {

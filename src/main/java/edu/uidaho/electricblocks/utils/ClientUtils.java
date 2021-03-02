@@ -38,6 +38,10 @@ public class ClientUtils {
         Minecraft.getInstance().displayGuiScreen(new TransformerScreen(transformerTileEntity, playerEntity));
     }
 
+    public static void openBusScreen(BusTileEntity busTileEntity, PlayerEntity playerEntity) {
+        Minecraft.getInstance().displayGuiScreen(new BusScreen(busTileEntity, playerEntity));
+    }
+
     public static void registerConfigScreen() {
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY,
                 () -> (mc, screen) -> new ConfigScreen());
