@@ -68,7 +68,7 @@ public abstract class AbstractScreen extends Screen {
             this.height - DONE_BUTTON_TOP_OFFSET,
             BUTTON_WIDTH, BUTTON_HEIGHT,
             // Text shown on the button
-            I18n.format("gui.done"),
+            "Close",
             // Action performed when the button is pressed
             button -> {
                 donePressed = true;
@@ -108,7 +108,7 @@ public abstract class AbstractScreen extends Screen {
     public void onChange() {
         if (!changed) {
             changed = true;
-            doneButton.setMessage("* " + I18n.format("gui.done") + " *");
+            doneButton.setMessage("Submit Changes");
         }
     }
 
