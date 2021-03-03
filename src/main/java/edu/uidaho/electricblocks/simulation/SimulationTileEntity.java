@@ -4,33 +4,28 @@ import java.util.*;
 
 import com.google.gson.JsonObject;
 
+import edu.uidaho.electricblocks.interfaces.IMultimeter;
+import edu.uidaho.electricblocks.utils.ClientUtils;
 import edu.uidaho.electricblocks.utils.MetricUnit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class SimulationTileEntity extends TileEntity {
-
-    protected static final Map<String, SimulationProperty> defaultInputs = new LinkedHashMap<>();
-    protected static final Map<String, SimulationProperty> defaultOutputs = new LinkedHashMap<>();
+public abstract class SimulationTileEntity extends TileEntity implements IMultimeter {
 
     protected Map<String, SimulationProperty> inputs = new LinkedHashMap<>();
     protected Map<String, SimulationProperty> outputs = new LinkedHashMap<>();
 
-    static {
-        defaultInputs.put("in_service", new SimulationProperty("In Service", "N/a", false));
-    }
-
-    protected boolean inService = false;
     protected UUID simId = UUID.randomUUID();
     protected final SimulationType simulationType;
     protected Map<String, UUID> embededBusses = new HashMap<>();
@@ -38,6 +33,12 @@ public abstract class SimulationTileEntity extends TileEntity {
     public SimulationTileEntity(TileEntityType<?> tileEntityTypeIn, SimulationType simulationType) {
         super(tileEntityTypeIn);
         this.simulationType = simulationType;
+        for (Map.Entry<String, SimulationProperty> entry : getDefaultInputs().entrySet()) {
+            inputs.put(entry.getKey(), entry.getValue().clone());
+        }
+        for (Map.Entry<String, SimulationProperty> entry : getDefaultOutputs().entrySet()) {
+            outputs.put(entry.getKey(), entry.getValue().clone());
+        }
         initEmbeddedBusses();
     }
 
@@ -47,10 +48,10 @@ public abstract class SimulationTileEntity extends TileEntity {
         super.write(compound);
         compound.putUniqueId("simId", simId);
         for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
-            entry.getValue().fillNBT(entry.getKey(), compound);
+            entry.getValue().fillNBT("in_" + entry.getKey(), compound);
         }
         for (Map.Entry<String, SimulationProperty> entry : outputs.entrySet()) {
-            entry.getValue().fillNBT(entry.getKey(), compound);
+            entry.getValue().fillNBT("out_" + entry.getKey(), compound);
         }
         return compound;
     }
@@ -59,16 +60,29 @@ public abstract class SimulationTileEntity extends TileEntity {
     public void read(@Nonnull CompoundNBT compound) {
         simId = compound.getUniqueId("simId");
         for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
-            entry.getValue().readNBT(entry.getKey(), compound);
+            entry.getValue().readNBT("in_" + entry.getKey(), compound);
         }
         for (Map.Entry<String, SimulationProperty> entry : outputs.entrySet()) {
-            entry.getValue().readNBT(entry.getKey(), compound);
+            entry.getValue().readNBT("out_" + entry.getKey(), compound);
         }
     }
 
     public void fillJSON(JsonObject jsonObject) {
         for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
-            jsonObject.addProperty(entry.getKey(), entry.getValue().getDouble());
+            if (!entry.getValue().shouldSendJSON()) {
+                continue;
+            }
+            switch (entry.getValue().getPropertyType()) {
+                case DOUBLE:
+                    jsonObject.addProperty(entry.getKey(), entry.getValue().getDouble());
+                    break;
+                case STRING:
+                    jsonObject.addProperty(entry.getKey(), entry.getValue().getString());
+                    break;
+                case BOOL:
+                    jsonObject.addProperty(entry.getKey(), entry.getValue().getBoolean());
+                    break;
+            }
         }
     }
 
@@ -235,26 +249,26 @@ public abstract class SimulationTileEntity extends TileEntity {
     }
 
     public JsonObject getBusJson() {
-        return getBusJson(new MetricUnit(20, MetricUnit.MetricPrefix.KILO));
+        return getBusJson(20.0);
     }
 
-    public JsonObject getBusJson(MetricUnit ratedVoltageKV) {
+    public JsonObject getBusJson(double ratedVoltageKV) {
         JsonObject bus = new JsonObject();
         bus.addProperty("etype", SimulationType.BUS.toString());
-        bus.addProperty("vn_kv", ratedVoltageKV.getKilo());
+        bus.addProperty("vn_kv", ratedVoltageKV);
         return bus;
     }
 
     public boolean isInService() {
-        return inService;
+        return inputs.get("in_service").getBoolean();
     }
 
     public void setInService(boolean inService) {
-        this.inService = inService;
+        inputs.get("in_service").set(inService);
     }
 
     public void toggleInService(PlayerEntity player) {
-        inService = !inService;
+        setInService(!isInService());
         requestSimulation(player);
     }
 
@@ -263,6 +277,15 @@ public abstract class SimulationTileEntity extends TileEntity {
         for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
             if (entry.getValue().getPropertyType() == SimulationProperty.PropertyType.DOUBLE) {
                 d[i++] = entry.getValue().getDouble();
+            }
+        }
+    }
+
+    public void readPacketBuffer(double[] d) {
+        int i = 0;
+        for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
+            if (entry.getValue().getPropertyType() == SimulationProperty.PropertyType.DOUBLE) {
+                entry.getValue().set(d[i++]);
             }
         }
     }
@@ -280,5 +303,29 @@ public abstract class SimulationTileEntity extends TileEntity {
         }
         return i;
     }
-    
+
+    public Map<String, SimulationProperty> getInputs() {
+        return inputs;
+    }
+
+    public Map<String, SimulationProperty> getOutputs() {
+        return outputs;
+    }
+
+    public abstract String getTranslationString();
+
+    public abstract Map<String, SimulationProperty> getDefaultInputs();
+
+    public abstract Map<String, SimulationProperty> getDefaultOutputs();
+
+
+    @Override
+    public void updateOrToggle(PlayerEntity player) {
+        toggleInService(player);
+    }
+
+    @Override
+    public void viewOrModify(PlayerEntity player) {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ClientUtils.openSTEScreen(this, player));
+    }
 }

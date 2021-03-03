@@ -1,33 +1,47 @@
 package edu.uidaho.electricblocks.simulation;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import edu.uidaho.electricblocks.utils.MetricUnit;
 import net.minecraft.nbt.CompoundNBT;
 
 import javax.annotation.Nonnull;
-import java.io.Serializable;
-import java.util.UUID;
 
 public class SimulationProperty {
+
+    public enum PropertyType {
+        STRING, BOOL, DOUBLE
+    }
 
     private final String label;
     private final String units;
     private Object data;
     private PropertyType propertyType;
+    private final boolean sendInJSON; // False for properties that are editable in menu, but require special handling for json
 
     public SimulationProperty(String label, String units, Object defaultValue) {
+        this(label, units, defaultValue, true);
+    }
+
+    public SimulationProperty(String label, String units, Object defaultValue, boolean sendInJSON) {
         this.label = label;
         this.units = units;
         this.data = defaultValue;
+        this.sendInJSON = sendInJSON;
+        if (defaultValue instanceof Boolean) {
+            propertyType = PropertyType.BOOL;
+        } else if (defaultValue instanceof String) {
+            propertyType = PropertyType.STRING;
+        } else if (defaultValue instanceof Double) {
+            propertyType = PropertyType.DOUBLE;
+        } else {
+            throw new UnsupportedOperationException("defaultValue is not an instance of a supported property type");
+        }
     }
 
     public void fillNBT(String id, @Nonnull CompoundNBT compound) {
         switch (propertyType) {
             case STRING:
                 compound.putString(id, getString());
-                return;
-            case UUID:
-                compound.putUniqueId(id, getUUID());
                 return;
             case BOOL:
                 compound.putBoolean(id, getBoolean());
@@ -42,9 +56,6 @@ public class SimulationProperty {
         switch (propertyType) {
             case STRING:
                 data = compound.getString(id);
-                return;
-            case UUID:
-                data = compound.getUniqueId(id);
                 return;
             case BOOL:
                 data = compound.getBoolean(id);
@@ -63,9 +74,6 @@ public class SimulationProperty {
             case BOOL:
                 data = jsonElement.getAsBoolean();
                 return;
-            case UUID:
-                data = UUID.fromString(jsonElement.getAsString());
-                return;
             case DOUBLE:
                 data = jsonElement.getAsDouble();
                 return;
@@ -75,11 +83,6 @@ public class SimulationProperty {
     public String getString() {
         checkType(String.class);
         return (String) data;
-    }
-
-    public UUID getUUID() {
-        checkType(UUID.class);
-        return (UUID) data;
     }
 
     public Boolean getBoolean() {
@@ -114,7 +117,11 @@ public class SimulationProperty {
         }
     }
 
-    public enum PropertyType {
-        STRING, UUID, BOOL, DOUBLE
+    public boolean shouldSendJSON() {
+        return sendInJSON;
+    }
+
+    public SimulationProperty clone() {
+        return new SimulationProperty(label, units, data, sendInJSON);
     }
 }

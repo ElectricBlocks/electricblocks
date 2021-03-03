@@ -9,7 +9,7 @@ public class ExternalGridItem extends BlockItem {
 
     public ExternalGridItem() {
         super(RegistryHandler.EXTERNAL_GRID_BLOCK.get(), new Item.Properties()
-            .group(ElectricBlocksMod.TAB)
+                .group(ElectricBlocksMod.TAB)
         );
     }
 

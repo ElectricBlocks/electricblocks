@@ -1,6 +1,7 @@
 package edu.uidaho.electricblocks.utils;
 
 import edu.uidaho.electricblocks.guis.*;
+import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.tileentities.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,24 +19,8 @@ public class ClientUtils {
 
     private ClientUtils() {}
 
-    public static void openExternalGridScreen(ExternalGridTileEntity externalGridTileEntity, PlayerEntity playerEntity) {
-        Minecraft.getInstance().displayGuiScreen(new ExternalGridScreen(externalGridTileEntity, playerEntity));
-    }
-
-    public static void openGeneratorScreen(GeneratorTileEntity generatorTileEntity, PlayerEntity playerEntity) {
-        Minecraft.getInstance().displayGuiScreen(new GeneratorScreen(generatorTileEntity, playerEntity));
-    }
-
-    public static void openLampScreen(LampTileEntity lampTileEntity, PlayerEntity playerEntity) {
-        Minecraft.getInstance().displayGuiScreen(new LampScreen(lampTileEntity, playerEntity));
-    }
-
-    public static void openLoadScreen(LoadTileEntity loadTileEntity, PlayerEntity playerEntity) {
-        Minecraft.getInstance().displayGuiScreen(new LoadScreen(loadTileEntity, playerEntity));
-    }
-
-    public static void openTransformerScreen(TransformerTileEntity transformerTileEntity, PlayerEntity playerEntity) {
-        Minecraft.getInstance().displayGuiScreen(new TransformerScreen(transformerTileEntity, playerEntity));
+    public static void openSTEScreen(SimulationTileEntity simulationTileEntity, PlayerEntity playerEntity) {
+        Minecraft.getInstance().displayGuiScreen(new STEScreen(simulationTileEntity, playerEntity));
     }
 
     public static void registerConfigScreen() {

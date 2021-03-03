@@ -65,33 +65,8 @@ public class ElectricBlocksPacketHandler {
         TileEntity te = world.getTileEntity(pos);
         SimulationTileEntity aste = te instanceof SimulationTileEntity ? (SimulationTileEntity) te : null;
 
-        if (aste instanceof ExternalGridTileEntity) {
-            ExternalGridTileEntity ste = (ExternalGridTileEntity) aste;
-            ste.setSlackVoltage(new MetricUnit(inputs[0]));
-            ste.setBusVoltage(new MetricUnit(inputs[1]));
-        } else if (aste instanceof GeneratorTileEntity) {
-            GeneratorTileEntity ste = (GeneratorTileEntity) aste;
-            ste.setMaxPower(new MetricUnit(inputs[0]));
-            ste.setPeakVoltage(new MetricUnit(inputs[1]));
-            ste.setBusVoltage(new MetricUnit(inputs[2]));
-        } else if (aste instanceof LampTileEntity) {
-            LampTileEntity ste = (LampTileEntity) aste;
-            ste.setMaxPower(new MetricUnit(inputs[0]));
-            ste.setBusVoltage(new MetricUnit(inputs[1]));
-        } else if (aste instanceof LoadTileEntity) {
-            LoadTileEntity ste = (LoadTileEntity) aste;
-            ste.setMaxPower(new MetricUnit(inputs[0]));
-            ste.setBusVoltage(new MetricUnit(inputs[1]));
-        } else if (aste instanceof TransformerTileEntity) {
-            TransformerTileEntity ste = (TransformerTileEntity) aste;
-            ste.setRatedApparentPower(new MetricUnit(inputs[0]));
-            ste.setRatedVoltageAtHighBus(new MetricUnit(inputs[1]));
-            ste.setRatedVoltageAtLowBus(new MetricUnit(inputs[2]));
-            ste.setShortCircuitVoltagePercent(inputs[3]);
-            ste.setShortCircuitVoltageRealComponentPercent(inputs[4]);
-            ste.setIronLosses(new MetricUnit(inputs[5]));
-            ste.setOpenLoopLossesPercent(inputs[6]);
-            ste.setShiftDegree(inputs[7]);
+        if (aste != null) {
+            aste.readPacketBuffer(inputs);
         } else {
             PlayerUtils.error(player, "command.electricblocks.viewmodify.err_block");
             return;
