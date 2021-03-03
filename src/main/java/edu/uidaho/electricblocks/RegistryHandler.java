@@ -1,12 +1,10 @@
 package edu.uidaho.electricblocks;
 
+import edu.uidaho.electricblocks.blocks.BusBlock;
 import edu.uidaho.electricblocks.blocks.ExternalGridBlock;
 import edu.uidaho.electricblocks.blocks.LampBlock;
 import edu.uidaho.electricblocks.blocks.WireBlock;
-import edu.uidaho.electricblocks.items.ExternalGridItem;
-import edu.uidaho.electricblocks.items.LampItem;
-import edu.uidaho.electricblocks.items.MultimeterItem;
-import edu.uidaho.electricblocks.items.WireItem;
+import edu.uidaho.electricblocks.items.*;
 import edu.uidaho.electricblocks.tileentities.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -33,18 +31,22 @@ public final class RegistryHandler {
     public static final RegistryObject<Block> LAMP_BLOCK = BLOCKS.register("lamp_block", LampBlock::new);
     public static final RegistryObject<Block> EXTERNAL_GRID_BLOCK = BLOCKS.register("externalgrid_block", ExternalGridBlock::new);
     public static final RegistryObject<Block> WIRE_BLOCK = BLOCKS.register("wire_block", WireBlock::new);
+    public static final RegistryObject<Block> BUS_BLOCK = BLOCKS.register("bus_block", BusBlock::new);
 
     // Items
     public static final RegistryObject<Item> LAMP_ITEM = ITEMS.register("lamp_item", LampItem::new);
     public static final RegistryObject<Item> MULTIMETER_ITEM = ITEMS.register("multimeter_item", MultimeterItem::new);
     public static final RegistryObject<Item> EXTERNAL_GRID_ITEM = ITEMS.register("externalgrid_item", ExternalGridItem::new);
     public static final RegistryObject<Item> WIRE_ITEM = ITEMS.register("wire_item", WireItem::new);
+    public static final RegistryObject<Item> BUS_ITEM = ITEMS.register("bus_item", BusItem::new);
 
     // Tile Entities
     public static final RegistryObject<TileEntityType<LampTileEntity>> LAMP_TILE_ENTITY  =
             TILE_ENTITIES.register("lamp_tileentity", () -> TileEntityType.Builder.create(LampTileEntity::new).build(null));
     public static final RegistryObject<TileEntityType<ExternalGridTileEntity>> EXTERNAL_GRID_TILE_ENTITY =
             TILE_ENTITIES.register("externalgrid_tileentity", () -> TileEntityType.Builder.create(ExternalGridTileEntity::new).build(null));
+    public static final RegistryObject<TileEntityType<BusTileEntity>> BUS_TILE_ENTITY =
+            TILE_ENTITIES.register("bus_tileentity", () -> TileEntityType.Builder.create(BusTileEntity::new).build(null));
 
     /**
      * Initializes all of the registers with the event mod bus so that blocks, items, and tile entities will be
