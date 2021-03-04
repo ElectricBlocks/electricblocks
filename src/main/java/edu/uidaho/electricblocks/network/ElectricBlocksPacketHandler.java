@@ -2,8 +2,6 @@ package edu.uidaho.electricblocks.network;
 
 import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
-import edu.uidaho.electricblocks.tileentities.*;
-import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.utils.PlayerUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -58,7 +56,7 @@ public class ElectricBlocksPacketHandler {
         double[] inputs = message.getInputs();
         // Verify that the block position
         if (!World.isValid(pos) || !world.isBlockModifiable(player, pos) || !player.getPosition().withinDistance(pos, 5.0)) {
-            PlayerUtils.errorServer(player, "command.electricblocks.viewmodify.err_block");
+            PlayerUtils.error(player, "command.electricblocks.viewmodify.err_block");
             return;
         }
 
@@ -68,7 +66,7 @@ public class ElectricBlocksPacketHandler {
         if (aste != null) {
             aste.readPacketBuffer(inputs);
         } else {
-            PlayerUtils.errorServer(player, "command.electricblocks.viewmodify.err_block");
+            PlayerUtils.error(player, "command.electricblocks.viewmodify.err_block");
             return;
         }
 

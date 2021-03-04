@@ -38,11 +38,11 @@ public class BlockEventHandler {
             } else if ((te = world.getTileEntity(event.getPos())) instanceof IMultimeter) {
                 multimeter = (IMultimeter) te;
             } else {
-                PlayerUtils.errorServer(event.getPlayer(), "command.electricblocks.updatetoggle.err_invalid_block");
+                PlayerUtils.error(event.getPlayer(), "command.electricblocks.updatetoggle.err_invalid_block");
                 return;
             }
 
-            PlayerUtils.sendMessageServer(player, "command.electricblocks.updatetoggle");
+            PlayerUtils.sendMessage(player, "command.electricblocks.updatetoggle");
             multimeter.updateOrToggle(player);
         }
     }
@@ -64,7 +64,7 @@ public class BlockEventHandler {
             } else if ((te = world.getTileEntity(event.getPos())) instanceof IMultimeter) {
                 multimeter = (IMultimeter) te;
             } else {
-                PlayerUtils.errorServer(event.getPlayer(), "command.electricblocks.viewmodify.err_invalid_block");
+                PlayerUtils.error(event.getPlayer(), "command.electricblocks.viewmodify.err_invalid_block");
                 return;
             }
 
@@ -86,7 +86,7 @@ public class BlockEventHandler {
         if (ElectricBlocksConfig.getUpdateOnBlockBreak()) {
             TileEntity te;
             if ((te = event.getWorld().getTileEntity(pos)) instanceof SimulationTileEntity) {
-                PlayerUtils.warnServer(player, "command.electricblocks.block_broken");
+                PlayerUtils.warn(player, "command.electricblocks.block_broken");
                 SimulationTileEntity simulationTileEntity = (SimulationTileEntity) te;
                 simulationTileEntity.disable();
                 simulationTileEntity.requestSimulation(player);

@@ -224,7 +224,7 @@ public class SimulationNetwork {
             try {
                 elements.add(simConn.getSimId().toString(), simConn.toJson());
             } catch (NullPointerException e) {
-                PlayerUtils.warnServer(player, "command.electricblocks.requestsimulation.warn_conn");
+                PlayerUtils.warn(player, "command.electricblocks.requestsimulation.warn_conn");
             }
         }
         requestJson.add("elements", elements);
@@ -310,7 +310,7 @@ public class SimulationNetwork {
                      * PandaPower and so we have to discard this loop. The player is warned if a player exists.
                      */
                     if (hasPlayer())
-                        PlayerUtils.warnServer(player, "command.electricblocks.requestsimulation.warn_loop");
+                        PlayerUtils.warn(player, "command.electricblocks.requestsimulation.warn_loop");
                     continue;
                 }
             }

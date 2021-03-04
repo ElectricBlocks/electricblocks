@@ -9,7 +9,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -63,14 +62,14 @@ public class SimulationHandler {
                                     sim.handleSimulationResults(result);
                                 } else if (status_str.equals("CONV_ERROR")) {
                                     sim.zeroSimResults();
-                                    PlayerUtils.warnServer(sim.getPlayer(), "command.electricblocks.requestsimulation.warn_conv");
+                                    PlayerUtils.warn(sim.getPlayer(), "command.electricblocks.requestsimulation.warn_conv");
                                 } else {
                                     sim.zeroSimResults();
-                                    PlayerUtils.errorServer(sim.getPlayer(), "command.electricblocks.requestsimulation.err", result.get("status").getAsString(), result.get("response").getAsString());
+                                    PlayerUtils.error(sim.getPlayer(), "command.electricblocks.requestsimulation.err", result.get("status").getAsString(), result.get("response").getAsString());
                                 }
                             } else {
                                 sim.zeroSimResults();
-                                PlayerUtils.errorServer(sim.getPlayer(), "command.electricblocks.requestsimulation.unknown_err");
+                                PlayerUtils.error(sim.getPlayer(), "command.electricblocks.requestsimulation.unknown_err");
                             }
                         }
                     }
@@ -128,7 +127,7 @@ public class SimulationHandler {
             responseString = sendPost(requestJson.toString());
         } catch (Exception e) {
             if (simNetwork.hasPlayer()) {
-                PlayerUtils.errorServer(simNetwork.getPlayer(), "command.electricblocks.requestsimulation.error_conn");
+                PlayerUtils.error(simNetwork.getPlayer(), "command.electricblocks.requestsimulation.error_conn");
             }
             ElectricBlocksMod.LOGGER.fatal("ElectricBlocks experienced a connection issue with EBPP:");
             e.printStackTrace();
