@@ -13,7 +13,6 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.LogicalSide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +51,8 @@ public class STEScreen extends Screen {
 
     // Info needed to preload the form with data
     protected boolean changed = false;
-    protected PlayerEntity player;
-    protected SimulationTileEntity simulationTileEntity;
+    protected final PlayerEntity player;
+    protected final SimulationTileEntity simulationTileEntity;
 
     public STEScreen(SimulationTileEntity simulationTileEntity, PlayerEntity player) {
         super(new TranslationTextComponent(simulationTileEntity.getTranslationString()));
@@ -265,7 +264,7 @@ public class STEScreen extends Screen {
         return inServiceButton.y - BUTTON_HEIGHT;
     }
 
-    private class PropertyRow {
+    private static class PropertyRow {
         public boolean isInput = false;
         public int offset = 0;
         public TextFieldWidget textFieldWidget;

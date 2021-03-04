@@ -70,7 +70,7 @@ public class ElectricBlocksMod {
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
-        boolean keepAliveSuccessful = false;
+        boolean keepAliveSuccessful;
         try {
             keepAliveSuccessful = SimulationHandler.instance().sendKeepAlive();
         } catch (Exception e) {

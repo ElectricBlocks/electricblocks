@@ -1,7 +1,6 @@
 package edu.uidaho.electricblocks.blocks;
 
 import edu.uidaho.electricblocks.tileentities.BusTileEntity;
-import edu.uidaho.electricblocks.tileentities.ExternalGridTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

@@ -2,7 +2,6 @@ package edu.uidaho.electricblocks.utils;
 
 import edu.uidaho.electricblocks.guis.*;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
-import edu.uidaho.electricblocks.tileentities.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.ExtensionPoint;

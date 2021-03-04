@@ -57,7 +57,7 @@ public class BlockEventHandler {
             BlockState blockState = world.getBlockState(event.getPos());
             Block block = blockState.getBlock();
 
-            IMultimeter multimeter = null;
+            IMultimeter multimeter;
             TileEntity te;
             if (block instanceof IMultimeter) {
                 multimeter = (IMultimeter) block;
