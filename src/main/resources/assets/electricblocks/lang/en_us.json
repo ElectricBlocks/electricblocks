@@ -1,6 +1,6 @@
 {
   "itemGroup.ebtab": "Electric Blocks",
-  "block.electricblocks.portablegenerator_block": "Portable Generator",
+  "block.electricblocks.generator_block": "Generator",
   "block.electricblocks.wire_block": "Wire",
   "block.electricblocks.battery_block": "Battery",
   "block.electricblocks.bus_block": "Bus",

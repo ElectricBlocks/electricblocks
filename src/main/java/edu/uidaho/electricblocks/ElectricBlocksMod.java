@@ -36,7 +36,7 @@ public class ElectricBlocksMod {
     public static final ItemGroup TAB = new ItemGroup("ebtab") {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(RegistryHandler.LAMP_ITEM.get()); // TODO change this when we add other blocks back in
+            return new ItemStack(RegistryHandler.GENERATOR_ITEM.get());
         }
     };
 
