@@ -1,7 +1,6 @@
 package edu.uidaho.electricblocks.simulation;
 
 import com.google.gson.JsonElement;
-import edu.uidaho.electricblocks.utils.MetricUnit;
 import net.minecraft.nbt.CompoundNBT;
 
 import javax.annotation.Nonnull;

@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 
 import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.utils.ClientUtils;
-import edu.uidaho.electricblocks.utils.MetricUnit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;

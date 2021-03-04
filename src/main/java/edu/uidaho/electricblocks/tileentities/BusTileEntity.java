@@ -6,15 +6,8 @@ import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.simulation.SimulationProperty;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
-import edu.uidaho.electricblocks.utils.ClientUtils;
-import edu.uidaho.electricblocks.utils.MetricUnit;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 
-import javax.annotation.Nonnull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;

@@ -6,19 +6,10 @@ import java.util.UUID;
 
 import com.google.gson.JsonObject;
 
-import edu.uidaho.electricblocks.interfaces.IMultimeter;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.simulation.SimulationProperty;
-import edu.uidaho.electricblocks.utils.ClientUtils;
-import edu.uidaho.electricblocks.utils.MetricUnit;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-
-import javax.annotation.Nonnull;
 
 /**
  * Tile entity associated with the @LoadBlock
