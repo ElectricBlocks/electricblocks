@@ -58,7 +58,7 @@ public class ElectricBlocksPacketHandler {
         double[] inputs = message.getInputs();
         // Verify that the block position
         if (!World.isValid(pos) || !world.isBlockModifiable(player, pos) || !player.getPosition().withinDistance(pos, 5.0)) {
-            PlayerUtils.error(player, "command.electricblocks.viewmodify.err_block");
+            PlayerUtils.errorServer(player, "command.electricblocks.viewmodify.err_block");
             return;
         }
 
@@ -68,7 +68,7 @@ public class ElectricBlocksPacketHandler {
         if (aste != null) {
             aste.readPacketBuffer(inputs);
         } else {
-            PlayerUtils.error(player, "command.electricblocks.viewmodify.err_block");
+            PlayerUtils.errorServer(player, "command.electricblocks.viewmodify.err_block");
             return;
         }
 

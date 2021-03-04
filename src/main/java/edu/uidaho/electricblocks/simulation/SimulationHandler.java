@@ -63,14 +63,14 @@ public class SimulationHandler {
                                     sim.handleSimulationResults(result);
                                 } else if (status_str.equals("CONV_ERROR")) {
                                     sim.zeroSimResults();
-                                    PlayerUtils.warn(sim.getPlayer(), "command.electricblocks.requestsimulation.warn_conv");
+                                    PlayerUtils.warnServer(sim.getPlayer(), "command.electricblocks.requestsimulation.warn_conv");
                                 } else {
                                     sim.zeroSimResults();
-                                    PlayerUtils.error(sim.getPlayer(), "command.electricblocks.requestsimulation.err", result.get("status").getAsString(), result.get("response").getAsString());
+                                    PlayerUtils.errorServer(sim.getPlayer(), "command.electricblocks.requestsimulation.err", result.get("status").getAsString(), result.get("response").getAsString());
                                 }
                             } else {
                                 sim.zeroSimResults();
-                                PlayerUtils.error(sim.getPlayer(), "command.electricblocks.requestsimulation.unknown_err");
+                                PlayerUtils.errorServer(sim.getPlayer(), "command.electricblocks.requestsimulation.unknown_err");
                             }
                         }
                     }
@@ -128,7 +128,7 @@ public class SimulationHandler {
             responseString = sendPost(requestJson.toString());
         } catch (Exception e) {
             if (simNetwork.hasPlayer()) {
-                PlayerUtils.error(simNetwork.getPlayer(), "command.electricblocks.requestsimulation.error_conn");
+                PlayerUtils.errorServer(simNetwork.getPlayer(), "command.electricblocks.requestsimulation.error_conn");
             }
             ElectricBlocksMod.LOGGER.fatal("ElectricBlocks experienced a connection issue with EBPP:");
             e.printStackTrace();

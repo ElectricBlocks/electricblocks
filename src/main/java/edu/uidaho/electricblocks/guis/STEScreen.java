@@ -214,7 +214,7 @@ public class STEScreen extends Screen {
             if (donePressed) {
                 submitChanges();
             } else {
-                PlayerUtils.warn(player, LogicalSide.CLIENT, "gui.electricblocks.warn_escape");
+                PlayerUtils.warnClient(player, "gui.electricblocks.warn_escape");
             }
         }
         super.onClose();
@@ -235,12 +235,12 @@ public class STEScreen extends Screen {
                 pr.newValue = Double.parseDouble(pr.textFieldWidget.getText());
             } catch (NumberFormatException e) {
                 shouldUpdate = false;
-                PlayerUtils.error(player, LogicalSide.CLIENT, "gui.electricblocks.err_invalid_number");
+                PlayerUtils.errorClient(player,"gui.electricblocks.err_invalid_number");
             }
         }
 
         if (shouldUpdate) {
-            PlayerUtils.sendMessage(player, LogicalSide.CLIENT,  "command.electricblocks.viewmodify.submit");
+            PlayerUtils.sendMessageClient(player,"command.electricblocks.viewmodify.submit");
             simulationTileEntity.setInService(inService);
             for (PropertyRow pr : propertyRows) {
                 if (!pr.isInput) {

@@ -1,14 +1,7 @@
 package edu.uidaho.electricblocks.utils;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.MinecraftGame;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.*;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fml.LogicalSide;
-
-import javax.annotation.Nullable;
 
 public class PlayerUtils {
 
@@ -18,25 +11,16 @@ public class PlayerUtils {
      * @param message The translation key for the message you want to send
      * @param args Optional positional arguments used in string formatting
      */
-    public static void sendMessage(PlayerEntity player, String message, Object... args) {
-        if (playerIsClientSide(player)) {
-            return;
-        }
-
-        sendMessage(player, LogicalSide.SERVER, message, args);
-    }
-
-    public static void sendMessage(PlayerEntity player, LogicalSide logicalSide, String message, Object... args) {
-        if (logicalSide.isClient()) {
-            player = Minecraft.getInstance().player;
-        }
-        if (player == null) {
+    public static void sendMessageServer(PlayerEntity player, String message, Object... args) {
+        if (player == null || playerIsClientSide(player)) {
             return;
         }
         player.sendMessage(new TranslationTextComponent(message, args));
-
     }
 
+    public static void sendMessageClient(PlayerEntity player, String message, Object... args) {
+        player.sendMessage(new TranslationTextComponent(message, args));
+    }
 
     /**
      * Sends a localized message to the player with a red [WARNING] tag in front of it.
@@ -44,22 +28,19 @@ public class PlayerUtils {
      * @param warning The translation key for the warning you want to send
      * @param args Optional positional arguments used in string formatting
      */
-    public static void warn(PlayerEntity player, String warning, Object... args) {
-        if (playerIsClientSide(player)) {
+    public static void warnServer(PlayerEntity player, String warning, Object... args) {
+        if (player == null || playerIsClientSide(player)) {
             return;
         }
 
-        warn(player, LogicalSide.SERVER, warning, args);
+        player.sendMessage(processWarning(warning, args));
     }
 
-    public static void warn(PlayerEntity player, LogicalSide logicalSide, String warning, Object... args) {
-        if (logicalSide.isClient()) {
-            player = Minecraft.getInstance().player;
-        }
-        if (player == null) {
-            return;
-        }
+    public static void warnClient(PlayerEntity player, String warning, Object... args) {
+        player.sendMessage(processWarning(warning, args));
+    }
 
+    public static TranslationTextComponent processWarning(String warning, Object... args) {
         TranslationTextComponent parent = new TranslationTextComponent("command.electricblocks.warn");
         parent.applyTextStyle(TextFormatting.RED);
         parent.appendText(": ");
@@ -68,7 +49,7 @@ public class PlayerUtils {
         sibling.applyTextStyle(TextFormatting.WHITE);
         parent.appendSibling(sibling);
 
-        player.sendMessage(parent);
+        return parent;
     }
 
     /**
@@ -77,22 +58,19 @@ public class PlayerUtils {
      * @param err The translation key for the error you want to send
      * @param args Optional positional arguments used in string formatting
      */
-    public static void error(PlayerEntity player, String err, Object... args) {
-        if (playerIsClientSide(player)) {
+    public static void errorServer(PlayerEntity player, String err, Object... args) {
+        if (player == null || playerIsClientSide(player)) {
             return;
         }
 
-        error(player, LogicalSide.SERVER, err, args);
+        player.sendMessage(processError(err, args));
     }
 
-    public static void error(PlayerEntity player, LogicalSide logicalSide, String err, Object... args) {
-        if (logicalSide.isClient()) {
-            player = Minecraft.getInstance().player;
-        }
-        if (player == null) {
-            return;
-        }
+    public static void errorClient(PlayerEntity player, String err, Object... args) {
+        player.sendMessage(processError(err, args));
+    }
 
+    public static TranslationTextComponent processError(String err, Object... args) {
         TranslationTextComponent parent = new TranslationTextComponent("command.electricblocks.error");
         parent.applyTextStyle(TextFormatting.DARK_RED);
         parent.appendText(": ");
@@ -101,7 +79,7 @@ public class PlayerUtils {
         sibling.applyTextStyle(TextFormatting.WHITE);
         parent.appendSibling(sibling);
 
-        player.sendMessage(parent);
+        return parent;
     }
 
     /**
@@ -112,10 +90,6 @@ public class PlayerUtils {
      */
     @Deprecated
     public static void sendRaw(PlayerEntity player, String message) {
-        if (playerIsClientSide(player)) {
-            return;
-        }
-
         player.sendMessage(new StringTextComponent(message));
     }
 
