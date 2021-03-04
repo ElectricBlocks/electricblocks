@@ -58,6 +58,7 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
 
     @Override
     public void read(@Nonnull CompoundNBT compound) {
+        super.read(compound);
         simId = compound.getUniqueId("simId");
         for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
             entry.getValue().readNBT("in_" + entry.getKey(), compound);
