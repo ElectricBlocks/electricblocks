@@ -20,15 +20,26 @@ import net.minecraftforge.fml.DistExecutor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * This abstract class contains the common base code used to represent all of the data associated with a particular
+ * electrical element in a simulation network.
+ */
 public abstract class SimulationTileEntity extends TileEntity implements IMultimeter {
 
+    // The inputs and output properties
     protected Map<String, SimulationProperty> inputs = new LinkedHashMap<>();
     protected Map<String, SimulationProperty> outputs = new LinkedHashMap<>();
 
-    protected UUID simId = UUID.randomUUID();
+    protected UUID simId = UUID.randomUUID(); // Unique ID for this tile entity
     protected final SimulationType simulationType;
     protected Map<String, UUID> embededBusses = new HashMap<>();
 
+    /**
+     * Common constructor for all simulation tile entities which copies the default input and outputs to this tile
+     * entity and initializes embedded buses
+     * @param tileEntityTypeIn The tile entity type
+     * @param simulationType The PandaPower element type that this STE represents
+     */
     public SimulationTileEntity(TileEntityType<?> tileEntityTypeIn, SimulationType simulationType) {
         super(tileEntityTypeIn);
         this.simulationType = simulationType;
@@ -41,6 +52,11 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
         initEmbeddedBusses();
     }
 
+    /**
+     * Function called by client and server to fill NBT tags with values stored in memory
+     * @param compound The tag to be filled
+     * @return The completed NBT Tag
+     */
     @Override
     @Nonnull
     public CompoundNBT write(@Nonnull CompoundNBT compound) {
@@ -55,6 +71,10 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
         return compound;
     }
 
+    /**
+     * Function called by client and server to read NBT tags and store their values in memory
+     * @param compound The tag to be read
+     */
     @Override
     public void read(@Nonnull CompoundNBT compound) {
         super.read(compound);
@@ -67,6 +87,10 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
         }
     }
 
+    /**
+     * Fills JSON representation of this STE by iterating over inputs and adding properties to JSON
+     * @param jsonObject The JsonObject to be filled
+     */
     public void fillJSON(JsonObject jsonObject) {
         for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
             if (!entry.getValue().shouldSendJSON()) {
@@ -248,10 +272,19 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
         }
     }
 
+    /**
+     * Generates the default JSON representing a single bus with the default voltage of 20.0 kilovolts
+     * @return The JSON representation of the bus
+     */
     public JsonObject getBusJson() {
         return getBusJson(20.0);
     }
 
+    /**
+     * Generates the default JSON representing a single bus with a specific voltage
+     * @param ratedVoltageKV The voltage of the bus in kilovolts
+     * @return The JSON representation of the bus
+     */
     public JsonObject getBusJson(double ratedVoltageKV) {
         JsonObject bus = new JsonObject();
         bus.addProperty("etype", SimulationType.BUS.toString());
@@ -259,19 +292,36 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
         return bus;
     }
 
+    /**
+     * @return Whether or not this electrical element is "In Service"
+     */
     public boolean isInService() {
         return inputs.get("in_service").getBoolean();
     }
 
+    /**
+     * Sets the "In Service" value of this electrical element. This does NOT request a simulation and just updates the
+     * value.
+     * @param inService True or false
+     */
     public void setInService(boolean inService) {
         inputs.get("in_service").set(inService);
     }
 
+    /**
+     * Toggles the "In Service" value of this electrical element and requests a simulation to be performed
+     * @param player The player that triggered the toggle
+     */
     public void toggleInService(PlayerEntity player) {
         setInService(!isInService());
         requestSimulation(player);
     }
 
+    /**
+     * Fills a packet buffer (double array) with the values stored in this STE. This is used for constructing a network
+     * packet for updating an STE using GUIs
+     * @param d The double array to be filled
+     */
     public void fillPacketBuffer(double[] d) {
         int i = 0;
         for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
@@ -281,6 +331,10 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
         }
     }
 
+    /**
+     * Reads the packet buffer (double array) and sets the value of the input properties to the values held in the array
+     * @param d The packet buffer double array to be read
+     */
     public void readPacketBuffer(double[] d) {
         int i = 0;
         for (Map.Entry<String, SimulationProperty> entry : inputs.entrySet()) {
@@ -304,20 +358,34 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
         return i;
     }
 
+    /**
+     * @return A map of input simulation properties for this STE
+     */
     public Map<String, SimulationProperty> getInputs() {
         return inputs;
     }
 
+    /**
+     * @return A map of output simulation properties for this STE
+     */
     public Map<String, SimulationProperty> getOutputs() {
         return outputs;
     }
 
+    /**
+     * @return The translation key in the lang file corresponding to the name of this electrical element
+     */
     public abstract String getTranslationString();
 
+    /**
+     * @return The default inputs for this electrical element, usually taken directly from PandaPower
+     */
     public abstract Map<String, SimulationProperty> getDefaultInputs();
 
+    /**
+     * @return The default outputs for this electrical element, usually starts with all values zero'd out
+     */
     public abstract Map<String, SimulationProperty> getDefaultOutputs();
-
 
     @Override
     public void updateOrToggle(PlayerEntity player) {
