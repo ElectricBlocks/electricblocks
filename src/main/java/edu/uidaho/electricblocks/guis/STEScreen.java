@@ -18,6 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The STEScreen class is designed to automatically construct the view/modify GUI based on the information stored within
+ * a simulation tile entity. This single class is aware of which tile entity that is trying to be displayed and will use
+ * their properties accordingly.
+ *
+ * Previously every single STE had its own Screen subclass but this resulted in far too much duplicate code.
+ */
 public class STEScreen extends Screen {
     // Layout constants 
     // Width of a button
@@ -62,8 +69,9 @@ public class STEScreen extends Screen {
     }
 
     /**
-     * Called whenever a new screen is initialized. This function adds a "Done" button at the bottom of the screen by
-     * default. Override in subclasses to perform additional actions
+     * Called whenever a new screen is initialized. This function adds a "Done" button and an "In Service" button to the
+     * bottom of the screen as well as extracting the properties from the STE to create all the necessary inputs and
+     * labels.
      */
     @Override
     protected void init() {
@@ -99,11 +107,14 @@ public class STEScreen extends Screen {
         );
         this.addButton(doneButton);
 
+        // Process all of the inputs
         boolean isFirst = true;
         for (Map.Entry<String, SimulationProperty> entry : simulationTileEntity.getInputs().entrySet()) {
             if (entry.getValue().getPropertyType() != SimulationProperty.PropertyType.DOUBLE) {
+                // Skip over special properties that are not doubles
                 continue;
             }
+            // Initialize a new property row with info from inputs
             PropertyRow propertyRow = new PropertyRow();
             propertyRow.isInput = true;
             propertyRow.offset = offset;
@@ -120,8 +131,10 @@ public class STEScreen extends Screen {
             offset += 30;
             propertyRows.add(propertyRow);
         }
+        // Remember separator location
         separatorOffset = offset - 10;
         offset += 5;
+        // Process all of the outputs
         for (Map.Entry<String, SimulationProperty> entry : simulationTileEntity.getOutputs().entrySet()) {
             if (entry.getValue().getPropertyType() != SimulationProperty.PropertyType.DOUBLE) {
                 continue;
@@ -137,6 +150,7 @@ public class STEScreen extends Screen {
         }
         MIN_SCROLL = -(offset - 180);
 
+        // Hide all of the text inputs that shouldn't be visible because they are off screen
         for (Widget w : this.buttons) {
             if (!(w instanceof Button)) {
                 w.visible = w.y <= getMaxCutoff() && w.y >= SCROLL_CUTOFF_MIN;
@@ -144,6 +158,13 @@ public class STEScreen extends Screen {
         }
     }
 
+    /**
+     * Handles mouse scrolling for hiding and displaying elements that are outside of the scroll window
+     * @param mouseX Mouse x position
+     * @param mouseY Mouse y position
+     * @param scrollAmount Amount scrolled
+     * @return Boolean value from super method call
+     */
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollAmount) {
         int scroll = scrollAmount >= 0 ? 5 : -5;
@@ -200,6 +221,10 @@ public class STEScreen extends Screen {
             super.drawString(p_drawString_1_, p_drawString_2_, p_drawString_3_, p_drawString_4_, p_drawString_5_);
     }
 
+    /**
+     * This function is called whenever a change is made by modifying a field value or by toggling the "In Service"
+     * button. This lets the form know that a submission needs to be made and updates the "Done" button message
+     */
     public void onChange() {
         if (!changed) {
             changed = true;
@@ -207,6 +232,9 @@ public class STEScreen extends Screen {
         }
     }
 
+    /**
+     * Called when this screen is closed. Used to finish processing the form.
+     */
     @Override
     public void onClose() {
         if (changed) {
@@ -226,6 +254,7 @@ public class STEScreen extends Screen {
      */
     protected void submitChanges() {
         boolean shouldUpdate = true;
+        // Validate all the values entered into rows are correct
         for (PropertyRow pr : propertyRows) {
             if (!pr.isInput) {
                 continue;
@@ -238,6 +267,7 @@ public class STEScreen extends Screen {
             }
         }
 
+        // Construct and send network packet to server
         if (shouldUpdate) {
             PlayerUtils.sendMessageClient(player,"command.electricblocks.viewmodify.submit");
             simulationTileEntity.setInService(inService);
@@ -253,6 +283,10 @@ public class STEScreen extends Screen {
 
     }
 
+    /**
+     * Boiler plate code for initializing an output result field
+     * @param textFieldWidget The text field widget being initialized
+     */
     protected void initializeResultField(TextFieldWidget textFieldWidget) {
         textFieldWidget.setVisible(true);
         textFieldWidget.setEnabled(false);
@@ -260,10 +294,18 @@ public class STEScreen extends Screen {
         addButton(textFieldWidget);
     }
 
+    /**
+     * Calculates the cutoff point at which text fields should no longer be displayed to avoid overlap with buttons.
+     * @return The max y cutoff for this screen.
+     */
     public int getMaxCutoff() {
         return inServiceButton.y - BUTTON_HEIGHT;
     }
 
+    /**
+     * Static inner class used to represent a single row in the GUI. Each row consists of a label, a text field, and a
+     * units label. This is used to help group all the relevant data together.
+     */
     private static class PropertyRow {
         public boolean isInput = false;
         public int offset = 0;

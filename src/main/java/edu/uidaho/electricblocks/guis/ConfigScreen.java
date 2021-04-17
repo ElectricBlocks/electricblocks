@@ -6,6 +6,10 @@ import net.minecraft.client.gui.widget.list.OptionsRowList;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TranslationTextComponent;
 
+/**
+ * This class holds the client side configuration information for this mod. As of the writing of this comment, there are
+ * currently no client side configurable options. They can be added here in the future though if needed.
+ */
 public class ConfigScreen extends Screen {
     /** Distance from top of the screen to the options row list's top */
     private static final int OPTIONS_LIST_TOP_HEIGHT = 24;
