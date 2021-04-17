@@ -18,6 +18,10 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+/**
+ * Server-side only packet handler class that opens a network chanel and listens for STE updates. This allows
+ * client-side GUI to communicate changes to the server.
+ */
 public class ElectricBlocksPacketHandler {
 
     private static int packetId = 1;
@@ -29,6 +33,11 @@ public class ElectricBlocksPacketHandler {
             PROTOCOL_VERSION::equals
     );
 
+    /**
+     * Function called by network channel when an STE update packet is received
+     * @param message The parsed TileEntityMessageToServer
+     * @param context The network context
+     */
     public static void onTileEntityMessageReceived(final TileEntityMessageToServer message, Supplier<NetworkEvent.Context> context) {
         NetworkEvent.Context ctx = context.get();
         ctx.setPacketHandled(true);
@@ -50,6 +59,11 @@ public class ElectricBlocksPacketHandler {
         ctx.enqueueWork(() -> processMessage(message, player));
     }
 
+    /**
+     * This function is called when the server has received a packet from a client and wants to process it.
+     * @param message The TileEntityMessageToServer to be processed
+     * @param player The player that sent the message
+     */
     static void processMessage(final TileEntityMessageToServer message, ServerPlayerEntity player) {
         ServerWorld world = player.getServerWorld();
         BlockPos pos = new BlockPos(message.getX(), message.getY(), message.getZ());
@@ -61,19 +75,22 @@ public class ElectricBlocksPacketHandler {
         }
 
         TileEntity te = world.getTileEntity(pos);
-        SimulationTileEntity aste = te instanceof SimulationTileEntity ? (SimulationTileEntity) te : null;
+        SimulationTileEntity ste = te instanceof SimulationTileEntity ? (SimulationTileEntity) te : null;
 
-        if (aste != null) {
-            aste.readPacketBuffer(inputs);
+        if (ste != null) {
+            ste.readPacketBuffer(inputs);
         } else {
             PlayerUtils.error(player, "command.electricblocks.viewmodify.err_block");
             return;
         }
 
-        aste.setInService(message.isInService());
-        aste.requestSimulation(player);
+        ste.setInService(message.isInService());
+        ste.requestSimulation(player);
     }
 
+    /**
+     * Registers packets and associated methods with communications channel
+     */
     public static void registerPackets() {
         INSTANCE.registerMessage(packetId++, TileEntityMessageToServer.class,
                 TileEntityMessageToServer::encode,

@@ -85,30 +85,51 @@ public class TileEntityMessageToServer {
         }
     }
 
+    /**
+     * @return The x coordinate for the STE that was updated
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * @return The y coordinate for the STE that was updated
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * @return The z coordinate for the STE that was updated
+     */
     public int getZ() {
         return z;
     }
 
+    /**
+     * @return Whether or not the updated STE is in service
+     */
     public boolean isInService() {
         return inService;
     }
 
+    /**
+     * @return The number of numerical inputs for the STE that was updated
+     */
     public int getNumInputs() {
         return numInputs;
     }
 
+    /**
+     * @return The array of numerical inputs for the STE that was updated
+     */
     public double[] getInputs() {
         return inputs;
     }
 
+    /**
+     * @return Whether or not this packet is valid or should result in an error
+     */
     public boolean isValid() {
         return isValid;
     }
