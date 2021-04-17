@@ -209,6 +209,10 @@ public class SimulationNetwork {
         return list;
     }
 
+    /**
+     * Converts the simulation network represented by this class to a JSON format for submission to EBPP
+     * @return The JsonObject representing this network
+     */
     public JsonObject toJson() {
         JsonObject requestJson = new JsonObject();
         requestJson.addProperty("status", "SIM_REQUEST");
