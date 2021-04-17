@@ -28,6 +28,7 @@ public class SimulationNetwork {
     private SimulationTileEntity startingBlock;
     private World world;
     private PlayerEntity player = null;
+    private boolean isThreePhase = false;
 
     public SimulationNetwork(SimulationTileEntity startingBlock) {
         this.startingBlock = startingBlock;
@@ -212,7 +213,7 @@ public class SimulationNetwork {
     public JsonObject toJson() {
         JsonObject requestJson = new JsonObject();
         requestJson.addProperty("status", "SIM_REQUEST");
-        requestJson.addProperty("3phase", false); // TODO make 3phase system work
+        requestJson.addProperty("3phase", isThreePhase);
         JsonObject elements = new JsonObject();
         for (SimulationTileEntity sim : getSimulationList()) {
             JsonObject simJs = sim.toJson();
@@ -316,7 +317,12 @@ public class SimulationNetwork {
             }
 
             if (cb.hasSimTileEntity()) {
-                if (!simTileEntities.contains(cb.ste)) simTileEntities.add(cb.ste);
+                if (!simTileEntities.contains(cb.ste)) {
+                    if (!isThreePhase && cb.ste.isThreePhase()) {
+                        isThreePhase = true;
+                    }
+                    simTileEntities.add(cb.ste);
+                }
 
                 if (cb.hasConnection()) {
                     cb.currConnection.setToBus(cb.ste.getEmbeddedBus(cb.previousBlock.pos));

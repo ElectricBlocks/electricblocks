@@ -312,6 +312,10 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
         return outputs;
     }
 
+    public boolean isThreePhase() {
+        return false;
+    }
+
     public abstract String getTranslationString();
 
     public abstract Map<String, SimulationProperty> getDefaultInputs();

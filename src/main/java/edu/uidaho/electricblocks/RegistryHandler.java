@@ -32,6 +32,7 @@ public final class RegistryHandler {
     public static final RegistryObject<Block> GENERATOR_BLOCK = BLOCKS.register("generator_block", GeneratorBlock::new);
     public static final RegistryObject<Block> LOAD_BLOCK = BLOCKS.register("load_block", LoadBlock::new);
     public static final RegistryObject<Block> TRANSFORMER_BLOCK = BLOCKS.register("transformer_block", TransformerBlock::new);
+    public static final RegistryObject<Block> THREE_PHASE_EXTERNAL_GRID_BLOCK = BLOCKS.register("threephaseexternalgrid_block", ThreePhaseExternalGridBlock::new);
 
     // Items
     public static final RegistryObject<Item> LAMP_ITEM = ITEMS.register("lamp_item", LampItem::new);
@@ -42,6 +43,7 @@ public final class RegistryHandler {
     public static final RegistryObject<Item> GENERATOR_ITEM = ITEMS.register("generator_item", GeneratorItem::new);
     public static final RegistryObject<Item> LOAD_ITEM = ITEMS.register("load_item", LoadItem::new);
     public static final RegistryObject<Item> TRANSFORMER_ITEM = ITEMS.register("transformer_item", TransformerItem::new);
+    public static final RegistryObject<Item> THREE_PHASE_EXTERNAL_GRID_ITEM = ITEMS.register("threephaseexternalgrid_item", ThreePhaseExternalGridItem::new);
 
     // Tile Entities
     public static final RegistryObject<TileEntityType<LampTileEntity>> LAMP_TILE_ENTITY  =
@@ -56,6 +58,8 @@ public final class RegistryHandler {
             TILE_ENTITIES.register("load_tileentity", () -> TileEntityType.Builder.create(LoadTileEntity::new).build(null));
     public static final RegistryObject<TileEntityType<TransformerTileEntity>> TRANSFORMER_TILE_ENTITY =
             TILE_ENTITIES.register("transformer_tileentity", () -> TileEntityType.Builder.create(TransformerTileEntity::new).build(null));
+    public static final RegistryObject<TileEntityType<ThreePhaseExternalGridTileEntity>> THREE_PHASE_EXTERNAL_GRID_TILE_ENTITY =
+            TILE_ENTITIES.register("threephaseexternalgrid_tileentity", () -> TileEntityType.Builder.create(ThreePhaseExternalGridTileEntity::new).build(null));
 
     /**
      * Initializes all of the registers with the event mod bus so that blocks, items, and tile entities will be
