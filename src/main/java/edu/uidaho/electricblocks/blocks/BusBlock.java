@@ -15,7 +15,7 @@ public class BusBlock extends Block {
     public BusBlock() {
         super(Properties.create(Material.EARTH)
                 .hardnessAndResistance(0f)
-                .sound(SoundType.ANVIL)
+                .sound(SoundType.STONE)
                 .slipperiness(0.6f)
                 .harvestLevel(2)
         );

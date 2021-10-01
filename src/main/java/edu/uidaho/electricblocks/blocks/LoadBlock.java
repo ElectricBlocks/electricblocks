@@ -20,7 +20,7 @@ public class LoadBlock extends Block {
     public LoadBlock() {
         super(Block.Properties.create(Material.EARTH)
                 .hardnessAndResistance(0f)
-                .sound(SoundType.ANVIL)
+                .sound(SoundType.STONE)
                 .slipperiness(0.6f)
                 .harvestLevel(0)
         );
