@@ -8,6 +8,7 @@ public enum SimulationType {
     BUS("bus"),
     SWITCH("switch"),
     TRANSFORMER("trafo"),
+    BATTERY ("batt"),
     ASYMMETRIC_LOAD("asymmetric_load"),
     ASYMMETRIC_GENERATOR("asymmetric_sgen"),
     STORAGE("storage"),

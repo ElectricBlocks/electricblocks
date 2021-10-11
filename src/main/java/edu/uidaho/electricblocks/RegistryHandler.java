@@ -26,6 +26,7 @@ public final class RegistryHandler {
 
     // Blocks
     public static final RegistryObject<Block> LAMP_BLOCK = BLOCKS.register("lamp_block", LampBlock::new);
+    public static final RegistryObject<Block> BATTERY_BLOCK = BLOCKS.register("battery_block", BatteryBlock::new);
     public static final RegistryObject<Block> EXTERNAL_GRID_BLOCK = BLOCKS.register("externalgrid_block", ExternalGridBlock::new);
     public static final RegistryObject<Block> WIRE_BLOCK = BLOCKS.register("wire_block", WireBlock::new);
     public static final RegistryObject<Block> BUS_BLOCK = BLOCKS.register("bus_block", BusBlock::new);
@@ -35,6 +36,7 @@ public final class RegistryHandler {
 
     // Items
     public static final RegistryObject<Item> LAMP_ITEM = ITEMS.register("lamp_item", LampItem::new);
+    public static final RegistryObject<Item> BATTERY_ITEM = ITEMS.register("battery_item", BatteryItem::new);
     public static final RegistryObject<Item> MULTIMETER_ITEM = ITEMS.register("multimeter_item", MultimeterItem::new);
     public static final RegistryObject<Item> EXTERNAL_GRID_ITEM = ITEMS.register("externalgrid_item", ExternalGridItem::new);
     public static final RegistryObject<Item> WIRE_ITEM = ITEMS.register("wire_item", WireItem::new);
@@ -46,6 +48,8 @@ public final class RegistryHandler {
     // Tile Entities
     public static final RegistryObject<TileEntityType<LampTileEntity>> LAMP_TILE_ENTITY  =
             TILE_ENTITIES.register("lamp_tileentity", () -> TileEntityType.Builder.create(LampTileEntity::new).build(null));
+    public static final RegistryObject<TileEntityType<BatteryTileEntity>> BATTERY_TILE_ENTITY  =
+            TILE_ENTITIES.register("battery_tileentity", () -> TileEntityType.Builder.create(BatteryTileEntity::new).build(null));
     public static final RegistryObject<TileEntityType<ExternalGridTileEntity>> EXTERNAL_GRID_TILE_ENTITY =
             TILE_ENTITIES.register("externalgrid_tileentity", () -> TileEntityType.Builder.create(ExternalGridTileEntity::new).build(null));
     public static final RegistryObject<TileEntityType<BusTileEntity>> BUS_TILE_ENTITY =
