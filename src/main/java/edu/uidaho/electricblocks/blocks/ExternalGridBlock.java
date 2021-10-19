@@ -11,8 +11,8 @@ import net.minecraft.world.IBlockReader;
 import javax.annotation.Nullable;
 
 /**
- * This block represents a connection to an external grid such as what one might receive in a typical home.
- * The defaults for this is 120 volts
+ * This block represents a connection to an external grid, like one might receive in a typical home.
+ * Defaults to 120 volts.
  */
 public class ExternalGridBlock extends Block {
 

@@ -17,7 +17,7 @@ public class BatteryTileEntity extends SimulationTileEntity implements IMultimet
     protected static final Map<String, SimulationProperty> defaultInputs = new LinkedHashMap<>();
     protected static final Map<String, SimulationProperty> defaultOutputs = new LinkedHashMap<>();
 
-    //changes outputs of multimeeter will need to be changed to reflect relavent data once fully developed.
+    //changes outputs of multimeter will need to be changed to reflect relevant data once fully developed.
 
     static {
         defaultInputs.put("in_service", new SimulationProperty("In Service", "N/a", false));
@@ -34,7 +34,7 @@ public class BatteryTileEntity extends SimulationTileEntity implements IMultimet
     }
 
     @Override
-    //changes toJson will need to be changed to reflect relavent data once fully developed.
+    //changes toJson will need to be changed to reflect relevant data once fully developed.
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
 
