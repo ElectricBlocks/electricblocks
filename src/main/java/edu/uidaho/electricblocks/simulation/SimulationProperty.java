@@ -26,6 +26,7 @@ public class SimulationProperty {
     private Object data; // The data itself
     private PropertyType propertyType; // Type of the data for casting
     private final boolean sendInJSON; // False for properties that are editable in menu, but require special handling for json
+    private final double level; //
 
     /**
      * Constructor for a new simulation property. sendInJSON defaults to true when using this constructor. Used for most
@@ -34,8 +35,8 @@ public class SimulationProperty {
      * @param units The units that the input is in
      * @param defaultValue The default value that is assigned for this property on instantiation
      */
-    public SimulationProperty(String label, String units, Object defaultValue) {
-        this(label, units, defaultValue, true);
+    public SimulationProperty(String label, String units, Object defaultValue, double level) {
+        this(label, units, defaultValue, true, level);
     }
 
     /**
@@ -46,11 +47,12 @@ public class SimulationProperty {
      * @param sendInJSON Whether or not this property value should be included in the JSON representation of the element
      *                   that contains this property
      */
-    public SimulationProperty(String label, String units, Object defaultValue, boolean sendInJSON) {
+    public SimulationProperty(String label, String units, Object defaultValue, boolean sendInJSON, double level) {
         this.label = label;
         this.units = units;
         this.data = defaultValue;
         this.sendInJSON = sendInJSON;
+        this.level = level;
         if (defaultValue instanceof Boolean) {
             propertyType = PropertyType.BOOL;
         } else if (defaultValue instanceof String) {
@@ -167,6 +169,13 @@ public class SimulationProperty {
         return units;
     }
 
+    /** used to determine what GUI level to be returned
+     *
+     * 1 - Beginner
+     * 2 - Intermediate
+     * 3 - Advanced
+     */
+    public double getLevel() { return level; }
     /**
      * @return The type of the data stored in this simulation property from the subset defined in the PropertyType enum
      */
@@ -200,6 +209,6 @@ public class SimulationProperty {
      * @return A copy of this simulation property.
      */
     public SimulationProperty clone() {
-        return new SimulationProperty(label, units, data, sendInJSON);
+        return new SimulationProperty(label, units, data, sendInJSON, level);
     }
 }

@@ -18,13 +18,13 @@ public class BusTileEntity extends SimulationTileEntity implements IMultimeter {
     protected static final Map<String, SimulationProperty> defaultOutputs = new LinkedHashMap<>();
 
     static {
-        defaultInputs.put("in_service", new SimulationProperty("In Service", "N/a", false));
-        defaultInputs.put("vn_kv", new SimulationProperty("Bus Voltage", "kV", 20.0));
+        defaultInputs.put("in_service", new SimulationProperty("In Service", "N/a",  false, 1 ));
+        defaultInputs.put("vn_kv", new SimulationProperty("Bus Voltage", "kV", 20.0, 1));
 
-        defaultOutputs.put("vm_pu", new SimulationProperty("Voltage Magnitude", "pu", 0.0));
-        defaultOutputs.put("va_degree", new SimulationProperty("Voltage Angle", "degrees", 0.0));
-        defaultOutputs.put("p_mw", new SimulationProperty("Active Power", "MW", 0.0));
-        defaultOutputs.put("q_mvar", new SimulationProperty("Reactive Power", "Mvar", 0.0));
+        defaultOutputs.put("vm_pu", new SimulationProperty("Voltage Magnitude", "pu", 0.0, 3));
+        defaultOutputs.put("va_degree", new SimulationProperty("Voltage Angle", "degrees", 0.0, 3));
+        defaultOutputs.put("p_mw", new SimulationProperty("Active Power", "MW", 0.0, 1));
+        defaultOutputs.put("q_mvar", new SimulationProperty("Reactive Power", "Mvar", 0.0, 2));
     }
 
     public BusTileEntity() {

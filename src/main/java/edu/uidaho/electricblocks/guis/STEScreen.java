@@ -55,6 +55,8 @@ public class STEScreen extends Screen {
     protected Button doneButton;
     protected boolean inService;
     protected Button inServiceButton;
+    protected Button inLevel;
+    double level = 3;
 
     // Info needed to preload the form with data
     protected boolean changed = false;
@@ -65,7 +67,7 @@ public class STEScreen extends Screen {
         super(new TranslationTextComponent(simulationTileEntity.getTranslationString()));
         this.simulationTileEntity = simulationTileEntity;
         this.player = player;
-        this.inService = simulationTileEntity.isInService();
+        this.inService = simulationTileEntity.isInService();;
     }
 
     /**
@@ -91,6 +93,7 @@ public class STEScreen extends Screen {
                     }
                     onChange();
                 });
+
         this.addButton(inServiceButton);
         // Add the "Done" button
         doneButton = new Button(
@@ -106,7 +109,6 @@ public class STEScreen extends Screen {
             }
         );
         this.addButton(doneButton);
-
         // Process all of the inputs
         boolean isFirst = true;
         for (Map.Entry<String, SimulationProperty> entry : simulationTileEntity.getInputs().entrySet()) {
@@ -114,22 +116,24 @@ public class STEScreen extends Screen {
                 // Skip over special properties that are not doubles
                 continue;
             }
-            // Initialize a new property row with info from inputs
-            PropertyRow propertyRow = new PropertyRow();
-            propertyRow.isInput = true;
-            propertyRow.offset = offset;
-            propertyRow.simulationProperty = entry.getValue();
-            propertyRow.textFieldWidget = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, offset, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-            propertyRow.textFieldWidget.setText(String.format("%f", entry.getValue().getDouble()));
-            propertyRow.textFieldWidget.setVisible(true);
-            addButton(propertyRow.textFieldWidget);
-            if (isFirst) {
-                isFirst = false;
-                propertyRow.textFieldWidget.setFocused2(true);
-                setFocused(propertyRow.textFieldWidget);
+            if(entry.getValue().getLevel() <= level) {
+                // Initialize a new property row with info from inputs
+                PropertyRow propertyRow = new PropertyRow();
+                propertyRow.isInput = true;
+                propertyRow.offset = offset;
+                propertyRow.simulationProperty = entry.getValue();
+                propertyRow.textFieldWidget = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, offset, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+                propertyRow.textFieldWidget.setText(String.format("%f", entry.getValue().getDouble()));
+                propertyRow.textFieldWidget.setVisible(true);
+                addButton(propertyRow.textFieldWidget);
+                if (isFirst) {
+                    isFirst = false;
+                    propertyRow.textFieldWidget.setFocused2(true);
+                    setFocused(propertyRow.textFieldWidget);
+                }
+                offset += 30;
+                propertyRows.add(propertyRow);
             }
-            offset += 30;
-            propertyRows.add(propertyRow);
         }
         // Remember separator location
         separatorOffset = offset - 10;
@@ -139,14 +143,16 @@ public class STEScreen extends Screen {
             if (entry.getValue().getPropertyType() != SimulationProperty.PropertyType.DOUBLE) {
                 continue;
             }
-            PropertyRow propertyRow = new PropertyRow();
-            propertyRow.offset = offset;
-            propertyRow.simulationProperty = entry.getValue();
-            propertyRow.textFieldWidget = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, offset, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-            propertyRow.textFieldWidget.setText(String.format("%f", entry.getValue().getDouble()));
-            initializeResultField(propertyRow.textFieldWidget);
-            offset += 30;
-            propertyRows.add(propertyRow);
+            if(entry.getValue().getLevel() <= level) {
+                PropertyRow propertyRow = new PropertyRow();
+                propertyRow.offset = offset;
+                propertyRow.simulationProperty = entry.getValue();
+                propertyRow.textFieldWidget = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, offset, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+                propertyRow.textFieldWidget.setText(String.format("%f", entry.getValue().getDouble()));
+                initializeResultField(propertyRow.textFieldWidget);
+                offset += 30;
+                propertyRows.add(propertyRow);
+            }
         }
         MIN_SCROLL = -(offset - 180);
 
