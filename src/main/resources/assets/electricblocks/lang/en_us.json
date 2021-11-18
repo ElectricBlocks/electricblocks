@@ -37,5 +37,14 @@
   "gui.electricblocks.transformerscreen": "Transformer",
   "gui.electricblocks.busscreen": "Bus",
   "gui.electricblocks.close": "Close",
-  "gui.electricblocks.submitchanges": "Submit Changes"
+  "gui.electricblocks.submitchanges": "Submit Changes",
+
+  "_comment_": "EB HWYLA Config",
+  "config.electricblocks.plugin_eb.ebinservice": "EB In Service",
+
+  "_comment_": "Electric Blocks Power",
+  "info.wawla.ebpower": "EB Power: %s",
+
+  "_comment_": "Electric Blocks Service Status",
+  "info.wawla.ebinservice": "EB In Service: %s"
 }
