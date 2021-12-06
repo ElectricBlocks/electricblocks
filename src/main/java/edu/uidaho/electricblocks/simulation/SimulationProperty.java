@@ -26,7 +26,7 @@ public class SimulationProperty {
     private Object data; // The data itself
     private PropertyType propertyType; // Type of the data for casting
     private final boolean sendInJSON; // False for properties that are editable in menu, but require special handling for json
-    private final double level; //
+    private final double level; // Used to determine what GUI level a specific element is. (beginner, intermediate, advanced)
 
     /**
      * Constructor for a new simulation property. sendInJSON defaults to true when using this constructor. Used for most
@@ -46,6 +46,8 @@ public class SimulationProperty {
      * @param defaultValue The default value that is assigned for this property on instantiation
      * @param sendInJSON Whether or not this property value should be included in the JSON representation of the element
      *                   that contains this property
+     * @param level What level the GUI will print out this item in the STEScreen class. Assigned in each blocks
+     *                   tile entities.
      */
     public SimulationProperty(String label, String units, Object defaultValue, boolean sendInJSON, double level) {
         this.label = label;

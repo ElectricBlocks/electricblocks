@@ -38,6 +38,8 @@ public final class RegistryHandler {
     public static final RegistryObject<Item> LAMP_ITEM = ITEMS.register("lamp_item", LampItem::new);
     public static final RegistryObject<Item> BATTERY_ITEM = ITEMS.register("battery_item", BatteryItem::new);
     public static final RegistryObject<Item> MULTIMETER_ITEM = ITEMS.register("multimeter_item", MultimeterItem::new);
+    public static final RegistryObject<Item> MULTIMETER_ITEM2 = ITEMS.register("multimeter_item2", MultimeterItem2::new);
+    public static final RegistryObject<Item> MULTIMETER_ITEM3 = ITEMS.register("multimeter_item3", MultimeterItem3::new);
     public static final RegistryObject<Item> EXTERNAL_GRID_ITEM = ITEMS.register("externalgrid_item", ExternalGridItem::new);
     public static final RegistryObject<Item> WIRE_ITEM = ITEMS.register("wire_item", WireItem::new);
     public static final RegistryObject<Item> BUS_ITEM = ITEMS.register("bus_item", BusItem::new);

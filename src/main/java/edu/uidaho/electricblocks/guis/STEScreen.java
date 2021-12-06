@@ -1,5 +1,6 @@
 package edu.uidaho.electricblocks.guis;
 
+import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
 import edu.uidaho.electricblocks.network.TileEntityMessageToServer;
 import edu.uidaho.electricblocks.simulation.SimulationProperty;
@@ -12,6 +13,8 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
@@ -55,8 +58,7 @@ public class STEScreen extends Screen {
     protected Button doneButton;
     protected boolean inService;
     protected Button inServiceButton;
-    protected Button inLevel;
-    double level = 3;
+    double level;
 
     // Info needed to preload the form with data
     protected boolean changed = false;
@@ -67,7 +69,21 @@ public class STEScreen extends Screen {
         super(new TranslationTextComponent(simulationTileEntity.getTranslationString()));
         this.simulationTileEntity = simulationTileEntity;
         this.player = player;
-        this.inService = simulationTileEntity.isInService();;
+        this.inService = simulationTileEntity.isInService();
+
+        Item item = player.getHeldItem(Hand.MAIN_HAND).getItem();
+        if (item == RegistryHandler.MULTIMETER_ITEM.get())
+        {
+            this.level = 1;
+        }
+        if (item == RegistryHandler.MULTIMETER_ITEM2.get())
+        {
+            this.level = 2;
+        }
+        if (item == RegistryHandler.MULTIMETER_ITEM3.get())
+        {
+            this.level = 3;
+        }
     }
 
     /**
@@ -77,6 +93,7 @@ public class STEScreen extends Screen {
      */
     @Override
     protected void init() {
+
         // Add in service button
         inServiceButton = new Button(
                 (this.width - BUTTON_WIDTH) / 2,
@@ -116,6 +133,9 @@ public class STEScreen extends Screen {
                 // Skip over special properties that are not doubles
                 continue;
             }
+
+
+            //checks the level (beginner, intermediate, advanced) at which they want the information displayed
             if(entry.getValue().getLevel() <= level) {
                 // Initialize a new property row with info from inputs
                 PropertyRow propertyRow = new PropertyRow();
