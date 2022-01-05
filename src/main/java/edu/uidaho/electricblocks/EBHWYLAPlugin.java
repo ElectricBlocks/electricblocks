@@ -9,6 +9,6 @@ public class EBHWYLAPlugin implements IWailaPlugin {
     @Override
     public void register (IRegistrar hwyla) {
 
-        EBHWYLA.getFeatures().forEach(f -> f.initialize(hwyla));
+        ElectricBlocksMod.getFeatures().forEach(f -> f.initialize(hwyla));
     }
 }

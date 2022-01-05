@@ -1,11 +1,10 @@
 package edu.uidaho.electricblocks.plugins;
 
+import edu.uidaho.electricblocks.ElectricBlocksMod;
 import mcp.mobius.waila.api.*;
-import edu.uidaho.electricblocks.EBHWYLA;
 import edu.uidaho.electricblocks.lib.Feature;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import edu.uidaho.electricblocks.blocks.*;
 import net.minecraft.block.Block;
 
 import java.util.List;
@@ -32,8 +31,8 @@ public class FeatureEBInService extends Feature implements IComponentProvider {
 
             catch (final Exception e) {
 
-                EBHWYLA.LOG.error("Failed to get EBInService for block {}.", accessor.getBlockState());
-                EBHWYLA.LOG.catching(e);
+                ElectricBlocksMod.LOGGER.error("Failed to get EBInService for block {}.", accessor.getBlockState());
+                ElectricBlocksMod.LOGGER.catching(e);
             }
         }
     }

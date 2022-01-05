@@ -1,6 +1,6 @@
 # Electric Blocks
 
-Electric Blocks is a minecraft mod that simulates realistic power transmission.
+Electric Blocks is a Minecraft mod that simulates realistic power transmission.
 
 [![Build][build-shield]][build-url]
 [![Contributors][contributors-shield]][contributors-url]
