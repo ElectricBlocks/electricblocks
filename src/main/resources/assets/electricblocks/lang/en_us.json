@@ -43,8 +43,8 @@
   "config.electricblocks.plugin_eb.ebinservice": "EB In Service",
 
   "_comment_": "Electric Blocks Power",
-  "info.wawla.ebpower": "EB Power: %s",
+  "info.electricblocks.ebpower": "EB Power: %s",
 
   "_comment_": "Electric Blocks Service Status",
-  "info.wawla.ebinservice": "EB In Service: %s"
+  "info.electricblocks.ebinservice": "EB In Service: %s"
 }

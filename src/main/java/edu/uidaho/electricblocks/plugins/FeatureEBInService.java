@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FeatureEBInService extends Feature implements IComponentProvider {
 
-    private static final ResourceLocation ENABLED = new ResourceLocation("wawla", "hardness");
+    private static final ResourceLocation ENABLED = new ResourceLocation("electricblocks", "ebinservice");
 
     @Override
     public void initialize (IRegistrar hwyla) {
@@ -26,6 +26,7 @@ public class FeatureEBInService extends Feature implements IComponentProvider {
         if (config.get(ENABLED)) {
 
             try {
+                //final boolean isinservice =
                 info.add(this.getInfoComponent("ebinservice", "Test FeatureEBInService"));
             }
 

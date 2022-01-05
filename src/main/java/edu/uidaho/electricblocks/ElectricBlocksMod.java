@@ -67,7 +67,7 @@ public class ElectricBlocksMod {
 
         RegistryHandler.init();
 
-        features.add(new FeatureEBInService()); //WAILA plugins from /plugins
+        features.add(new FeatureEBInService()); //HWYLA plugins from /plugins
     }
 
     public static List<Feature> getFeatures() {
