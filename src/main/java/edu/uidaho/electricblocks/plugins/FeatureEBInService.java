@@ -6,6 +6,8 @@ import edu.uidaho.electricblocks.lib.Feature;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 
 import java.util.List;
 
@@ -26,8 +28,15 @@ public class FeatureEBInService extends Feature implements IComponentProvider {
         if (config.get(ENABLED)) {
 
             try {
+                final TileEntity tile = accessor.getTileEntity();
+                if (tile instanceof SimulationTileEntity) {
+                    final boolean isinservice = ((SimulationTileEntity) tile).isInService();
+                    info.add(this.getInfoComponent("ebinservice", isinservice));
+                }
+                //if (Block.SimulationProperty.getString().equals("In Service"))
                 //final boolean isinservice =
-                info.add(this.getInfoComponent("ebinservice", "Test FeatureEBInService"));
+                //use SimulationProperty.getString and SimulationProperty.getBoolean to achieve this?
+                //info.add(this.getInfoComponent("ebinservice", "Test FeatureEBInService"));
             }
 
             catch (final Exception e) {

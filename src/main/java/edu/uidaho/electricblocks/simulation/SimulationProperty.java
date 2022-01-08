@@ -34,6 +34,8 @@ public class SimulationProperty {
      * @param label The name of the input
      * @param units The units that the input is in
      * @param defaultValue The default value that is assigned for this property on instantiation
+     * @param level What level the GUI will print out this item in the STEScreen class. Assigned in each block's
+     *                  tile entities.
      */
     public SimulationProperty(String label, String units, Object defaultValue, double level) {
         this(label, units, defaultValue, true, level);
@@ -46,7 +48,7 @@ public class SimulationProperty {
      * @param defaultValue The default value that is assigned for this property on instantiation
      * @param sendInJSON Whether or not this property value should be included in the JSON representation of the element
      *                   that contains this property
-     * @param level What level the GUI will print out this item in the STEScreen class. Assigned in each blocks
+     * @param level What level the GUI will print out this item in the STEScreen class. Assigned in each block's
      *                   tile entities.
      */
     public SimulationProperty(String label, String units, Object defaultValue, boolean sendInJSON, double level) {
