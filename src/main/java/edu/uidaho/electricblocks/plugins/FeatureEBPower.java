@@ -11,9 +11,11 @@ import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 
 import java.util.List;
 
-public class FeatureEBInService extends Feature implements IComponentProvider {
+//HWYLA plugin - displays block power in the HWYLA tooltip.
+public class FeatureEBPower extends Feature implements IComponentProvider {
 
-    private static final ResourceLocation ENABLED = new ResourceLocation("electricblocks", "ebinservice");
+    //found in en_us.json
+    private static final ResourceLocation ENABLED = new ResourceLocation("electricblocks", "ebpower");
 
     @Override
     public void initialize (IRegistrar hwyla) {
@@ -30,14 +32,14 @@ public class FeatureEBInService extends Feature implements IComponentProvider {
             try {
                 final TileEntity tile = accessor.getTileEntity();
                 if (tile instanceof SimulationTileEntity) {
-                    final boolean isinservice = ((SimulationTileEntity) tile).isInService();
-                    info.add(this.getInfoComponent("ebinservice", isinservice));
+                    //final boolean isinservice = ((SimulationTileEntity) tile).isInService();
+                    //info.add(this.getInfoComponent("ebinservice", isinservice));
                 }
             }
 
             catch (final Exception e) {
 
-                ElectricBlocksMod.LOGGER.error("Failed to get EBInService for block {}.", accessor.getBlockState());
+                ElectricBlocksMod.LOGGER.error("Failed to get EBPower for block {}.", accessor.getBlockState());
                 ElectricBlocksMod.LOGGER.catching(e);
             }
         }
