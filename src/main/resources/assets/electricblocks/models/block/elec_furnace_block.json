@@ -1,0 +1,11 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "up": "electricblocks:blocks/elec_furnace_base",
+    "down": "electricblocks:blocks/elec_furnace_base",
+    "east": "electricblocks:blocks/elec_furnace_base",
+    "west": "electricblocks:blocks/elec_furnace_base",
+    "south": "electricblocks:blocks/elec_furnace_base",
+    "north": "electricblocks:blocks/elec_furnace_front"
+  }
+}

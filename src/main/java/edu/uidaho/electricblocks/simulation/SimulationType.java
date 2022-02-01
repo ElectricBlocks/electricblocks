@@ -12,6 +12,7 @@ public enum SimulationType {
     ASYMMETRIC_LOAD("asymmetric_load"),
     ASYMMETRIC_GENERATOR("asymmetric_sgen"),
     STORAGE("storage"),
+    ELEC_FURNACE("elec_furnace"),
     THREE_WINDING_TRANSFORMER("trafo3w");
 
     private final String name;

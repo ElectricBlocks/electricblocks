@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "electricblocks:block/elec_furnace_block" }
+  }
+}

@@ -23,6 +23,7 @@ public class ElectricBlocksConfig {
     }
 
     private static String hostURL;
+    private static String proxyURL;
     private static boolean updateOnBlockBreak;
     private static boolean logJSONRequests;
 
@@ -57,6 +58,7 @@ public class ElectricBlocksConfig {
 
     public static void bakeConfig() {
         hostURL = SERVER.hostURL.get();
+        proxyURL = SERVER.proxyURL.get();
         updateOnBlockBreak = SERVER.updateOnBlockBreak.get();
         logJSONRequests = SERVER.logJSONRequests.get();
     }
@@ -71,6 +73,7 @@ public class ElectricBlocksConfig {
     public static class ServerConfig {
 
         public final ConfigValue<String> hostURL;
+        public final ConfigValue<String> proxyURL;
         public final BooleanValue updateOnBlockBreak;
         public final BooleanValue logJSONRequests;
         
@@ -79,6 +82,10 @@ public class ElectricBlocksConfig {
                 .comment("Host of EBPP Simulation Server including port and endpoint")
                 .translation("config.electricblocks.hostURL")
                 .define("hostURL", "http://127.0.0.1:1127/api");
+            proxyURL = builder
+                .comment("Proxy of EBPP Simulation Server including port and address")
+                .translation("config.electricblocks.proxyURL")
+                .define("proxyURL", "http://127.0.0.1:1126");
             updateOnBlockBreak = builder
                 .comment("Whether or not the simulation should be updated when an electric block is broken")
                 .translation("config.electricblocks.update_on_block_break")
