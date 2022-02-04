@@ -126,7 +126,7 @@ public class STEScreen extends Screen {
             }
         );
         this.addButton(doneButton);
-        // Process all of the inputs
+        // Process all inputs
         boolean isFirst = true;
         for (Map.Entry<String, SimulationProperty> entry : simulationTileEntity.getInputs().entrySet()) {
             if (entry.getValue().getPropertyType() != SimulationProperty.PropertyType.DOUBLE) {
@@ -158,7 +158,7 @@ public class STEScreen extends Screen {
         // Remember separator location
         separatorOffset = offset - 10;
         offset += 5;
-        // Process all of the outputs
+        // Process all outputs
         for (Map.Entry<String, SimulationProperty> entry : simulationTileEntity.getOutputs().entrySet()) {
             if (entry.getValue().getPropertyType() != SimulationProperty.PropertyType.DOUBLE) {
                 continue;
@@ -176,7 +176,7 @@ public class STEScreen extends Screen {
         }
         MIN_SCROLL = -(offset - 180);
 
-        // Hide all of the text inputs that shouldn't be visible because they are off screen
+        // Hide all the text inputs that shouldn't be visible because they are off-screen
         for (Widget w : this.buttons) {
             if (!(w instanceof Button)) {
                 w.visible = w.y <= getMaxCutoff() && w.y >= SCROLL_CUTOFF_MIN;
@@ -185,7 +185,7 @@ public class STEScreen extends Screen {
     }
 
     /**
-     * Handles mouse scrolling for hiding and displaying elements that are outside of the scroll window
+     * Handles mouse scrolling for hiding and displaying elements that are outside the scroll window
      * @param mouseX Mouse x position
      * @param mouseY Mouse y position
      * @param scrollAmount Amount scrolled

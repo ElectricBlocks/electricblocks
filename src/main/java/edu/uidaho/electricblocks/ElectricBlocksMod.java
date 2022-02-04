@@ -2,7 +2,6 @@ package edu.uidaho.electricblocks;
 
 import edu.uidaho.electricblocks.lib.Feature;
 import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
-import edu.uidaho.electricblocks.plugins.FeatureEBInService;
 import edu.uidaho.electricblocks.utils.ClientUtils;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -23,6 +22,10 @@ import org.apache.logging.log4j.Logger;
 
 import edu.uidaho.electricblocks.eventhandlers.BlockEventHandler;
 import edu.uidaho.electricblocks.simulation.SimulationHandler;
+
+import edu.uidaho.electricblocks.plugins.FeatureEBInService;
+import edu.uidaho.electricblocks.plugins.FeatureEBInputs;
+import edu.uidaho.electricblocks.plugins.FeatureEBOutputs;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -68,11 +71,13 @@ public class ElectricBlocksMod {
         RegistryHandler.init();
 
         features.add(new FeatureEBInService()); //HWYLA plugins from /plugins
+        features.add(new FeatureEBInputs());
+        features.add(new FeatureEBOutputs());
     }
 
     public static List<Feature> getFeatures() {
         return features;
-    }
+    } //HWYLA
 
     private void setup(final FMLCommonSetupEvent event)
     {

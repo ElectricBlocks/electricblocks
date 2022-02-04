@@ -39,12 +39,14 @@
   "gui.electricblocks.close": "Close",
   "gui.electricblocks.submitchanges": "Submit Changes",
 
-  "_comment_": "EB HWYLA Config",
-  "config.electricblocks.plugin_eb.ebinservice": "EB In Service",
+  "_comment_": "WAILA/HWYLA Config",
+  "config.waila.plugin_electricblocks": "Electric Blocks",
+  "config.waila.plugin_electricblocks.ebinputs": "Inputs",
+  "config.waila.plugin_electricblocks.eboutputs": "Outputs",
+  "config.waila.plugin_electricblocks.ebinservice": "Service Status",
 
-  "_comment_": "Electric Blocks Power",
-  "info.electricblocks.ebpower": "Power: %s",
-
-  "_comment_": "Electric Blocks Service Status",
+  "_comment_": "WAILA/HWYLA Plugin Strings",
+  "info.electricblocks.ebinputs": "In: %s",
+  "info.electricblocks.eboutputs": "Out: %s",
   "info.electricblocks.ebinservice": "In Service: %s"
 }

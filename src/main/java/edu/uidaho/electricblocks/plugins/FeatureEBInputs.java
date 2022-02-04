@@ -8,14 +8,17 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
-
+import edu.uidaho.electricblocks.simulation.SimulationProperty;
+import java.util.Map;
 import java.util.List;
 
 //HWYLA plugin - displays block power in the HWYLA tooltip.
-public class FeatureEBPower extends Feature implements IComponentProvider {
+public class FeatureEBInputs extends Feature implements IComponentProvider {
 
     //found in en_us.json
-    private static final ResourceLocation ENABLED = new ResourceLocation("electricblocks", "ebpower");
+    private static final ResourceLocation ENABLED = new ResourceLocation("electricblocks", "ebinputs");
+
+
 
     @Override
     public void initialize (IRegistrar hwyla) {
@@ -31,15 +34,22 @@ public class FeatureEBPower extends Feature implements IComponentProvider {
 
             try {
                 final TileEntity tile = accessor.getTileEntity();
+
                 if (tile instanceof SimulationTileEntity) {
-                    //final boolean isinservice = ((SimulationTileEntity) tile).isInService();
-                    //info.add(this.getInfoComponent("ebinservice", isinservice));
+                    for (Map.Entry<String, SimulationProperty> entry : ((SimulationTileEntity) tile).getInputs().entrySet()) {
+                        if (entry.getValue().getPropertyType() != SimulationProperty.PropertyType.DOUBLE) {
+                            //Skip over special properties that are not doubles
+                            continue;
+                        }
+                        final String s = entry.getValue().getLabel() + ": " + entry.getValue().getDouble() + " " + entry.getValue().getUnits();
+                        info.add(this.getInfoComponent("ebinputs", s));
+                    }
                 }
             }
 
             catch (final Exception e) {
 
-                ElectricBlocksMod.LOGGER.error("Failed to get EBPower for block {}.", accessor.getBlockState());
+                ElectricBlocksMod.LOGGER.error("Failed to get EBInputs for block {}.", accessor.getBlockState());
                 ElectricBlocksMod.LOGGER.catching(e);
             }
         }

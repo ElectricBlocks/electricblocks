@@ -383,7 +383,7 @@ public abstract class SimulationTileEntity extends TileEntity implements IMultim
     public abstract Map<String, SimulationProperty> getDefaultInputs();
 
     /**
-     * @return The default outputs for this electrical element, usually starts with all values zero'd out
+     * @return The default outputs for this electrical element, usually starts with all values zeroed out
      */
     public abstract Map<String, SimulationProperty> getDefaultOutputs();
 
