@@ -9,6 +9,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -156,6 +159,24 @@ public class SimulationHandler {
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
         try {
+            /**
+            //UDP IMPLEMENTATION
+            DatagramSocket sock = new DatagramSocket();
+            InetAddress ip = InetAddress.getLocalHost();
+            byte buf[] = null;
+            buf = body.getBytes();
+            DatagramPacket DpSend = new DatagramPacket(buf, buf.length, ip, 1126);
+            sock.send(DpSend);
+            byte retbuf[] = new byte[65535];
+            DatagramPacket DpRecv = new DatagramPacket(retbuf, retbuf.length, ip, 1126);
+            sock.receive(DpRecv);
+
+            result = data(retbuf);
+
+            retbuf = new byte[65535];
+            //return answer;
+            */
+            //ORIGINAL IMPLEMENTATION
             URL url = new URL(addr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -185,6 +206,22 @@ public class SimulationHandler {
         }
         return result.toString();
     }
+
+    /*
+    public static StringBuilder data(byte[] a)
+    {
+        if (a == null)
+            return null;
+        StringBuilder ret = new StringBuilder();
+        int i = 0;
+        while (a[i] != 0)
+        {
+            ret.append((char) a[i]);
+            i++;
+        }
+        return ret;
+    }
+    */
 
     /**
      * Creates a new simulation network starting at a specific SimulationTileEntity, but the player who triggered the

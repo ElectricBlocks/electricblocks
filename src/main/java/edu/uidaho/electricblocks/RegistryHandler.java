@@ -1,11 +1,14 @@
 package edu.uidaho.electricblocks;
 
 import edu.uidaho.electricblocks.blocks.*;
+import edu.uidaho.electricblocks.containers.ElecFurnaceContainer;
 import edu.uidaho.electricblocks.items.*;
 import edu.uidaho.electricblocks.tileentities.*;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,6 +26,9 @@ public final class RegistryHandler {
     public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ElectricBlocksMod.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ElectricBlocksMod.MOD_ID);
     public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, ElectricBlocksMod.MOD_ID);
+    public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = new DeferredRegister<>(
+            ForgeRegistries.CONTAINERS, ElectricBlocksMod.MOD_ID);
+
 
     // Blocks
     public static final RegistryObject<Block> LAMP_BLOCK = BLOCKS.register("lamp_block", LampBlock::new);
@@ -66,6 +72,10 @@ public final class RegistryHandler {
             TILE_ENTITIES.register("transformer_tileentity", () -> TileEntityType.Builder.create(TransformerTileEntity::new).build(null));
     public static final RegistryObject<TileEntityType<ElecFurnaceTileEntity>> ELEC_FURNACE_TILE_ENTITY =
             TILE_ENTITIES.register("elec_furnace_tileentity", () -> TileEntityType.Builder.create(ElecFurnaceTileEntity::new).build(null));
+
+    //Containers
+    public static final RegistryObject<ContainerType<ElecFurnaceContainer>> ELEC_FURNACE_CONTAINER = CONTAINER_TYPES
+            .register("electric_furnace", () -> IForgeContainerType.create(ElecFurnaceContainer::new));
 
     /**
      * Initializes all of the registers with the event mod bus so that blocks, items, and tile entities will be
