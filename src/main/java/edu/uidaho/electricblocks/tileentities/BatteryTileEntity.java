@@ -21,10 +21,14 @@ public class BatteryTileEntity extends SimulationTileEntity implements IMultimet
 
     static {
         defaultInputs.put("in_service", new SimulationProperty("In Service", "N/a", false, 1));
-        defaultInputs.put("vn_kv", new SimulationProperty("Bus Voltage", "kV", 20.0, 1));
+        //defaultInputs.put("vn_kv", new SimulationProperty("Bus Voltage", "kV", 20.0, false, 1));
+        defaultInputs.put("p_mw", new SimulationProperty("Active Power (+ -)", "MW", 20.0, 1));
+        defaultInputs.put("max_e_mwh", new SimulationProperty("Maximum Energy", "MW", 60.0, 1));
+        defaultInputs.put("soc_percent", new SimulationProperty("Charge Percent", "%", 5.0, 1));
+        defaultInputs.put("vn_kv", new SimulationProperty("Bus Voltage", "kV", 20.0, false, 3));
 
-        defaultOutputs.put("vm_pu", new SimulationProperty("Voltage Magnitude", "pu", 0.0, 3));
-        defaultOutputs.put("va_degree", new SimulationProperty("Voltage Angle", "degrees", 0.0, 3));
+//        defaultOutputs.put("vm_pu", new SimulationProperty("Voltage Magnitude", "pu", 0.0, 3));
+//        defaultOutputs.put("va_degree", new SimulationProperty("Voltage Angle", "degrees", 0.0, 3));
         defaultOutputs.put("p_mw", new SimulationProperty("Active Power", "MW", 0.0, 1));
         defaultOutputs.put("q_mvar", new SimulationProperty("Reactive Power", "Mvar", 0.0, 2));
     }
@@ -37,32 +41,27 @@ public class BatteryTileEntity extends SimulationTileEntity implements IMultimet
     //changes toJson will need to be changed to reflect relevant data once fully developed.
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
+        JsonObject bus = getBusJson(inputs.get("vn_kv").getDouble());
+        UUID busId = embededBusses.get("main");
 
         JsonObject obj = new JsonObject();
         obj.addProperty("etype", getSimulationType().toString());
+        obj.addProperty("bus", busId.toString());
         fillJSON(obj);
 
+        json.add(busId.toString(), bus);
         json.add(getSimulationID().toString(), obj);
         return json;
     }
 
     @Override
     public void initEmbeddedBusses() {
-        // No embedded busses!
+        embededBusses.put("main", UUID.randomUUID());
     }
 
-    // Overriding since there are no embedded buses
-    @Override
-    public UUID getEmbeddedBus(BlockPos pos) {
-        if (getPos().manhattanDistance(pos) == 1) {
-            return simId;
-        }
-        return null;
-    }
-// not a bus, is set to a bus to make sure integration works.
     @Override
     public String getTranslationString() {
-        return "gui.electricblocks.busscreen";
+        return "gui.electricblocks.batteryscreen";
     }
 
     @Override
