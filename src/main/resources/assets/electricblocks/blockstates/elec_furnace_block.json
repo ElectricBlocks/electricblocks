@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "electricblocks:block/elec_furnace_block" }
+    "facing=north,lit=false":  { "model": "electricblocks:block/elec_furnace_block" },
+    "facing=east,lit=false":   { "model": "electricblocks:block/elec_furnace_block", "y": 90 },
+    "facing=south,lit=false":   { "model": "electricblocks:block/elec_furnace_block", "y": 180 },
+    "facing=west,lit=false":   { "model": "electricblocks:block/elec_furnace_block", "y": 270 }
   }
 }

@@ -4,6 +4,7 @@ import edu.uidaho.electricblocks.blocks.*;
 import edu.uidaho.electricblocks.containers.ElecFurnaceContainer;
 import edu.uidaho.electricblocks.items.*;
 import edu.uidaho.electricblocks.tileentities.*;
+
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -76,7 +77,7 @@ public final class RegistryHandler {
     //Containers
     public static final RegistryObject<ContainerType<ElecFurnaceContainer>> ELEC_FURNACE_CONTAINER = CONTAINER_TYPES
             .register("electric_furnace", () -> IForgeContainerType.create(ElecFurnaceContainer::new));
-
+    
     /**
      * Initializes all of the registers with the event mod bus so that blocks, items, and tile entities will be
      * recognized by the Forge mod loader
@@ -85,6 +86,7 @@ public final class RegistryHandler {
         BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        CONTAINER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
 }

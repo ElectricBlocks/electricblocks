@@ -42,6 +42,7 @@
   "gui.electricblocks.close": "Close",
   "gui.electricblocks.submitchanges": "Submit Changes",
   "gui.electricblocks.batteryscreen": "Battery",
+  "container.electricblocks.example_furnace": "Electric Furnace",
 
   "_comment_": "WAILA/HWYLA Config",
   "config.waila.plugin_electricblocks": "Electric Blocks",
