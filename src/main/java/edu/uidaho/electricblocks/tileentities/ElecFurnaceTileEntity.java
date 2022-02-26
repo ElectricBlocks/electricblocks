@@ -23,6 +23,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
@@ -32,6 +33,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -115,7 +117,12 @@ public class ElecFurnaceTileEntity extends SimulationTileEntity implements ITick
     @Nullable
     @Override
     public Container createMenu(final int windowID, final PlayerInventory playerInv, final PlayerEntity playerIn) {
-        return new ElecFurnaceContainer(windowID, playerInv, this);
+        Item item = playerIn.getHeldItem(Hand.MAIN_HAND).getItem();
+        if(item == RegistryHandler.MULTIMETER_ITEM.get() || item == RegistryHandler.MULTIMETER_ITEM2.get() || item == RegistryHandler.MULTIMETER_ITEM3.get()){
+            return null;
+        } else {
+            return new ElecFurnaceContainer(windowID, playerInv, this);
+        }
     }
 
     @Override
