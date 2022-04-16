@@ -13,7 +13,7 @@ issueTrackerURL="https://github.com/ElectricBlocks/electricblocks/issues" #optio
 [[mods]] #mandatory
 # The modid of the mod
 modId="electricblocks" #mandatory
-# The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
+# The version number of the mod - there's a few well known ${} variables usable here or just hardcode it
 version="2.0.0" #mandatory
  # A display name for the mod
 displayName="Electric Blocks" #mandatory
