@@ -1,9 +1,0 @@
-#Host of EBPP Simulation Server including port and endpoint
-hostURL = "http://127.0.0.1:1127/api"
-#Proxy of EBPP Simulation Server including port and address
-proxyURL = "http://127.0.0.1:1126"
-#Whether or not the simulation should be updated when an electric block is broken
-updateOnBlockBreak = true
-#Should JSON requests to EBPP be included in the log. Useful for debugging
-logJSONRequests = false
-
