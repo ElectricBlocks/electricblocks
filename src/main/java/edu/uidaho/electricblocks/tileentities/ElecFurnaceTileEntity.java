@@ -130,7 +130,7 @@ public class ElecFurnaceTileEntity extends SimulationTileEntity implements IName
     public void checkState(){
         Boolean status = inputs.get("in_service").getBoolean();
         Double outval = outputs.get("p_mw").getDouble();
-        if(status == true || outval > 0.0f){
+        if(status == true && outval > 0.0f){
             this.world.setBlockState(this.getPos(),
                     this.getBlockState().with(ElecFurnaceBlock.LIT, true));
         } else {
