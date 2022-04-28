@@ -31,9 +31,9 @@ public class ElecRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
 
     @Override
     public void write(PacketBuffer buffer, ElecRecipe recipe) {
+        buffer.writeItemStack(recipe.getRecipeOutput(), false);
+
         Ingredient input = recipe.getIngredients().get(0);
         input.write(buffer);
-
-        buffer.writeItemStack(recipe.getRecipeOutput(), false);
     }
 }
