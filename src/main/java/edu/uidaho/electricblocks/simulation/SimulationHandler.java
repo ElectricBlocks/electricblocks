@@ -158,25 +158,7 @@ public class SimulationHandler {
         PrintWriter out = null;
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
-        try {
-            /**
-            //UDP IMPLEMENTATION
-            DatagramSocket sock = new DatagramSocket();
-            InetAddress ip = InetAddress.getLocalHost();
-            byte buf[] = null;
-            buf = body.getBytes();
-            DatagramPacket DpSend = new DatagramPacket(buf, buf.length, ip, 1126);
-            sock.send(DpSend);
-            byte retbuf[] = new byte[65535];
-            DatagramPacket DpRecv = new DatagramPacket(retbuf, retbuf.length, ip, 1126);
-            sock.receive(DpRecv);
-
-            result = data(retbuf);
-
-            retbuf = new byte[65535];
-            //return answer;
-            */
-            //ORIGINAL IMPLEMENTATION
+        try{
             URL url = new URL(addr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -206,22 +188,6 @@ public class SimulationHandler {
         }
         return result.toString();
     }
-
-    /*
-    public static StringBuilder data(byte[] a)
-    {
-        if (a == null)
-            return null;
-        StringBuilder ret = new StringBuilder();
-        int i = 0;
-        while (a[i] != 0)
-        {
-            ret.append((char) a[i]);
-            i++;
-        }
-        return ret;
-    }
-    */
 
     /**
      * Creates a new simulation network starting at a specific SimulationTileEntity, but the player who triggered the

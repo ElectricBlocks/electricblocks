@@ -16,6 +16,7 @@ import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.simulation.SimulationProperty;
 import edu.uidaho.electricblocks.simulation.SimulationTileEntity;
 import edu.uidaho.electricblocks.simulation.SimulationType;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,6 +32,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -51,9 +53,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Tile entity associated with the @LoadBlock
+ * Tile entity associated with the @ElecFurnaceBlock
  */
-public class ElecFurnaceTileEntity extends SimulationTileEntity implements ITickableTileEntity, INamedContainerProvider {
+public class ElecFurnaceTileEntity extends SimulationTileEntity implements INamedContainerProvider {
 
     private ITextComponent customName;
     public int currentSmeltTime;
@@ -125,27 +127,42 @@ public class ElecFurnaceTileEntity extends SimulationTileEntity implements ITick
         }
     }
 
-    @Override
-    public void tick() {
+    public void checkState(){
+        Boolean status = inputs.get("in_service").getBoolean();
+        Double outval = outputs.get("p_mw").getDouble();
+        if(status == true || outval > 0.0f){
+            this.world.setBlockState(this.getPos(),
+                    this.getBlockState().with(ElecFurnaceBlock.LIT, true));
+        } else {
+            this.world.setBlockState(this.getPos(),
+                    this.getBlockState().with(ElecFurnaceBlock.LIT, false));
+        }
+    }
+
+    public void process() {
+        Double outval = outputs.get("p_mw").getDouble();
         boolean dirty = false;
+        ElectricBlocksMod.LOGGER.warn("Inside Tick method\n");
+
+        if(outval > 0.0f){
+            ElectricBlocksMod.LOGGER.warn("Should change block state\n");
+            this.world.setBlockState(this.getPos(),
+                    this.getBlockState().with(ElecFurnaceBlock.LIT, true));
+        }
 
         if (this.world != null && !this.world.isRemote) {
-            if (this.world.isBlockPowered(this.getPos())) {
-                if (this.getRecipe(this.inventory.getStackInSlot(0)) != null) {
-                    if (this.currentSmeltTime != this.maxSmeltTime) {
-                        this.world.setBlockState(this.getPos(),
-                                this.getBlockState().with(ElecFurnaceBlock.LIT, true));
-                        this.currentSmeltTime++;
-                        dirty = true;
-                    } else {
-                        this.world.setBlockState(this.getPos(),
-                                this.getBlockState().with(ElecFurnaceBlock.LIT, false));
-                        this.currentSmeltTime = 0;
-                        ItemStack output = this.getRecipe(this.inventory.getStackInSlot(0)).getRecipeOutput();
-                        this.inventory.insertItem(1, output.copy(), false);
-                        this.inventory.decrStackSize(0, 1);
-                        dirty = true;
-                    }
+            if (this.getRecipe(this.inventory.getStackInSlot(0)) != null) {
+                if (this.currentSmeltTime != this.maxSmeltTime) {
+                    this.world.setBlockState(this.getPos(),
+                            this.getBlockState().with(ElecFurnaceBlock.LIT, true));
+                    this.currentSmeltTime = this.maxSmeltTime;
+                    dirty = true;
+                } else {
+                    this.currentSmeltTime = 0;
+                    ItemStack output = this.getRecipe(this.inventory.getStackInSlot(0)).getRecipeOutput();
+                    this.inventory.insertItem(1, output.copy(), false);
+                    this.inventory.decrStackSize(0, 1);
+                    dirty = true;
                 }
             }
         }
@@ -166,7 +183,7 @@ public class ElecFurnaceTileEntity extends SimulationTileEntity implements ITick
     }
 
     private ITextComponent getDefaultName() {
-        return new TranslationTextComponent("container." + ElectricBlocksMod.MOD_ID + ".example_furnace");
+        return new TranslationTextComponent("container." + ElectricBlocksMod.MOD_ID + ".electric_furnace");
     }
 
     @Override

@@ -12,7 +12,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public interface IElecRecipe extends IRecipe<RecipeWrapper> {
 
-    ResourceLocation RECIPE_TYPE_ID = new ResourceLocation(ElectricBlocksMod.MOD_ID, "example");
+    ResourceLocation RECIPE_TYPE_ID = new ResourceLocation(ElectricBlocksMod.MOD_ID, "elec_furnace");
 
     @Nonnull
     @Override

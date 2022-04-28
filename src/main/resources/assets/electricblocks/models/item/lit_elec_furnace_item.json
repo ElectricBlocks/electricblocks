@@ -1,0 +1,4 @@
+{
+  "parent": "electricblocks:block/lit_elec_furnace_block",
+  "child": "electricblocks:block/lit_elec_furnace_block_v2"
+}

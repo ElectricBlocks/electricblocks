@@ -3,6 +3,7 @@ package edu.uidaho.electricblocks.blocks;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.tileentities.ElecFurnaceTileEntity;
 import edu.uidaho.electricblocks.utils.ElecFurnaceItemHandler;
@@ -15,9 +16,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
@@ -108,16 +109,6 @@ public class ElecFurnaceBlock extends Block {
     }
 
     @Override
-    public boolean hasComparatorInputOverride(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-        return Container.calcRedstone(worldIn.getTileEntity(pos));
-    }
-
-    @Override
     @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         if (stateIn.get(LIT)) {
@@ -144,7 +135,13 @@ public class ElecFurnaceBlock extends Block {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
                                              Hand handIn, BlockRayTraceResult hit) {
-        if (worldIn != null && !worldIn.isRemote) {
+        Item item = player.getHeldItem(Hand.MAIN_HAND).getItem();
+        ElecFurnaceTileEntity efurn_tile = (ElecFurnaceTileEntity) worldIn.getTileEntity(pos);
+        efurn_tile.checkState();
+        //Now lets check if we have input to process 8)
+
+
+        if (worldIn != null && !worldIn.isRemote && !(item == RegistryHandler.MULTIMETER_ITEM.get() || item == RegistryHandler.MULTIMETER_ITEM2.get() || item == RegistryHandler.MULTIMETER_ITEM3.get())) {
             TileEntity tile = worldIn.getTileEntity(pos);
             if (tile instanceof ElecFurnaceTileEntity) {
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tile, pos);

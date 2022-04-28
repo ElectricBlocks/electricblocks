@@ -2,6 +2,7 @@ package edu.uidaho.electricblocks.containers;
 
 import javax.annotation.Nonnull;
 
+import edu.uidaho.electricblocks.ElectricBlocksMod;
 import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.tileentities.ElecFurnaceTileEntity;
 import edu.uidaho.electricblocks.utils.FunctionalIntReferenceHolder;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
@@ -29,6 +31,7 @@ public class ElecFurnaceContainer extends Container {
     // Server Constructor
     public ElecFurnaceContainer(final int windowID, final PlayerInventory playerInv,
                                    final ElecFurnaceTileEntity tile) {
+
         super(RegistryHandler.ELEC_FURNACE_CONTAINER.get(), windowID);
 
         this.tileEntity = tile;
@@ -59,11 +62,14 @@ public class ElecFurnaceContainer extends Container {
 
         this.trackInt(currentSmeltTime = new FunctionalIntReferenceHolder(() -> this.tileEntity.currentSmeltTime,
                 value -> this.tileEntity.currentSmeltTime = value));
+        //ElectricBlocksMod.LOGGER.warn("Server side constructor called!");
     }
 
     // Client Constructor
     public ElecFurnaceContainer(final int windowID, final PlayerInventory playerInv, final PacketBuffer data) {
         this(windowID, playerInv, getTileEntity(playerInv, data));
+        //ElectricBlocksMod.LOGGER.warn("Client side constructor called!");
+
     }
 
     private static ElecFurnaceTileEntity getTileEntity(final PlayerInventory playerInv, final PacketBuffer data) {
@@ -84,6 +90,7 @@ public class ElecFurnaceContainer extends Container {
     @Nonnull
     @Override
     public ItemStack transferStackInSlot(final PlayerEntity player, final int index) {
+        ElectricBlocksMod.LOGGER.warn("Inside transferStackInSlot function with index: ", index);
         ItemStack returnStack = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
@@ -107,6 +114,11 @@ public class ElecFurnaceContainer extends Container {
                 return ItemStack.EMPTY;
             }
             slot.onTake(player, slotStack);
+        }
+        if(index == 0){
+            //call tick method
+            ElectricBlocksMod.LOGGER.warn("Move detected in input slot");
+            this.tileEntity.process();
         }
         return returnStack;
     }

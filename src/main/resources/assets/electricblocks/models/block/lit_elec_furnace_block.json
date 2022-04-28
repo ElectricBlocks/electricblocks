@@ -1,0 +1,8 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "electricblocks:blocks/elec_furnace_base",
+    "front": "electricblocks:blocks/lit_elec_furnace_front",
+    "side": "electricblocks:blocks/elec_furnace_base"
+  }
+}

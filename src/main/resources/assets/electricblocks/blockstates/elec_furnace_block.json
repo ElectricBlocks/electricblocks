@@ -3,6 +3,11 @@
     "facing=north,lit=false":  { "model": "electricblocks:block/elec_furnace_block" },
     "facing=east,lit=false":   { "model": "electricblocks:block/elec_furnace_block", "y": 90 },
     "facing=south,lit=false":   { "model": "electricblocks:block/elec_furnace_block", "y": 180 },
-    "facing=west,lit=false":   { "model": "electricblocks:block/elec_furnace_block", "y": 270 }
+    "facing=west,lit=false":   { "model": "electricblocks:block/elec_furnace_block", "y": 270 },
+
+    "facing=north,lit=true":  { "model": "electricblocks:block/lit_elec_furnace_block" },
+    "facing=east,lit=true":   { "model": "electricblocks:block/lit_elec_furnace_block", "y": 90 },
+    "facing=south,lit=true":   { "model": "electricblocks:block/lit_elec_furnace_block", "y": 180 },
+    "facing=west,lit=true":   { "model": "electricblocks:block/lit_elec_furnace_block", "y": 270 }
   }
 }

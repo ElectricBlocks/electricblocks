@@ -21,7 +21,7 @@ public class RecipeSerializerInit {
     public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = new DeferredRegister<>(
             ForgeRegistries.RECIPE_SERIALIZERS, ElectricBlocksMod.MOD_ID);
 
-    public static final RegistryObject<IRecipeSerializer<?>> ELEC_SERIALIZER = RECIPE_SERIALIZERS.register("example",
+    public static final RegistryObject<IRecipeSerializer<?>> ELEC_SERIALIZER = RECIPE_SERIALIZERS.register("elec_furnace",
             () -> ELEC_RECIPE_SERIALIZER);
 
     private static class RecipeType<T extends IRecipe<?>> implements IRecipeType<T> {

@@ -8,12 +8,16 @@ import edu.uidaho.electricblocks.tileentities.*;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import static edu.uidaho.electricblocks.init.RecipeSerializerInit.RECIPE_SERIALIZERS;
 
 /**
  * This is a static class that cannot be instantiated and is just used to register all of the blocks, items and tile
@@ -29,6 +33,7 @@ public final class RegistryHandler {
     public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, ElectricBlocksMod.MOD_ID);
     public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = new DeferredRegister<>(
             ForgeRegistries.CONTAINERS, ElectricBlocksMod.MOD_ID);
+
 
 
     // Blocks
@@ -77,7 +82,7 @@ public final class RegistryHandler {
     //Containers
     public static final RegistryObject<ContainerType<ElecFurnaceContainer>> ELEC_FURNACE_CONTAINER = CONTAINER_TYPES
             .register("electric_furnace", () -> IForgeContainerType.create(ElecFurnaceContainer::new));
-    
+
     /**
      * Initializes all of the registers with the event mod bus so that blocks, items, and tile entities will be
      * recognized by the Forge mod loader
@@ -87,6 +92,7 @@ public final class RegistryHandler {
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         CONTAINER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
 }
