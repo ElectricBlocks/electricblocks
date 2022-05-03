@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:cooked_mutton"
+  },
+
+  "input": {
+    "item": "minecraft:mutton"
+  }
+}

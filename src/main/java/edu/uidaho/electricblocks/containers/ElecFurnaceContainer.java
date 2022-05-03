@@ -90,7 +90,7 @@ public class ElecFurnaceContainer extends Container {
     @Nonnull
     @Override
     public ItemStack transferStackInSlot(final PlayerEntity player, final int index) {
-        ElectricBlocksMod.LOGGER.warn("Inside transferStackInSlot function with index: ", index);
+        //ElectricBlocksMod.LOGGER.warn("Inside transferStackInSlot function with index: ", index);
         ItemStack returnStack = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
@@ -117,8 +117,8 @@ public class ElecFurnaceContainer extends Container {
         }
         if(index == 0){
             //call tick method
-            ElectricBlocksMod.LOGGER.warn("Move detected in input slot");
-            this.tileEntity.process();
+            //ElectricBlocksMod.LOGGER.warn("Move detected in input slot");
+            //this.tileEntity.process(); THIS DOES NOT WORK
         }
         return returnStack;
     }

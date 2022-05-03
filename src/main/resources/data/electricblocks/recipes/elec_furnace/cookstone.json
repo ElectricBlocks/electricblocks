@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:smooth_stone"
+  },
+
+  "input": {
+    "item": "minecraft:stone"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:terracotta"
+  },
+
+  "input": {
+    "item": "minecraft:clay"
+  }
+}

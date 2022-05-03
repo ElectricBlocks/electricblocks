@@ -137,31 +137,45 @@ public class ElecFurnaceTileEntity extends SimulationTileEntity implements IName
             this.world.setBlockState(this.getPos(),
                     this.getBlockState().with(ElecFurnaceBlock.LIT, false));
         }
+
+        if(this.inventory.getStackInSlot(0) != ItemStack.EMPTY){
+            int count = this.inventory.getStackInSlot(0).getCount();
+            this.process(count);
+        } else {
+            //ElectricBlocksMod.LOGGER.warn("No items found in input slot!");
+        }
     }
 
-    public void process() {
+    // THIS FUNCTION IS MODIFIED FROM tick() in ITickableTileEntity
+    // As far as my knowledge goes, implementing the ITickableTileEntity interface does not work.
+    // This is why all state and item handling is done in checkState() method, called by the onBlockActivated method
+    // in ElectricFurnaceBlock class
+    public void process(int count) {
         Double outval = outputs.get("p_mw").getDouble();
         boolean dirty = false;
-        ElectricBlocksMod.LOGGER.warn("Inside Tick method\n");
+        //ElectricBlocksMod.LOGGER.warn("Inside Tick method\n");
 
         if(outval > 0.0f){
-            ElectricBlocksMod.LOGGER.warn("Should change block state\n");
+            //ElectricBlocksMod.LOGGER.warn("Should change block state\n");
             this.world.setBlockState(this.getPos(),
                     this.getBlockState().with(ElecFurnaceBlock.LIT, true));
         }
 
         if (this.world != null && !this.world.isRemote) {
-            if (this.getRecipe(this.inventory.getStackInSlot(0)) != null) {
+            if (this.getRecipe(this.inventory.getStackInSlot(0)) != null && this.inventory.getStackInSlot(1) == ItemStack.EMPTY) {
                 if (this.currentSmeltTime != this.maxSmeltTime) {
                     this.world.setBlockState(this.getPos(),
                             this.getBlockState().with(ElecFurnaceBlock.LIT, true));
                     this.currentSmeltTime = this.maxSmeltTime;
                     dirty = true;
-                } else {
+                }
+                if (this.currentSmeltTime == this.maxSmeltTime) {
                     this.currentSmeltTime = 0;
                     ItemStack output = this.getRecipe(this.inventory.getStackInSlot(0)).getRecipeOutput();
-                    this.inventory.insertItem(1, output.copy(), false);
-                    this.inventory.decrStackSize(0, 1);
+                    for(int i = 0; i < count; i++) {
+                        this.inventory.insertItem(1, output.copy(), false);
+                    }
+                    this.inventory.decrStackSize(0, count);
                     dirty = true;
                 }
             }
@@ -183,7 +197,7 @@ public class ElecFurnaceTileEntity extends SimulationTileEntity implements IName
     }
 
     private ITextComponent getDefaultName() {
-        return new TranslationTextComponent("container." + ElectricBlocksMod.MOD_ID + ".electric_furnace");
+        return new TranslationTextComponent("Electric Furnace");
     }
 
     @Override
