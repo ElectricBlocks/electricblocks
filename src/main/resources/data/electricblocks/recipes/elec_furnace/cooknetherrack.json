@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:nether_brick"
+  },
+
+  "input": {
+    "item": "minecraft:netherrack"
+  }
+}

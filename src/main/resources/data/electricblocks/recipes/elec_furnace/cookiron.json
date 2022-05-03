@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:iron_ingot"
+  },
+
+  "input": {
+    "item": "minecraft:iron_ore"
+  }
+}

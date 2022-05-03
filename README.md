@@ -1,6 +1,6 @@
 # Electric Blocks
 
-Electric Blocks is a minecraft mod that simulates realistic power transmission.
+Electric Blocks is a Minecraft mod that simulates realistic power transmission.
 
 [![Build][build-shield]][build-url]
 [![Contributors][contributors-shield]][contributors-url]
@@ -23,7 +23,9 @@ Electric Blocks is a minecraft mod that simulates realistic power transmission.
 
 ## About The Project
 
-Electric Blocks is different from other Minecraft mods. Rather than using our own power flow implementation, this mod uses the heavily tested and validated PandaPower API. This means that the results of power flows are very accurate and can be used for real world modeling and testing of power flow. This tool can be used for educational or engineering purposes.
+For all installation and usage information and other documentation, visit our [website](https://electricblocks.github.io).
+
+The Electric Blocks mod brings accurate power flow simulation to Minecraft! Rather than using our own power flow implementation, Electric Blocks uses the heavily tested and validated PandaPower API. This means that the results of power flows are very accurate and can be used for real world modeling and testing of power flow. 
 
 ### Built With
 
@@ -32,7 +34,7 @@ Electric Blocks is different from other Minecraft mods. Rather than using our ow
 
 ## Installation
 
-To use this mod, you must have Forge version 1.15.2 installed. For single player, [EBPP](https://github.com/ElectricBlocks/ebpp) must be installed and running on your computer. For multiplayer, only the computer running the Forge server needs to have [EBPP](https://github.com/ElectricBlocks/ebpp) installed.
+To use this mod, you **must** have Forge version 1.15.2 **and** the [HWYLA](https://www.curseforge.com/minecraft/mc-mods/hwyla/files/2880069) mod installed. For single player, the power flow simulation server [EBPP](https://github.com/ElectricBlocks/ebpp) must be installed and running on your computer. For multiplayer, only the computer running the Forge server needs to have [EBPP](https://github.com/ElectricBlocks/ebpp) installed.
 
 ### Prebuilt JAR
 
@@ -40,7 +42,7 @@ First make sure you have MC Forge installed. If you want to play single player o
 
 Move the JAR file into your mods folder and start up MC Forge.
 
-### Manual Install
+### Building from Source
 
 To build from sources, you will need:
 * Java 8 JDK
@@ -54,13 +56,15 @@ gradlew jar
 ```
 We recommend using the included gradle wrapper. We are using version 4.10.3. Newer versions of gradle may cause this build to fail.
 
-This may take a while. Once built, the JAR should be located in `./build/reobfJar/output.jar`
+This may take a while. Once built, the JAR should be located in `./build/reobfJar/output.jar`.
 
 Copy this JAR file into your mods folder and start MC Forge.
 
+If compiling with an IDE, we recommend IntelliJ. If you encounter errors during compilation, you may need to add the HWYLA sources jar as a library.
+
 ## Usage
 
-TODO: Create useage info
+For usage info, 
 
 ## Contributing
 
@@ -72,10 +76,13 @@ Distributed under the GNU Affero General Public License. See [LICENSE.md](LICENS
 
 ## Acknowledgements
 
-This software is developed by students at the University of Idaho for the Capstone Design class:
+This software has been developed by the following students at the University of Idaho for the 2020-21 and 2021-22 Senior Capstone Design courses:
 
-* Zachary Sugano - Project Lead - [zachoooo](https://github.com/zachoooo)
-* Christian Whitfield - Team Member/Communications Lead - [oceanwhit](https://github.com/oceanwhit)
+* 21-22: Ryan Buckel - [gellyboi](https://github.com/gellyboi)
+* 21-22: Samuel Frederickson - [SamFrederickson](https://github.com/SamFrederickson)
+* 21-22: Greyson Biggs - [stlngds](https://github.com/stlngds)
+* 20-21: Zachary Sugano - Project Lead - [zachoooo](https://github.com/zachoooo)
+* 20-21: Christian Whitfield - Team Member/Communications Lead - [oceanwhit](https://github.com/oceanwhit)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

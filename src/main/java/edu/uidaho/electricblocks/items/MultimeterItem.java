@@ -11,5 +11,4 @@ public class MultimeterItem extends Item {
             .maxStackSize(1)
         );
     }
-    
 }

@@ -9,6 +9,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -155,7 +158,7 @@ public class SimulationHandler {
         PrintWriter out = null;
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
-        try {
+        try{
             URL url = new URL(addr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");

@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:dried_kelp"
+  },
+
+  "input": {
+    "item": "minecraft:kelp"
+  }
+}

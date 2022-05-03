@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:baked_potato"
+  },
+
+  "input": {
+    "item": "minecraft:potato"
+  }
+}

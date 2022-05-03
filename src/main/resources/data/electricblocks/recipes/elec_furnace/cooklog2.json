@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:charcoal"
+  },
+
+  "input": {
+    "item": "minecraft:spruce_log"
+  }
+}

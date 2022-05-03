@@ -13,8 +13,8 @@ issueTrackerURL="https://github.com/ElectricBlocks/electricblocks/issues" #optio
 [[mods]] #mandatory
 # The modid of the mod
 modId="electricblocks" #mandatory
-# The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="${version}" #mandatory
+# The version number of the mod - there's a few well known ${} variables usable here or just hardcode it
+version="2.0.0" #mandatory
  # A display name for the mod
 displayName="Electric Blocks" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
@@ -24,11 +24,11 @@ displayURL="https://electricblocks.github.io" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="logo.png" #optional
 # A text field displayed in the mod UI
-credits="Thanks to our project sponsor Dr. Daniel Conte de Leon and project advisor Professor Bruce Bolden at the University of Idaho for their support!"
+credits="Thanks to our project sponsor Dr. Daniel Conte de Leon and project advisor Dr. Bruce Bolden at the University of Idaho for their support!"
 # A text field displayed in the mod UI
-authors="Christian Whitfield and Zach Sugano" #optional
+authors="2020-2021: Christian Whitfield, Zach Sugano. 2021-2022: Greyson Biggs, Ryan Buckel, Samuel Frederickson." #optional
 # The description text for the mod (multi line!) (#mandatory)
-description="Electric Blocks simulates electric power flow! This project was made for the University of Idaho as part of our capstone design class."
+description="Electric Blocks brings power flow simulation to Minecraft!"
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.electricblocks]] #optional

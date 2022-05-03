@@ -20,27 +20,27 @@ public class TransformerTileEntity extends SimulationTileEntity {
     protected static final Map<String, SimulationProperty> defaultOutputs = new LinkedHashMap<>();
 
     static {
-        defaultInputs.put("in_service", new SimulationProperty("In Service", "N/a", false));
-        defaultInputs.put("sn_mva", new SimulationProperty("Apparent Power", "MVA", 40.0));
-        defaultInputs.put("vn_hv_kv", new SimulationProperty("High Bus Voltage", "kV", 110.0));
-        defaultInputs.put("vn_lv_kv", new SimulationProperty("Low Bus Voltage", "kV", 10.0));
-        defaultInputs.put("vkr_percent", new SimulationProperty("S/C Voltage Real", "%", 0.3));
-        defaultInputs.put("vk_percent", new SimulationProperty("S/C Voltage", "%", 10.0));
-        defaultInputs.put("pfe_kw", new SimulationProperty("Iron Losses", "kW", 30.0));
-        defaultInputs.put("i0_percent", new SimulationProperty("Open Loop Losses", "%", 0.1));
-        defaultInputs.put("shift_degree", new SimulationProperty("Shift Degree", "degrees", 30.0));
+        defaultInputs.put("in_service", new SimulationProperty("In Service", "N/a", false, 1));
+        defaultInputs.put("sn_mva", new SimulationProperty("Apparent Power", "MVA", 40.0, 1));
+        defaultInputs.put("vn_hv_kv", new SimulationProperty("High Bus Voltage", "kV", 110.0, 1));
+        defaultInputs.put("vn_lv_kv", new SimulationProperty("Low Bus Voltage", "kV", 10.0, 1));
+        defaultInputs.put("vkr_percent", new SimulationProperty("S/C Voltage Real", "%", 0.3,1));
+        defaultInputs.put("vk_percent", new SimulationProperty("S/C Voltage", "%", 10.0,1));
+        defaultInputs.put("pfe_kw", new SimulationProperty("Iron Losses", "kW", 30.0,1));
+        defaultInputs.put("i0_percent", new SimulationProperty("Open Loop Losses", "%", 0.1,1));
+        defaultInputs.put("shift_degree", new SimulationProperty("Shift Degree", "degrees", 30.0,1));
 
-        defaultOutputs.put("p_hv_mw", new SimulationProperty("HV Power", "MW", 0.0));
-        defaultOutputs.put("q_hv_mvar", new SimulationProperty("HV Reactive Power", "Mvar", 0.0));
-        defaultOutputs.put("p_lv_mw", new SimulationProperty("LV Power", "MW", 0.0));
-        defaultOutputs.put("q_lv_mvar", new SimulationProperty("LV Reactive Power", "Mvar", 0.0));
-        defaultOutputs.put("pl_mw", new SimulationProperty("Power Losses", "MW", 0.0));
-        defaultOutputs.put("ql_mvar", new SimulationProperty("R Power Losses", "Mvar", 0.0));
-        defaultOutputs.put("i_hv_ka", new SimulationProperty("HV Bus Current", "kA", 0.0));
-        defaultOutputs.put("i_lv_ka", new SimulationProperty("LV Bus Current", "kA", 0.0));
-        defaultOutputs.put("vm_hv_pu", new SimulationProperty("HV Voltage MAG", "pu", 0.0));
-        defaultOutputs.put("vm_lv_pu", new SimulationProperty("LV Voltage MAG", "pu", 0.0));
-        defaultOutputs.put("loading_percent", new SimulationProperty("Loading Percent", "%", 0.0));
+        defaultOutputs.put("p_hv_mw", new SimulationProperty("HV Power", "MW", 0.0,1));
+        defaultOutputs.put("q_hv_mvar", new SimulationProperty("HV Reactive Power", "Mvar", 0.0,1));
+        defaultOutputs.put("p_lv_mw", new SimulationProperty("LV Power", "MW", 0.0,1));
+        defaultOutputs.put("q_lv_mvar", new SimulationProperty("LV Reactive Power", "Mvar", 0.0,1));
+        defaultOutputs.put("pl_mw", new SimulationProperty("Power Losses", "MW", 0.0,1));
+        defaultOutputs.put("ql_mvar", new SimulationProperty("R Power Losses", "Mvar", 0.0,1));
+        defaultOutputs.put("i_hv_ka", new SimulationProperty("HV Bus Current", "kA", 0.0,1));
+        defaultOutputs.put("i_lv_ka", new SimulationProperty("LV Bus Current", "kA", 0.0,1));
+        defaultOutputs.put("vm_hv_pu", new SimulationProperty("HV Voltage MAG", "pu", 0.0,1));
+        defaultOutputs.put("vm_lv_pu", new SimulationProperty("LV Voltage MAG", "pu", 0.0,1));
+        defaultOutputs.put("loading_percent", new SimulationProperty("Loading Percent", "%", 0.0,1));
     }
 
     private Direction cachedDirection = Direction.NORTH; // Cache direction for when block is broken

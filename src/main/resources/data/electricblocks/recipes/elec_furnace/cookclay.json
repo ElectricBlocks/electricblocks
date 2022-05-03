@@ -1,0 +1,10 @@
+{
+  "type": "electricblocks:elec_furnace",
+  "output": {
+    "item": "minecraft:brick"
+  },
+
+  "input": {
+    "item": "minecraft:clay_ball"
+  }
+}

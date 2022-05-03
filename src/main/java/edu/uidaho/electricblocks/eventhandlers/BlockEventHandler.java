@@ -36,7 +36,7 @@ public class BlockEventHandler {
         PlayerEntity player = event.getPlayer();
 
         Item item = player.getHeldItem(Hand.MAIN_HAND).getItem();
-        if (item == RegistryHandler.MULTIMETER_ITEM.get()) { // Only process if player is holding multimeter
+        if (item == RegistryHandler.MULTIMETER_ITEM.get() || item == RegistryHandler.MULTIMETER_ITEM2.get() || item == RegistryHandler.MULTIMETER_ITEM3.get()) { // Only process if player is holding multimeter
             BlockState blockState = world.getBlockState(event.getPos());
             Block block = blockState.getBlock();
 
@@ -69,7 +69,7 @@ public class BlockEventHandler {
         PlayerEntity player = event.getPlayer();
 
         Item item = player.getHeldItem(Hand.MAIN_HAND).getItem();
-        if (item == RegistryHandler.MULTIMETER_ITEM.get()) { // Only process if player is holding multimeter
+        if (item == RegistryHandler.MULTIMETER_ITEM.get() || item == RegistryHandler.MULTIMETER_ITEM2.get() || item == RegistryHandler.MULTIMETER_ITEM3.get()) { // Only process if player is holding multimeter
             BlockState blockState = world.getBlockState(event.getPos());
             Block block = blockState.getBlock();
 
@@ -101,7 +101,7 @@ public class BlockEventHandler {
         Item item = player.getHeldItem(Hand.MAIN_HAND).getItem();
         BlockPos pos = event.getPos();
 
-        if (item == RegistryHandler.MULTIMETER_ITEM.get()) { // Cancel event if player is holding multimeter
+        if (item == RegistryHandler.MULTIMETER_ITEM.get() || item == RegistryHandler.MULTIMETER_ITEM2.get() || item == RegistryHandler.MULTIMETER_ITEM3.get()) { // Cancel event if player is holding multimeter
             event.setCanceled(true);
             return;
         }

@@ -1,5 +1,6 @@
 package edu.uidaho.electricblocks.guis;
 
+import edu.uidaho.electricblocks.RegistryHandler;
 import edu.uidaho.electricblocks.network.ElectricBlocksPacketHandler;
 import edu.uidaho.electricblocks.network.TileEntityMessageToServer;
 import edu.uidaho.electricblocks.simulation.SimulationProperty;
@@ -12,6 +13,8 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
@@ -55,6 +58,7 @@ public class STEScreen extends Screen {
     protected Button doneButton;
     protected boolean inService;
     protected Button inServiceButton;
+    double level;
 
     // Info needed to preload the form with data
     protected boolean changed = false;
@@ -66,6 +70,20 @@ public class STEScreen extends Screen {
         this.simulationTileEntity = simulationTileEntity;
         this.player = player;
         this.inService = simulationTileEntity.isInService();
+
+        Item item = player.getHeldItem(Hand.MAIN_HAND).getItem();
+        if (item == RegistryHandler.MULTIMETER_ITEM.get())
+        {
+            this.level = 1;
+        }
+        if (item == RegistryHandler.MULTIMETER_ITEM2.get())
+        {
+            this.level = 2;
+        }
+        if (item == RegistryHandler.MULTIMETER_ITEM3.get())
+        {
+            this.level = 3;
+        }
     }
 
     /**
@@ -75,6 +93,7 @@ public class STEScreen extends Screen {
      */
     @Override
     protected void init() {
+
         // Add in service button
         inServiceButton = new Button(
                 (this.width - BUTTON_WIDTH) / 2,
@@ -91,6 +110,7 @@ public class STEScreen extends Screen {
                     }
                     onChange();
                 });
+
         this.addButton(inServiceButton);
         // Add the "Done" button
         doneButton = new Button(
@@ -106,51 +126,57 @@ public class STEScreen extends Screen {
             }
         );
         this.addButton(doneButton);
-
-        // Process all of the inputs
+        // Process all inputs
         boolean isFirst = true;
         for (Map.Entry<String, SimulationProperty> entry : simulationTileEntity.getInputs().entrySet()) {
             if (entry.getValue().getPropertyType() != SimulationProperty.PropertyType.DOUBLE) {
                 // Skip over special properties that are not doubles
                 continue;
             }
-            // Initialize a new property row with info from inputs
-            PropertyRow propertyRow = new PropertyRow();
-            propertyRow.isInput = true;
-            propertyRow.offset = offset;
-            propertyRow.simulationProperty = entry.getValue();
-            propertyRow.textFieldWidget = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, offset, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-            propertyRow.textFieldWidget.setText(String.format("%f", entry.getValue().getDouble()));
-            propertyRow.textFieldWidget.setVisible(true);
-            addButton(propertyRow.textFieldWidget);
-            if (isFirst) {
-                isFirst = false;
-                propertyRow.textFieldWidget.setFocused2(true);
-                setFocused(propertyRow.textFieldWidget);
+
+
+            //checks the level (beginner, intermediate, advanced) at which they want the information displayed
+            if(entry.getValue().getLevel() <= level) {
+                // Initialize a new property row with info from inputs
+                PropertyRow propertyRow = new PropertyRow();
+                propertyRow.isInput = true;
+                propertyRow.offset = offset;
+                propertyRow.simulationProperty = entry.getValue();
+                propertyRow.textFieldWidget = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, offset, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+                propertyRow.textFieldWidget.setText(String.format("%f", entry.getValue().getDouble()));
+                propertyRow.textFieldWidget.setVisible(true);
+                addButton(propertyRow.textFieldWidget);
+                if (isFirst) {
+                    isFirst = false;
+                    propertyRow.textFieldWidget.setFocused2(true);
+                    setFocused(propertyRow.textFieldWidget);
+                }
+                offset += 30;
+                propertyRows.add(propertyRow);
             }
-            offset += 30;
-            propertyRows.add(propertyRow);
         }
         // Remember separator location
         separatorOffset = offset - 10;
         offset += 5;
-        // Process all of the outputs
+        // Process all outputs
         for (Map.Entry<String, SimulationProperty> entry : simulationTileEntity.getOutputs().entrySet()) {
             if (entry.getValue().getPropertyType() != SimulationProperty.PropertyType.DOUBLE) {
                 continue;
             }
-            PropertyRow propertyRow = new PropertyRow();
-            propertyRow.offset = offset;
-            propertyRow.simulationProperty = entry.getValue();
-            propertyRow.textFieldWidget = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, offset, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
-            propertyRow.textFieldWidget.setText(String.format("%f", entry.getValue().getDouble()));
-            initializeResultField(propertyRow.textFieldWidget);
-            offset += 30;
-            propertyRows.add(propertyRow);
+            if(entry.getValue().getLevel() <= level) {
+                PropertyRow propertyRow = new PropertyRow();
+                propertyRow.offset = offset;
+                propertyRow.simulationProperty = entry.getValue();
+                propertyRow.textFieldWidget = new TextFieldWidget(font, (this.width - TEXT_INPUT_WIDTH) / 2 + (BUTTON_WIDTH - TEXT_INPUT_WIDTH) / 2, offset, TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT, "");
+                propertyRow.textFieldWidget.setText(String.format("%f", entry.getValue().getDouble()));
+                initializeResultField(propertyRow.textFieldWidget);
+                offset += 30;
+                propertyRows.add(propertyRow);
+            }
         }
         MIN_SCROLL = -(offset - 180);
 
-        // Hide all of the text inputs that shouldn't be visible because they are off screen
+        // Hide all the text inputs that shouldn't be visible because they are off-screen
         for (Widget w : this.buttons) {
             if (!(w instanceof Button)) {
                 w.visible = w.y <= getMaxCutoff() && w.y >= SCROLL_CUTOFF_MIN;
@@ -159,7 +185,7 @@ public class STEScreen extends Screen {
     }
 
     /**
-     * Handles mouse scrolling for hiding and displaying elements that are outside of the scroll window
+     * Handles mouse scrolling for hiding and displaying elements that are outside the scroll window
      * @param mouseX Mouse x position
      * @param mouseY Mouse y position
      * @param scrollAmount Amount scrolled

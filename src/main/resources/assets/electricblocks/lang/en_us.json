@@ -7,10 +7,13 @@
   "block.electricblocks.externalgrid_block": "External Grid",
   "block.electricblocks.lamp_block": "Lamp",
   "block.electricblocks.load_block": "Load",
+  "block.electricblocks.elec_furnace_block": "Electric Furnace",
   "block.electricblocks.transformer_block": "Transformer",
   "config.electricblocks.hostURL": "Host of EBPP Simulation Server including port and endpoint",
   "config.electricblocks.log_json_requests": "Should JSON requests to EBPP be included in the log. Useful for debugging",
-  "item.electricblocks.multimeter_item": "Multimeter",
+  "item.electricblocks.multimeter_item": "Multimeter Intro",
+  "item.electricblocks.multimeter_item2": "Multimeter Intermediate",
+  "item.electricblocks.multimeter_item3": "Multimeter Advanced",
   "command.electricblocks.warn": "WARNING",
   "command.electricblocks.error": "ERROR",
   "command.electricblocks.block_broken": "An electric block was broken. Requesting simulation update.",
@@ -37,5 +40,18 @@
   "gui.electricblocks.transformerscreen": "Transformer",
   "gui.electricblocks.busscreen": "Bus",
   "gui.electricblocks.close": "Close",
-  "gui.electricblocks.submitchanges": "Submit Changes"
+  "gui.electricblocks.submitchanges": "Submit Changes",
+  "gui.electricblocks.batteryscreen": "Battery",
+  "container.electricblocks.example_furnace": "Electric Furnace",
+
+  "_comment_": "WAILA/HWYLA Config",
+  "config.waila.plugin_electricblocks": "Electric Blocks",
+  "config.waila.plugin_electricblocks.ebinputs": "Inputs",
+  "config.waila.plugin_electricblocks.eboutputs": "Outputs",
+  "config.waila.plugin_electricblocks.ebinservice": "Service Status",
+
+  "_comment_": "WAILA/HWYLA Plugin Strings",
+  "info.electricblocks.ebinputs": "In: %s",
+  "info.electricblocks.eboutputs": "Out: %s",
+  "info.electricblocks.ebinservice": "In Service: %s"
 }
