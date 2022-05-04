@@ -34,7 +34,7 @@ The Electric Blocks mod brings accurate power flow simulation to Minecraft! Rath
 
 ## Installation
 
-To use this mod, you **must** have Forge version 1.15.2 **and** the [HWYLA](https://www.curseforge.com/minecraft/mc-mods/hwyla/files/2880069) mod installed. For single player, the power flow simulation server [EBPP](https://github.com/ElectricBlocks/ebpp) must be installed and running on your computer. For multiplayer, only the computer running the Forge server needs to have [EBPP](https://github.com/ElectricBlocks/ebpp) installed.
+To use this mod, you **must** have Forge version 1.15.2 **and** the [HWYLA](https://www.curseforge.com/minecraft/mc-mods/hwyla/files/2880069) mod installed. For single player, the power flow simulation server [EBPP](https://github.com/ElectricBlocks/ebpp) must be installed and running on your computer. For multiplayer, only the computer running the Forge server needs to have [EBPP](https://github.com/ElectricBlocks/ebpp) installed. As well, because Electric Blocks still uses Minecraft 1.15.2, if you're hosting a multiplayer server, it is vulnerable to the extremely dangerous Log4j exploit. More about that and how to fix it [here](https://help.minecraft.net/hc/en-us/articles/4416199399693-Security-Vulnerability-in-Minecraft-Java-Edition).
 
 ### Prebuilt JAR
 
@@ -64,7 +64,7 @@ If compiling with an IDE, we recommend IntelliJ. If you encounter errors during 
 
 ## Usage
 
-For usage info, 
+For usage info, check out our [website](https://electricblocks.github.io).
 
 ## Contributing
 
